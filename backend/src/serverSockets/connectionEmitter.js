@@ -19,10 +19,8 @@ class connectionEmitter{
 	}
 
 	broadcast_gameUpdate(data){
-		// console.log("sending update to", data.gameid);
-		var sendData = {"time": data.time};
 		this.server.to(data.gameid).emit("updateGame",sendData);
-	}
+    }
 }
 
 export default connectionEmitter;

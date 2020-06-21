@@ -1,17 +1,12 @@
-import GAME_BOARD from "./combatLogic/battleBoard.js";
 import PLAYER from "./player/player.js";
 
 class game {
 	constructor(){
 		this.id = '';
 		this.players = [];
-		this.board = new GAME_BOARD();
-		this.maxPlayers = 6;
-
-		this.tickInterval = undefined;
+        this.maxPlayers = 6;
 	}
 	setId(gameid){
-		this.board = new GAME_BOARD();
 		this.id = gameid;
 	}
 
@@ -25,7 +20,7 @@ class game {
 		}
 	}
 
-	removePlayer(playerName){
+	removePlayer(playerName) {
 		this.players = this.players.filter( (player) => player.name != playerName);
 	}
 
@@ -41,35 +36,16 @@ class game {
 		return this.players;
 	}
 
-	beginGame(tickRate){
-		// this.update();
-		this.tickInterval = setInterval(this.update.bind(this),1000/tickRate);
+	beginGame() {
+        var sendData = {"gameid": this.id, "uid": 1};
+        global.emitters.broadcast_gameUpdate(sendData);
+        console.log("Waiting for user punishments");
 	}
 
-	update(){
+	sendUpdate(){
 		var date = new Date().toJSON();
-		var sendData = {"gameid": this.id, "time": date};
+		var sendData = {"gameid": this.id, "uid": 0, "time": date.time};
 		global.emitters.broadcast_gameUpdate(sendData);
-	}
-
-	playerToGameBoard() {
-		return this.board.addPlayerUnits(this.players);
-	}
-
-	battleUpdate() {
-		var data = this.board.battleUpdate(this.players);
-		if (Object.keys(data.rank).length == this.players.length) {
-			return { end: true, data: data };
-		} else {
-			return { end: false, data: data };
-		}
-	}
-
-	battleClean() {
-		this.board.cleanBoard();
-		for (const player of this.players) {
-			player.resetBoardUnits();
-		}
 	}
 }
 

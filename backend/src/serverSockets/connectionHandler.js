@@ -1,14 +1,10 @@
-import globalData from "../globalData.js";
-import { POS } from '../utils/pos.js';
-
-import UNIT_STATE from '../combatLogic/unitState.js';
 
 // This class handles all the game connections socket handlers
 class connectionHandler{
 	constructor(server,client){
 		this.server = server;
 		this.client = client;
-	}
+    }
 
 	joinGameRoom(client,data){
 		// client joins room with gameid
@@ -74,7 +70,12 @@ class connectionHandler{
 		// find game
 		var game = global.data.findGame(data.gameid);
 		game.beginGame(global.data.serverTickRate);
-	}
+    }
+
+    readUpdateGame(client,data) {
+        var game = global.data.findGame(data.gameid);
+        game.readUpdate()
+    }
 
 	eventHandlers(){
 		const client = this.client;
@@ -93,64 +94,10 @@ class connectionHandler{
 		client.on("dummyFunction",function(data){
 			try {
 				if (true) {
-					let gameID = global.data.createNewGame("test");
-					if (gameID != -1) {
-						console.log("Created game with id: " + gameID);
-					} else {
-						console.log("Failed to create game");
-					}
-					let curGame = global.data.gameArray[0];
-					curGame.addPlayer(0, "bob");
-					curGame.addPlayer(1, "amy");
-					curGame.addPlayer(2, "joe");
-					curGame.addPlayer(3, "jen");
-					curGame.addPlayer(4, "fred");
-					curGame.addPlayer(5, "sam");
-					var p0 = curGame.findPlayer(0);
-					var p1 = curGame.findPlayer(1);
-					for (let i = 0; i < 10; i++) {
-						p0.addUnit("warrior");
-					}
-					for (let i = 0; i < 10; i++) {
-						p1.addUnit("warrior");
-					}
-					p0.addXP(2);
-					p1.addXP(2);
-					p0.boardMove(p0.benchGet(0), new POS(0, -3));
-					p1.boardMove(p1.benchGet(0), new POS(1, -3));
-					var idxs = curGame.playerToGameBoard();
-					console.log(idxs);
-	
-					// console.log(p0.unitHolder);
-					// console.log(p1.unitHolder);
-					// curGame.board.logTiles();
-					
-					var p0board = p0.board();
-					console.log("INIT:")
-					curGame.board.logTiles();
-					console.log("\n");
-					console.log(Object.values(p0board));
-					console.log("\n");
-					var result;
-					var i = 100;
-					do {
-						console.log("COUNTDOWN: " + i);
-						result = curGame.battleUpdate();
-						console.log(result);
-						console.log("\n");
-						i--;
-					} while (!result.end && i > 0);
-					console.log("FINAL:");
-					curGame.board.logTiles();
-					console.log(result.data);
-					console.log("\n");
-					curGame.battleClean();
-					curGame.board.logTiles();
-					console.log("DONE");
-					console.log(idxs);
+					console.log("WOOOO");
 				}
 			} catch(err) {
-				console.log(err)
+				console.log(err);
 			}
 		}.bind(this));
 	}

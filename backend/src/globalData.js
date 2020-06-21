@@ -5,7 +5,6 @@ class globalData {
 	constructor(){
 		this.gameArray = [];
 		this.maxGames = 10;
-		this.serverTickRate = 1;
 		this.mongoDB = new database();
 	}
 

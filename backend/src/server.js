@@ -33,8 +33,8 @@ io.on('connection', function(socket){
 global.data.mongoDB.connect().catch(function(err){
 	console.log("Failed to connect to database with error:", err);
 }).finally(function(){
-	server.listen(8000, () => {
-		console.log('Example app listening on port 8000!');
+	server.listen(9000, () => {
+		console.log('Example app listening on port 9000!');
 	});	
 });
 
