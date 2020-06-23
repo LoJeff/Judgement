@@ -39,7 +39,7 @@ class Login extends Component {
         return(
             <div>
 				<div id="title_container" className="title">
-					<h2>Auto Battle IO</h2>
+					<h2>Poke!</h2>
 				</div>
 				
 				<div id="interactive_set">
@@ -55,9 +55,11 @@ class Login extends Component {
 					</div>
 					
 					<div id="submit_button_container">
-						<button className="popButton" type="button" onClick={this.joinGameRoom}>Submit</button>
+						<button className="popButton" type="submit" onClick={this.joinGameRoom}>Join
+                            <img src="..\images\bottleDraft.PNG" width="90" height="50" alt="submit" />
+                        </button>
 					</div>
-                    <button className="popButton" onClick={this.dummyFunction}>Jeff's button</button>
+                    <button className="popButton" onClick={this.dummyFunction}>Giff's button</button>
 				</div>
             </div>
         );
