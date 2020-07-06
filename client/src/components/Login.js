@@ -56,7 +56,6 @@ class Login extends Component {
 					
 					<div id="submit_button_container">
 						<button className="popButton" type="submit" onClick={this.joinGameRoom}>Join
-                            <img src="..\images\bottleDraft.PNG" width="90" height="50" alt="submit" />
                         </button>
 					</div>
                     <button className="popButton" onClick={this.dummyFunction}>Giff's button</button>

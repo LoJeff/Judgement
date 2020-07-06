@@ -49,20 +49,20 @@ class Lobby extends Component {
 
         return(
             <div>
+                <h1>Welcome {this.props.clientName}</h1>
+                <h1>Currently aboard The {this.props.gameid}</h1>
+                <br/>
                 <Chat emitters={this.props.emitters}
                       handlers={this.props.handlers}
                       gameid={this.props.gameid}
                       clientName={this.props.clientName}
                       />
-                <h1>Hi {this.props.clientName}</h1>
-                <h1>Current room id: {this.props.gameid}</h1>
-                <br/>
-                <h1>Players List</h1>
+                <h1>Passengers Onboard: </h1>
                 <ul>
                     {playersListElements}
                 </ul>
-                <button className="popButton" onClick={this.leaveGameRoom}>Exit</button>
-                <button className="popButton" onClick={this.startGame}>Start Game</button>
+                <button className="popButton" onClick={this.leaveGameRoom}>Jump Ship</button>
+                <button className="popButton" onClick={this.startGame}>Start Voyage</button>
 			</div>
         );
     }

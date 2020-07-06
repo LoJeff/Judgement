@@ -12,9 +12,6 @@ export default function overall(){
 	console.log(main_canvas);
 	console.log(screen_width);
 	console.log(screen_height);
-
-	//draw_hex(300, 300, context, 100, "#000000");
-	//19.05 * radius = screen height
 	
 	var field_drawer = new view.field_drawer(context, main_canvas);
 	field_drawer.set_radius(screen_height/19.2);

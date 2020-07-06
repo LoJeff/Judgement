@@ -13,47 +13,6 @@ class field_drawer{
 		this.world_center_x = 0;
 		this.world_center_y = 0
 	}
-	
-	draw_line(coordinate1, coordinate2, colour){
-		this.context.beginPath();
-		this.context.moveTo(coordinate1.x, coordinate1.y);
-		this.context.lineTo(coordinate2.x, coordinate2.y);
-		this.context.strokeStyle = colour;
-		this.context.lineWidth = 2;
-		this.context.stroke();
-	}
-	
-	draw_hex(center_coordinate, colour){
-		var x = center_coordinate.x;
-		var y = center_coordinate.y;
-		
-		var bottom_left = new coordinate(x - (this.radius * Math.cos(this.angle)), y + (this.radius * Math.sin(this.angle)));
-		var bottom_right = new coordinate(x + (this.radius * Math.cos(this.angle)), y + (this.radius * Math.sin(this.angle)));
-		var mid_left = new coordinate(x - (this.radius), y);
-		var mid_right = new coordinate(x + (this.radius), y);
-		var top_left = new coordinate(x - (this.radius * Math.cos(this.angle)), y - (this.radius * Math.sin(this.angle)));
-		var top_right = new coordinate(x + (this.radius * Math.cos(this.angle)), y - (this.radius * Math.sin(this.angle)));
-		
-		
-		this.draw_line(top_left, top_right, colour);
-		this.draw_line(top_right, mid_right, colour);
-		this.draw_line(mid_right, bottom_right, colour);
-		this.draw_line(bottom_right, bottom_left, colour);
-		this.draw_line(bottom_left, mid_left, colour);
-		this.draw_line(mid_left, top_left, colour);
-	}
-	
-	recalculate(){
-		this.max_vertical_radius =5; //in units of hexes
-		this.max_horizontal_radius = 6;
-		this.hex_height = this.radius * 2 * Math.sin(this.angle);
-		this.hex_edge_length = this.radius * 2 * Math.cos(this.angle);
-		this.horizontal_shift = this.hex_edge_length/2 + this.radius;
-		
-		var dim = get_dimensions(this.canvas);
-		this.world_center_x = dim.x/2;
-		this.world_center_y = dim.y/2;
-	}
 
 	draw_field_layout(colour){
 		this.recalculate();
