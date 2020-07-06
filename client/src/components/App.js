@@ -79,7 +79,9 @@ class App extends Component {
                           />);
         }
         else if(this.state.pageState === "endgame"){
-            return(<
+            return(<Game  emitters={this.state.emitters}
+                handlers={this.state.handlers}
+                triggerPageChange={this.triggerPageChange}
                 />)
         }
         else{
