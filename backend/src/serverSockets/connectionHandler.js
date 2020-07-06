@@ -64,17 +64,14 @@ class connectionHandler{
 	}
 
 	startGame(client,data){
-		// Check if players is equal to max length
-
-
 		// find game
 		var game = global.data.findGame(data.gameid);
-		game.beginGame(global.data.serverTickRate);
+        game.beginGame();
     }
 
-    readUpdateGame(client,data) {
+    updateGame(client,data){
         var game = global.data.findGame(data.gameid);
-        game.readUpdate()
+        game.update(data);
     }
 
 	eventHandlers(){
@@ -90,7 +87,12 @@ class connectionHandler{
 
 		client.on("startGame",function(data){
 			this.startGame(client,data);
-		}.bind(this));
+        }.bind(this));
+
+        client.on("updateGame", function(data){
+            this.updateGame(client,data);
+        })
+        
 		client.on("dummyFunction",function(data){
 			try {
 				if (true) {

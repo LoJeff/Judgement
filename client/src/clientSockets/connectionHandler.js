@@ -10,10 +10,6 @@ class connectionHandler{
 		this.react = newReact;
 	}
 
-	updateChatReact(newChatReact){
-		this.chatReact = newChatReact;
-	}
-
 	// Notifies the client that a new member has joined the game room
 	updateRoomPlayers(data){
 		// data
@@ -25,14 +21,11 @@ class connectionHandler{
 		var newState = this.react.state.receivedPackets;
 		newState.push(data);
 		this.react.setState({"receivedPackets": newState});
-	}
-
-	updateChat(data){
-        var currChat = this.chatReact.state.chatLog;
-        currChat.push(data);
-        this.chatReact.setState({chatLog: currChat});
-        this.chatReact.scrollChatDown();
     }
+    
+    updateUser(data){
+        console.log("Received Data for User " + String(data.userid));
+	}
 
 	eventHandlers(){
 		const client = this.client;
@@ -42,11 +35,11 @@ class connectionHandler{
 
 		client.on("updateGame",function(data){
 			this.updateGame(data);
-		}.bind(this));
-
-		client.on("updateChat",function(data){
-            this.updateChat(data);
         }.bind(this));
+        
+        client.on("updateUser",function(data){
+			this.updateUser(data);
+		}.bind(this));
 	}
 
 }

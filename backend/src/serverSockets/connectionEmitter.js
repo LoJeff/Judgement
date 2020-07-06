@@ -6,7 +6,7 @@ class connectionEmitter{
 
 	broadcast_updateRoomPlayers(data){
 		var sendData = {"playersList":data.playersList};
-		this.server.to(data.gameid).emit("updateRoomPlayers",sendData);
+		this.server.to(data.gid).emit("updateRoomPlayers",sendData);
 	}
 
 	broadcast_chatUpdate(data){
@@ -15,11 +15,16 @@ class connectionEmitter{
 			content: data.content,
 			type: data.type
 		};
-		this.server.to(data.gameid).emit("updateChat",sendData);
+		this.server.to(data.gid).emit("updateChat",sendData);
 	}
 
 	broadcast_gameUpdate(data){
-		this.server.to(data.gameid).emit("updateGame",sendData);
+		this.server.to(data.gid).emit("updateGame",sendData);
+    }
+
+    broadcast_userUpdate(data){
+        console.log("Sending to User: " + String(data.pid));
+        this.server.to(data.pid).emit("updateUser",data);
     }
 }
 

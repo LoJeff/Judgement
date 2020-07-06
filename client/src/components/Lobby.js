@@ -1,8 +1,5 @@
 import React, {Component} from 'react';
 
-// Component imports
-import Chat from "./Chat.js";
-
 class Lobby extends Component {
     constructor(props){
         super(props);
@@ -49,11 +46,6 @@ class Lobby extends Component {
 
         return(
             <div>
-                <Chat emitters={this.props.emitters}
-                      handlers={this.props.handlers}
-                      gameid={this.props.gameid}
-                      clientName={this.props.clientName}
-                      />
                 <h1>Hi {this.props.clientName}</h1>
                 <h1>Current room id: {this.props.gameid}</h1>
                 <br/>
