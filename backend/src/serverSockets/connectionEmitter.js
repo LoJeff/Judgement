@@ -21,6 +21,11 @@ class connectionEmitter{
 	broadcast_gameUpdate(data){
 		this.server.to(data.gameid).emit("updateGame",sendData);
     }
+
+    broadcast_userUpdate(data){
+        console.log("Sending to User: " + String(data.pid));
+        this.server.to(data.pid).emit("updateUser",data);
+    }
 }
 
 export default connectionEmitter;

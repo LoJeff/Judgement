@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
-
-// Component imports
-import Chat from "./Chat.js";
+import Chat from './Chat.js'
 
 class Lobby extends Component {
     constructor(props){
