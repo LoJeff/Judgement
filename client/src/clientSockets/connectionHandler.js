@@ -8,6 +8,10 @@ class connectionHandler{
 
 	updateReact(newReact){
 		this.react = newReact;
+    }
+    
+    updateChatReact(newChatReact){
+		this.chatReact = newChatReact;
 	}
 
 	// Notifies the client that a new member has joined the game room

@@ -20,7 +20,7 @@ class Chat extends Component {
         fetch('/api/game/'+ this.props.gameid + '/chatLog').then((response)=>{
             return response.json();
         }).then((jsonResult)=>{
-            if(jsonResult.error != undefined){
+            if(jsonResult == null || jsonResult.error != undefined){
                 console.log(jsonResult);
             } else{         
                 this.setState({chatLog: jsonResult.chatLog});
