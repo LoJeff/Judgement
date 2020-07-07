@@ -7,6 +7,7 @@ import connectionHandler from "../clientSockets/connectionHandler.js";
 import Login from './Login.js';
 import Lobby from './Lobby.js';
 import Game from './Game.js';
+import Endgame from './Endgame.js';
 
 class App extends Component {
     constructor(props){
@@ -76,6 +77,12 @@ class App extends Component {
                           handlers={this.state.handlers}
                           triggerPageChange={this.triggerPageChange}
                           />);
+        }
+        else if(this.state.pageState === "endgame"){
+            return(<Game  emitters={this.state.emitters}
+                handlers={this.state.handlers}
+                triggerPageChange={this.triggerPageChange}
+                />)
         }
         else{
             return(<h1>Page not found </h1>);
