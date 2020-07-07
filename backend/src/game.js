@@ -17,8 +17,8 @@ class game {
     
     //Helper Functions
 
-	setId(gid){
-		this.id = gid;
+	setId(gameid){
+		this.id = gameid;
 	}
 
 	addPlayer(playerID,playerName) {
@@ -53,7 +53,7 @@ class game {
     sendUpdate(){
 		var date = new Date().toJSON();
         var sendData = {
-            "gid": this.id,
+            "gameid": this.id,
             "uid": 0,
             "time": date.time
         };
@@ -77,7 +77,7 @@ class game {
 	beginGame() {
         if (this.players.length > 3) {
             var sendData = {
-                "gid": this.id,
+                "gameid": this.id,
                 "uid": 1 //update id
             };
             global.emitters.broadcast_gameUpdate(sendData);
@@ -126,7 +126,7 @@ class game {
     // Broadcast to all who is the current chooser
     sendChooser() {
         var sendData = {
-            "gid": this.id,
+            "gameid": this.id,
             "uid": 2, //update id
             "pid": this.players[this.curChooser].id,
             "invalidPairs": this.invalidPairs
@@ -137,7 +137,7 @@ class game {
     // Attempt to set the targets
     setTarget(pair) {
         var sendData = {
-            "gid": this.id,
+            "gameid": this.id,
             "uid": 3, //update id
             "valid": false
         }
