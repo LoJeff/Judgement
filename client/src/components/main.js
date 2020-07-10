@@ -13,7 +13,8 @@ export default function overall(){
 	console.log(screen_width);
 	console.log(screen_height);
 	
-	var field_drawer = new view.field_drawer(context, main_canvas);
-	field_drawer.set_radius(screen_height/19.2);
-	field_drawer.draw_field_layout( "#000000");
+	//this draws the board. but we don't need a board(?) hmm
+	//var field_drawer = new view.field_drawer(context, main_canvas);
+	//field_drawer.set_radius(screen_height/19.2);
+	//field_drawer.draw_field_layout( "#000000");
 }
