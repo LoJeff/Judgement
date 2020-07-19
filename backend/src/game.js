@@ -135,33 +135,89 @@ class game {
 
     // Attempt to set the targets
     setTarget(pair) {
-        var sendData = {
-            "gameid": this.m_id,
-            "uid": 3, //update id
-            "valid": false
-        }
-
         if (this.validTarget(pair)) {
+            // Found a valid pair broadcast to all who the pair is
+            var sendData = {
+                "gameid": this.m_id,
+                "uid": 3, //update id
+                "valid": true
+            }
             this.m_invalidPairs.add(pair);
             this.m_episode.setTargets(pair);
 
-            // Found a valid pair broadcast to all who the pair is
-            sendData.valid = true;
             broadcast_gameUpdate(sendData);
+
+            // Request for choosing truth or dare
+            sendData = {
+                "gameid": this.m_id,
+                "uid": 4, //update id
+                "pid": this.m_players[this.m_episode.target(0)].id
+            }
+            broadcast_userUpdate(sendData);
+            sendData = {
+                "gameid": this.m_id,
+                "uid": 4, //update id
+                "pid": this.m_players[this.m_episode.target(1)].id
+            }
+            broadcast_userUpdate(sendData);
         } else {
             // Pair is rejected try again
-            sendData.pid = this.m_players[this.m_episode.chooser()].id;
+            var sendData = {
+                "gameid": this.m_id,
+                "uid": 3, //update id
+                "valid": false,
+                "pid": this.m_players[this.m_episode.chooser()].id
+            }
             broadcast_userUpdate(sendData);
         }
     }
 
     // Check if this is a valid pair to choose
     validTarget(pair) {
-        if (isTarget() && !this.m_invalidPairs.has(pair)) {
-            return true;
-        }
+        return this.m_episode.isTarget(pair) && !this.m_invalidPairs.has(pair);
+    }
 
-        return false;
+    // Receiving targets choices of truth or dare
+    rcvTarTOD(choice) {
+        if (this.m_episode.tarChooseTOD(choice)) {
+            // broadcast to all users the decision
+            var sendData = {
+                "gameid": this.m_id,
+                "uid": 5, //update id
+                "decision": this.m_episode.truthOrDare()
+            }
+            broadcast_gameUpdate(sendData);
+
+            // ask the chooser to provide a prompt
+            sendData = {
+                "gameid": this.m_id,
+                "uid": 6, //update id
+                "pid": this.m_players[this.m_episode.chooser()].id
+                // Suggestions for Truth or Dare
+            }
+            broadcast_userUpdate(sendData);
+        }
+    }
+
+    // Receiving choosers truth or dare prompt
+    rcvChooserTOD(prompt) {
+        this.m_episode.setPrompt(prompt);
+        
+        // broadcast to all users what the prompt is
+        var sendData = {
+            "gameid": this.m_id,
+            "uid": 7, //update id
+            "prompt": this.m_episode.prompt()
+        }
+        broadcast_gameUpdate(sendData);
+
+        // tell the chooser that he/she needs to choose to continue
+        sendData = {
+            "gameid": this.m_id,
+            "uid": 8, //update id
+            "pid": this.m_players[this.m_episode.chooser()].id
+        }
+        broadcast_userUpdate(sendData);
     }
 
     // Display stats and handle events based on number of points earned
