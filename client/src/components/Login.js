@@ -13,6 +13,8 @@ class Login extends Component {
         };
     }
 
+    //when need to interact with browser
+    //if need data from remote endpoint, good place to instantiate network request
     componentDidMount(){
         this.props.handlers.updateReact(this);
         document.getElementById("name").value = this.props.clientName;
@@ -39,7 +41,7 @@ class Login extends Component {
         return(
             <div>
 				<div id="title_container" className="title">
-					<h2>Poke!</h2>
+					<h2>Judge!</h2>
 				</div>
 				
 				<div id="interactive_set">

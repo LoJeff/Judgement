@@ -31,11 +31,10 @@ class Lobby extends Component {
         // if(this.state.playersList.length === 6){
             // emit game start to server
             this.props.emitters.startGame(this.props.gameid);
-            // trigger page change
-            this.props.triggerPageChange("game");
+            // trigger page change to enter punishment page
+            this.props.triggerPageChange("punishment");
         // }
     }
-
 
     render(){
         const playersListElements = [];
@@ -59,7 +58,7 @@ class Lobby extends Component {
                 <ul>
                     {playersListElements}
                 </ul>
-                <button className="popButton" onClick={this.leaveGameRoom}>Jump Ship</button>
+                <button className="popButton" onClick={this.leaveGameRoom}>Abandon Ship</button>
                 <button className="popButton" onClick={this.startGame}>Start Voyage</button>
 			</div>
         );

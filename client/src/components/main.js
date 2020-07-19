@@ -13,8 +13,12 @@ export default function overall(){
 	console.log(screen_width);
 	console.log(screen_height);
 	
-	//this draws the board. but we don't need a board(?) hmm
-	//var field_drawer = new view.field_drawer(context, main_canvas);
-	//field_drawer.set_radius(screen_height/19.2);
-	//field_drawer.draw_field_layout( "#000000");
+	//this draws the board
+	//start drawing our game
+	//where / how is this updated?
+	//have one class for an episode
+	//one class for punishments? bc this only happens once. hm.
+	var episode_drawer = new view.episode_drawer(context, main_canvas);
+	episode_drawer.set_radius(screen_height/19.2);
+	//episode_drawer.draw_field_layout( "#000000");
 }
