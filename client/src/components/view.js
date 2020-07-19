@@ -1,4 +1,6 @@
-class field_drawer{
+//this is where the board is drawn. 
+//is this where the buttons are done?
+class episode_drawer{
 	constructor(context, canvas){
 		this.context = context;
 		this.canvas = canvas;
@@ -9,20 +11,25 @@ class field_drawer{
 		this.world_center_y = 0
 	}
 
+	set_radius(radius){
+		this.radius = radius;
+	}
+
 }
 
-class unit_drawer{
+class punishment_drawer{
 	constructor(context){
 		this.context = context;
 	}
 }
 
 function setup_canvas(canvas){
-	console.log('hi');
+	console.log('in setup_canvas');
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight * 0.8;
 }
 
+//do I need coordinates?
 class coordinate{
 	constructor(x,y){
 		this.x = x;
@@ -37,4 +44,4 @@ function get_dimensions(canvas){
 
 
 
-export {field_drawer, get_dimensions, setup_canvas};
+export {episode_drawer, get_dimensions, setup_canvas};

@@ -6,6 +6,7 @@ import connectionHandler from "../clientSockets/connectionHandler.js";
 // Component imports
 import Login from './Login.js';
 import Lobby from './Lobby.js';
+import Punishment from './Punishment.js';
 import Game from './Game.js';
 import Endgame from './Endgame.js';
 
@@ -78,8 +79,14 @@ class App extends Component {
                           triggerPageChange={this.triggerPageChange}
                           />);
         }
+        else if(this.state.pageState === "punishment"){
+            return(<Punishment  emitters={this.state.emitters}
+                handlers={this.state.handlers}
+                triggerPageChange={this.triggerPageChange}
+                />)
+        }
         else if(this.state.pageState === "endgame"){
-            return(<Game  emitters={this.state.emitters}
+            return(<Endgame  emitters={this.state.emitters}
                 handlers={this.state.handlers}
                 triggerPageChange={this.triggerPageChange}
                 />)
