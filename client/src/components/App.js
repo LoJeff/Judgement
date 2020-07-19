@@ -53,7 +53,7 @@ class App extends Component {
     }
 
     // Lobby Page
-
+    //TODO: change the order of this so it makes more sense/matches flow
     render(){
         if(this.state.pageState === "login"){
             return(<Login emitters={this.state.emitters}
@@ -73,18 +73,37 @@ class App extends Component {
                           clientName={this.state.clientName}
                           />);
         }
-        else if(this.state.pageState === "game"){
-            return(<Game  emitters={this.state.emitters}
-                          handlers={this.state.handlers}
-                          triggerPageChange={this.triggerPageChange}
-                          />);
-        }
         else if(this.state.pageState === "punishment"){
             return(<Punishment  emitters={this.state.emitters}
                 handlers={this.state.handlers}
                 triggerPageChange={this.triggerPageChange}
                 />)
         }
+        else if(this.state.pageState === "PickTargets"){
+            return(<PickTargets  emitters={this.state.emitters}
+                handlers={this.state.handlers}
+                triggerPageChange={this.triggerPageChange}
+                />)
+        }
+        else if(this.state.pageState === "TruthorDare"){
+            return(<TruthorDare  emitters={this.state.emitters}
+                handlers={this.state.handlers}
+                triggerPageChange={this.triggerPageChange}
+                />)
+        }
+        else if(this.state.pageState === "game"){
+            return(<Game  emitters={this.state.emitters}
+                          handlers={this.state.handlers}
+                          triggerPageChange={this.triggerPageChange}
+                          />);
+        }
+        else if(this.state.pageState === "leaderboard"){
+            return(<Leaderboard  emitters={this.state.emitters}
+                handlers={this.state.handlers}
+                triggerPageChange={this.triggerPageChange}
+                />)
+        }
+
         else if(this.state.pageState === "endgame"){
             return(<Endgame  emitters={this.state.emitters}
                 handlers={this.state.handlers}
