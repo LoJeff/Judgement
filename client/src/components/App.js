@@ -7,6 +7,9 @@ import connectionHandler from "../clientSockets/connectionHandler.js";
 import Login from './Login.js';
 import Lobby from './Lobby.js';
 import Punishment from './Punishment.js';
+import PickTargets from './PickTargets.js';
+import TruthorDare from './TruthorDare.js';
+import Leaderboard from './Leaderboard.js';
 import Game from './Game.js';
 import Endgame from './Endgame.js';
 
