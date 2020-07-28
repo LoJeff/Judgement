@@ -17,7 +17,20 @@ class Punishment extends Component {
 
         return ( 
         <div>
-            <h1>Punishment</h1>
+            <div id="subtitle_container" className="title">
+                <h1>Punishment</h1>
+            </div>
+
+            <div id="description_container">
+                <p> blahblahsome description for punishmentbalhblah</p>
+            </div>
+
+            <div id="interactive_set">
+            <div id="punishment_container">
+							<form > <input className="fancyInput" type="text" id="name" placeholder="Enter punishment!" /></form>
+						</div>
+
+            </div>
 
         </div>
 

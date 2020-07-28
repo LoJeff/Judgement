@@ -11,6 +11,7 @@ import PickTargets from './PickTargets.js';
 import TruthorDare from './TruthorDare.js';
 import Leaderboard from './Leaderboard.js';
 import Game from './Game.js';
+import Vote from './Vote.js';
 import Endgame from './Endgame.js';
 
 class App extends Component {
@@ -94,6 +95,12 @@ class App extends Component {
                 triggerPageChange={this.triggerPageChange}
                 />)
         }
+        else if(this.state.pageState === "vote"){
+            return(<Vote  emitters={this.state.emitters}
+                handlers={this.state.handlers}
+                triggerPageChange={this.triggerPageChange}
+                />)
+        }
         else if(this.state.pageState === "game"){
             return(<Game  emitters={this.state.emitters}
                           handlers={this.state.handlers}
@@ -106,7 +113,6 @@ class App extends Component {
                 triggerPageChange={this.triggerPageChange}
                 />)
         }
-
         else if(this.state.pageState === "endgame"){
             return(<Endgame  emitters={this.state.emitters}
                 handlers={this.state.handlers}
