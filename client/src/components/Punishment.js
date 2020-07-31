@@ -7,6 +7,17 @@ class Punishment extends Component {
         this.state = {
             "receivedPackets": [],
         };
+
+        // functions
+        this.enterGame = this.enterGame.bind(this);
+    }
+
+    enterGame(){
+        var punishment = document.getElementById("punishment").value;
+
+        // trigger page change
+        this.props.triggerPageChange("Game");
+
     }
 
     componentDidMount(){
@@ -26,10 +37,16 @@ class Punishment extends Component {
             </div>
 
             <div id="interactive_set">
-            <div id="punishment_container">
-							<form > <input className="fancyInput" type="text" id="name" placeholder="Enter punishment!" /></form>
-						</div>
+                <div id="punishment_container">
+						<form > <input className="fancyInput" type="text" id="punishment" placeholder="Enter punishment!" /></form>
+			    </div>
+            </div>
 
+            <div>
+                <div id="submit_button_container">
+					<button className="popButton" type="submit" onClick={this.enterGame}>Submit
+                    </button>
+				</div>
             </div>
 
         </div>
