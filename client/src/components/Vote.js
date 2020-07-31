@@ -7,6 +7,20 @@ class Vote extends Component {
         this.state = {
             "receivedPackets": [],
         };
+
+        // functions
+        this.continueGame = this.continueGame.bind(this);
+    }
+
+    continueGame(){
+        // if turn x, y, z, show leaderboard; else, start another episode
+        // TODO: update this with condition on when to choose leaderboard
+        if (true){
+        this.props.triggerPageChange("leaderboard");
+        }
+        else {
+        this.props.triggerPageChange("pickTargets");       
+        }
     }
 
     componentDidMount(){
@@ -17,7 +31,17 @@ class Vote extends Component {
 
         return ( 
         <div>
-            <h1>Vote</h1>
+            <div>
+                <h1>Vote</h1>
+            </div>
+
+            // TODO: add submit button visual modifiers in this div
+            <div>
+                <div id="submit_button_container">
+					<button className="popButton" type="submit" onClick={this.continueGame}>Submit
+                    </button>
+				</div>
+            </div>
 
         </div>
 

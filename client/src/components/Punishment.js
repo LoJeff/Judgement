@@ -16,8 +16,7 @@ class Punishment extends Component {
         var punishment = document.getElementById("punishment").value;
 
         // trigger page change
-        this.props.triggerPageChange("Game");
-
+        this.props.triggerPageChange("pickTargets");
     }
 
     componentDidMount(){
@@ -42,6 +41,7 @@ class Punishment extends Component {
 			    </div>
             </div>
 
+            // TODO: add submit button visual modifiers in this div
             <div>
                 <div id="submit_button_container">
 					<button className="popButton" type="submit" onClick={this.enterGame}>Submit

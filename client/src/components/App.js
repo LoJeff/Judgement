@@ -78,45 +78,45 @@ class App extends Component {
                           />);
         }
         else if(this.state.pageState === "punishment"){
-            return(<Punishment  emitters={this.state.emitters}
-                handlers={this.state.handlers}
-                triggerPageChange={this.triggerPageChange}
+            return(<Punishment emitters={this.state.emitters}
+                               handlers={this.state.handlers}
+                               triggerPageChange={this.triggerPageChange}
                 />)
         }
-        else if(this.state.pageState === "PickTargets"){
-            return(<PickTargets  emitters={this.state.emitters}
-                handlers={this.state.handlers}
-                triggerPageChange={this.triggerPageChange}
+        else if(this.state.pageState === "pickTargets"){
+            return(<PickTargets emitters={this.state.emitters}
+                                handlers={this.state.handlers}
+                                triggerPageChange={this.triggerPageChange}
                 />)
         }
-        else if(this.state.pageState === "TruthorDare"){
-            return(<TruthorDare  emitters={this.state.emitters}
-                handlers={this.state.handlers}
-                triggerPageChange={this.triggerPageChange}
+        else if(this.state.pageState === "truthOrDare"){
+            return(<TruthorDare emitters={this.state.emitters}
+                                handlers={this.state.handlers}
+                                triggerPageChange={this.triggerPageChange}
                 />)
         }
         else if(this.state.pageState === "vote"){
-            return(<Vote  emitters={this.state.emitters}
-                handlers={this.state.handlers}
-                triggerPageChange={this.triggerPageChange}
+            return(<Vote emitters={this.state.emitters}
+                         handlers={this.state.handlers}
+                         triggerPageChange={this.triggerPageChange}
                 />)
         }
         else if(this.state.pageState === "game"){
-            return(<Game  emitters={this.state.emitters}
-                          handlers={this.state.handlers}
-                          triggerPageChange={this.triggerPageChange}
+            return(<Game emitters={this.state.emitters}
+                         handlers={this.state.handlers}
+                         triggerPageChange={this.triggerPageChange}
                           />);
         }
         else if(this.state.pageState === "leaderboard"){
-            return(<Leaderboard  emitters={this.state.emitters}
-                handlers={this.state.handlers}
-                triggerPageChange={this.triggerPageChange}
+            return(<Leaderboard emitters={this.state.emitters}
+                                handlers={this.state.handlers}
+                                triggerPageChange={this.triggerPageChange}
                 />)
         }
         else if(this.state.pageState === "endgame"){
-            return(<Endgame  emitters={this.state.emitters}
-                handlers={this.state.handlers}
-                triggerPageChange={this.triggerPageChange}
+            return(<Endgame emitters={this.state.emitters}
+                            handlers={this.state.handlers}
+                            triggerPageChange={this.triggerPageChange}
                 />)
         }
         else{

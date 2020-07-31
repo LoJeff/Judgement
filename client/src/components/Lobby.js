@@ -28,12 +28,10 @@ class Lobby extends Component {
     }
 
     startGame(){
-        // if(this.state.playersList.length === 6){
             // emit game start to server
             this.props.emitters.startGame(this.props.gameid);
             // trigger page change to enter punishment page
             this.props.triggerPageChange("punishment");
-        // }
     }
 
     render(){
