@@ -17,8 +17,9 @@ class connectionHandler{
 
 		var game = global.data.findGame(data.gameid);
 		// check that max players have not been exceeded
-		if(game.getPlayersList().length < game.maxPlayers){
-			// add the player to the gamelist
+		if(game.getPlayersList().length < game.m_max_players){
+            // add the player to the gamelist
+            console.log("ADDING PLAYER " + data.name);
 			game.addPlayer(client.id,data.name);
 
 			// broadcast to all users in the room that a new player has joined
@@ -65,7 +66,7 @@ class connectionHandler{
 
 	startGame(client,data){
 		// find game
-		var game = global.data.findGame(data.gameid);
+        var game = global.data.findGame(data.gameid);
         game.beginGame();
     }
 

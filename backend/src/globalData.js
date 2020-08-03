@@ -23,16 +23,16 @@ class globalData {
 	}
 
 	findGame(gameid){
-		var foundGame = this.gameArray.find((game) => game.id == gameid);
+		var foundGame = this.gameArray.find((game) => game.getId() == gameid);
 		return foundGame;
 	}
 
 	removeGame(gameid){
-		this.gameArray = this.gameArray.filter( (game) => game.id != gameid);
+		this.gameArray = this.gameArray.filter( (game) => game.getId() != gameid);
 	}
 
 	gameExists(gameid){
-		return this.gameArray.some((game) => game.id == gameid);
+		return this.gameArray.some((game) => game.getId() == gameid);
 	}
 
 }

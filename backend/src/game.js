@@ -8,22 +8,26 @@ const upId = {
 
 class game {
 	constructor() {
-		this.m_id = '';
+		this.m_id = -1;
 		this.m_players = [];
-        this.m_maxPlayers = 6;
-        this.m_invalidPairs = new Set();
-        this.m_episode = new EPISODE(m_maxPlayers);
+        this.m_max_players = 6;
+        this.m_invalid_pairs = new Set();
+        this.m_episode = new EPISODE();
     }
     
     //Helper Functions
 
+    getId() {
+        return this.m_id;
+    }
+
 	setId(gameid) {
-		this.m_id = gameid;
+        this.m_id = gameid;
 	}
 
 	addPlayer(playerID,playerName) {
         console.log("PLAYER ID: " + playerID);
-		if (this.m_players.length < this.m_maxPlayers) {
+		if (this.m_players.length < this.m_max_players) {
 			this.m_players.push(new PLAYER(playerID, playerName));
 			return true;
 		} else {
@@ -75,7 +79,8 @@ class game {
     
     // Request for all the punishments at the start of the game
 	beginGame() {
-        if (this.m_players.length > 3) {
+        if (this.m_players.length >= 3) {
+            this.m_episode.setNumPlayers(this.m_players.length);
             var sendData = {
                 "gameid": this.m_id,
                 "uid": 1 //update id
@@ -98,75 +103,83 @@ class game {
     sortByRanking() {
         this.m_players.sort((a,b) => {
             if (a.points == b.points) {
-                return a.id > b.id;
+                return b.id - a.id;
             } else {
-                return a.points > b.points;
+                return b.points - a.points;
             }
         });
     }
 
-    // Reset the round and ask current chooser to make a choice
+    // Reset the round and ask current judge to make a choice
     startRound() {
         this.sortByRanking();
-        this.m_episode.reset();
-        this.m_invalidPairs.length = 0;
-        this.sendChooser();
+        this.m_episode.hardReset();
+        this.m_invalid_pairs.clear();
+        this.sendJudge();
     }
 
-    // Move on to the next chooser, if we reach the end of the list then end the round
-    nextChooser() {
-        if (this.m_episode.incrChooser()) {
-            this.sendChooser();
+    // Move on to the next judge, if we reach the end of the list then end the round
+    nextJudge() {
+        if (this.m_episode.incrJudge()) {
+            this.sendJudge();
         } else {
             this.endRound();
         }
     }
 
-    // Broadcast to all who is the current chooser
-    sendChooser() {
+    // Broadcast to all who is the current judge
+    sendJudge() {
         var sendData = {
             "gameid": this.m_id,
             "uid": 2, //update id
-            "pid": this.m_players[this.m_episode.chooser()].id,
-            "invalidPairs": this.m_invalidPairs
+            "pid": this.m_players[this.m_episode.judge()].name
         };
         global.emitters.broadcast_gameUpdate(sendData);
+        sendData = {
+            "gameid": this.m_id,
+            "uid": 11, //update id
+            "pid": this.m_players[this.m_episode.judge()].id,
+            "invalidPairs": this.m_invalid_pairs
+        };
+        global.emitters.broadcast_userUpdate(sendData);
     }
 
     // Attempt to set the targets
-    setTarget(pair) {
-        if (this.validTarget(pair)) {
-            // Found a valid pair broadcast to all who the pair is
+    setTarget(targets, pid) {
+        if (pid != this.m_players[this.m_episode.judge()].id) return;
+
+        if (this.validTarget(targets)) {
+            // Found valid targets broadcast to all who the targets are
             var sendData = {
                 "gameid": this.m_id,
                 "uid": 3, //update id
                 "valid": true
             }
-            this.m_invalidPairs.add(pair);
-            this.m_episode.setTargets(pair);
-
             broadcast_gameUpdate(sendData);
 
-            // Request for choosing truth or dare
+            this.m_invalid_pairs.add(targets);
+            this.m_episode.setTargets(targets);
+            for (var i = 0; i < targets.length; i++) {
+                this.m_episode.addTarIdSet(this.m_players[targets[i]].id);
+            }
+
             sendData = {
                 "gameid": this.m_id,
                 "uid": 4, //update id
-                "pid": this.m_players[this.m_episode.target(0)].id
+                "pid": -1
             }
-            broadcast_userUpdate(sendData);
-            sendData = {
-                "gameid": this.m_id,
-                "uid": 4, //update id
-                "pid": this.m_players[this.m_episode.target(1)].id
+            // Request for choosing truth or dare to all targets
+            for (var i = 0; i < this.m_episode.maxTargets(); i++) {
+                sendData.pid = this.m_players[this.m_episode.target(i)].id
+                broadcast_userUpdate(sendData);
             }
-            broadcast_userUpdate(sendData);
         } else {
-            // Pair is rejected try again
+            // Target is rejected try again
             var sendData = {
                 "gameid": this.m_id,
                 "uid": 3, //update id
                 "valid": false,
-                "pid": this.m_players[this.m_episode.chooser()].id
+                "pid": this.m_players[this.m_episode.judge()].id
             }
             broadcast_userUpdate(sendData);
         }
@@ -174,33 +187,40 @@ class game {
 
     // Check if this is a valid pair to choose
     validTarget(pair) {
-        return this.m_episode.isTarget(pair) && !this.m_invalidPairs.has(pair);
+        return this.m_episode.isValidTarget(pair) && !this.m_invalid_pairs.has(pair);
     }
 
     // Receiving targets choices of truth or dare
-    rcvTarTOD(choice) {
-        if (this.m_episode.tarChooseTOD(choice)) {
+    rcvTarTOD(choice, pid) {
+        // Check if person trying to vote is one of the targets
+        if (!this.m_episode.isTargetId(pid)) return;
+
+        if (this.m_episode.tarChooseTOD(choice, pid)) {
             // broadcast to all users the decision
             var sendData = {
                 "gameid": this.m_id,
                 "uid": 5, //update id
-                "decision": this.m_episode.truthOrDare()
+                "decision": this.m_episode.truth()
             }
             broadcast_gameUpdate(sendData);
 
-            // ask the chooser to provide a prompt
+            // ask the judge to provide a prompt
             sendData = {
                 "gameid": this.m_id,
                 "uid": 6, //update id
-                "pid": this.m_players[this.m_episode.chooser()].id
+                "pid": this.m_players[this.m_episode.judge()].id
                 // Suggestions for Truth or Dare
             }
             broadcast_userUpdate(sendData);
+
+            this.m_episode.resetNumResponses();
         }
     }
 
-    // Receiving choosers truth or dare prompt
-    rcvChooserTOD(prompt) {
+    // Receiving judges truth or dare prompt
+    rcvJudgeTOD(prompt, pid) {
+        if (pid != this.m_players[this.m_episode.judge()].id) return;
+
         this.m_episode.setPrompt(prompt);
         
         // broadcast to all users what the prompt is
@@ -211,13 +231,44 @@ class game {
         }
         broadcast_gameUpdate(sendData);
 
-        // tell the chooser that he/she needs to choose to continue
+        // tell the judge that he/she needs to choose to continue
         sendData = {
             "gameid": this.m_id,
             "uid": 8, //update id
-            "pid": this.m_players[this.m_episode.chooser()].id
+            "pid": this.m_players[this.m_episode.judge()].id
         }
         broadcast_userUpdate(sendData);
+    }
+
+    // Receiving judges request to continue to voting
+    rcvJudgeCont() {
+        if (pid != this.m_players[this.m_episode.judge()].id) return;
+
+        var names = [];
+        for (var i = 0; i < this.m_episode.maxTargets(); i++) {
+            names.push(this.m_players[this.m_episode.target(i)].name);
+        }
+        var sendData = {
+            "gameid": this.m_id,
+            "uid": 9,
+            "player": names
+        }
+        broadcast_gameUpdate(sendData);
+    }
+
+    // Receiving votes from a player
+    rcvVote(vote, pid) {
+        // Check if person trying to vote is one of the targets
+        if (isTargetId(pid)) return;
+
+        if (this.m_episode.playerVote(vote, pid)) {
+            var sendData = {
+                "gameid": this.m_id,
+                "uid": 10,
+                "votes": this.m_episode.getEpisodeRanking()
+            }
+            broadcast_gameUpdate(sendData);
+        }
     }
 
     // Display stats and handle events based on number of points earned

@@ -18,8 +18,8 @@ class connectionEmitter{
 		this.server.to(data.gameid).emit("updateChat",sendData);
 	}
 
-	broadcast_gameUpdate(data){
-		this.server.to(data.gameid).emit("updateGame",sendData);
+	broadcast_gameUpdate(data){        
+		this.server.to(data.gameid).emit("updateGame",data);
     }
 
     broadcast_userUpdate(data){
