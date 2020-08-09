@@ -15,6 +15,8 @@ class Punishment extends Component {
     enterGame(){
         var punishment = document.getElementById("punishment").value;
 
+        this.props.emitters.sendPunishment(punishment);
+
         // trigger page change
         this.props.triggerPageChange("pickTargets");
     }
@@ -25,7 +27,7 @@ class Punishment extends Component {
 
     render(){
 
-        return ( 
+        return (
         <div>
             <div id="subtitle_container" className="title">
                 <h1>Punishment</h1>
@@ -36,13 +38,12 @@ class Punishment extends Component {
             </div>
 
             <div id="interactive_set">
-                <div id="punishment_container">
-						<form > <input className="fancyInput" type="text" id="punishment" placeholder="Enter punishment!" /></form>
-			    </div>
-            </div>
+                <div className="row_of_input">
+                    <div id="punishment_container">
+                            <form > <input className="punishmentInput" type="text" id="punishment" placeholder="Enter punishment!"/></form>
+                    </div>
+                </div>
 
-            // TODO: add submit button visual modifiers in this div
-            <div>
                 <div id="submit_button_container">
 					<button className="popButton" type="submit" onClick={this.enterGame}>Submit
                     </button>

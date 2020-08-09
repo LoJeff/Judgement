@@ -28,6 +28,14 @@ class connectionEmitter {
 		client.emit("dummyFunction");
 		console.log("emitted dummyFunction event");
 	}
+
+	sendPunishment(punishment){
+		const client = this.client;
+		const data = {"punishment": punishment};
+		client.emit("sendPunishment",data);
+	}
+
+
 }
 
 export default connectionEmitter;

@@ -5,7 +5,7 @@ class PickTargets extends Component {
         super(props);
     
         this.state = {
-            "receivedPackets": [],
+            //"receivedPacket": [],
         };
 
         // functions
@@ -25,15 +25,30 @@ class PickTargets extends Component {
         this.props.triggerPageChange("truthOrDare");
     }
 
+
+
     render(){
+        
+        const showUserSpecificScreen = () => {
+            if ( false
+                //receivedPacket.uid == 11
+                ){
+                return <p>I am a judge wooo</p>
+            } else {
+                return <p>I am not une judge :(</p>
+            }
+        }
 
         return ( 
         <div>
-            <div>
-                <h1>PickTargets</h1>
+            <div id="subtitle_container">
+                <h1>Pick Targets</h1>
             </div>
 
-            // TODO: add submit button visual modifiers in this div
+            <div> 
+                {showUserSpecificScreen()}
+            </div>
+
             <div>
                 <div id="submit_button_container">
                     <button className="popButton" type="submit" onClick={this.submitTargets}>Judge!
