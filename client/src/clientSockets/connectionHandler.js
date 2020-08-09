@@ -22,14 +22,12 @@ class connectionHandler{
 	}
 
 	updateGame(data){
-		var newState = this.react.state.receivedPackets;
-		newState.push(data);
-		this.react.setState({"receivedPackets": newState});
+        console.log(String(data));
     }
     
     updateUser(data){
         console.log("Received Data for User " + String(data.userid));
-	}
+    }
 
 	eventHandlers(){
 		const client = this.client;
@@ -43,7 +41,7 @@ class connectionHandler{
         
         client.on("updateUser",function(data){
 			this.updateUser(data);
-		}.bind(this));
+        }.bind(this));
 	}
 
 }

@@ -1,49 +1,80 @@
 class EPISODE {
-    constructor(maxPlayers) {
-        this.m_maxPlayers = maxPlayers;
-        this.m_curChooser = 0;
-        this.m_targets = [];
-        this.m_truth = 0; //0 not chosen, 1 truth, 2 dare
-        this.m_responses = 0;
-        this.m_prompt = "";
+    constructor() {
+        this.m_num_players = 0;
+        this.m_num_targets = 2;
+        this.m_cur_judge = 0;
+        this.m_responses = new Set();
+        this.m_target_id_hash = new Set();
+        this.hardReset();
     }
 
-    reset() {
-        this.m_curChooser = 0;
+    hardReset() {
+        this.m_cur_judge = 0;
+        this.softReset();
+    }
+
+    softReset() {
         this.m_targets = [];
-        this.m_truth = 0;
-        this.m_responses = 0;
+        this.m_tod_choice = [0, 0]
+        this.m_responses.clear();
+        this.m_prompt = "";
+        this.m_vote = [];
+        this.m_target_id_hash.clear();
+        for (var i = 0; i < this.m_num_targets; i++) {
+            this.m_vote.push({"idx": i, "count": 0, "order": Number.MAX_SAFE_INTEGER});
+        }
+        this.m_vote_sorted = false;
+    }
+
+    resetNumResponses() {
+        this.m_responses.clear();
     }
 
     // Setter Functions
-    setTargets(pair) {
-        this.m_targets = pair;
+    setNumPlayers(numPlayers) {
+        this.m_num_players = numPlayers;
+    }
+    
+    setTargets(targets) {
+        this.m_targets = targets;
     }
 
-    setChooser(id) {
-        this.m_curChooser = id;
+    setJudge(id) {
+        this.m_cur_judge = id;
     }
 
     setPrompt(prompt) {
         this.m_prompt = prompt;
     }
 
+    addTarIdSet(pid) {
+        this.m_target_id_hash.add(pid);
+    }
+
     // Getter Functions
+    maxTargets() {
+        return this.m_num_targets;
+    }
+
     target(pos) {
-        assert(pos == 0 || pos == 1);
+        assert(pos >= 0 && pos < this.m_num_targets);
         return this.m_targets[pos];
     }
 
-    chooser() {
-        return this.m_curChooser;
+    judge() {
+        return this.m_cur_judge;
     }
 
     cid() {
         return this.m_cid;
     }
 
-    truthOrDare() {
-        return this.m_truth;
+    truth() {
+        return m_tod_choice[0] > m_tod_choice[1];
+    }
+    
+    dare() {
+        return m_tod_choice[0] < m_tod_choice[1];
     }
 
     prompt() {
@@ -51,35 +82,89 @@ class EPISODE {
     }
 
     // Check if this is a legal pair of targets
-    isTarget(pair) {
-        if (pair.length() != 2 || !pair[0].isInteger() || !pair[1].isInteger()) {
+    isValidTarget(pair) {
+        if (pair.length() != this.m_num_targets) {
             return false;
         }
 
-        if (pair[0] < this.m_maxPlayers && pair[0] >= 0 && 
-            pair[1] < this.m_maxPlayers && pair[1] >= 0 && pair[0] != pair[1]) {
-                return true;
+        for (var i = 0; i < this.m_num_targets; i++) {
+            if (!pair[i].isInteger()) return false;
         }
-        return false;
+
+        for (var i = 0; i < this.m_num_targets; i++) {
+            if (pair[i] >= this.m_num_players || pair[i] < 0) return false;
+        }
+        return true;
     }
 
-    // Increment to the next chooser, if we can't increment anymore return false
-    incrChooser() {
-        if (this.m_curChooser < this.m_maxPlayers - 1) {
-            this.m_curChooser += 1;
+    isTargetId(pid) {
+        return m_target_id_hash.has(pid);
+    }
+
+    // Increment to the next judge, if we can't increment anymore return false
+    incrJudge() {
+        if (this.m_cur_judge < this.m_num_players - 1) {
+            this.m_cur_judge += 1;
+            this.m_episode.softReset();
             return true;
         }
         return false;
     }
 
     // Two targets choose if they want truth or dare
-    tarChooseTOD(choice) {
-        if (this.m_responses == 0) {
-            this.m_truth = choice;
+    tarChooseTOD(choice, pid) {
+        if (choice != 0 && choice != 1) return false;
+        // Player has already made a choice
+        if (this.m_responses().has(pid)) return false;
+
+        if (this.m_responses.size < this.m_num_targets - 1) {
+            this.m_tod_choice[choice]++;
+            this.m_responses.add(pid);
             return false;
-        } else if (this.m_responses == 1 && this.m_truth != choice) {
-            this.m_truth = 0.5 > Math.random();
+        } else if (this.m_responses.length == this.m_num_targets - 1) {
+            this.m_tod_choice[choice]++;
+            if (m_tod_choice[0] == m_tod_choice[1]) {
+                m_tod_choice[Math.round(Math.random())]++;
+            }
             return true;
         }
     }
+
+    // One player's vote
+    playerVote(vote, pid) {
+        // m_vote was sorted and can no longer be modified
+        ASSERT(!this.m_vote_sorted);
+
+        // All players have already voted
+        if (this.m_responses().size >= this.m_num_players) return true;
+        // Valid vote
+        if (!(this.m_targets.length > vote && vote >= 0)) return false;
+        // Player has already voted
+        if (this.m_responses().has(pid)) return false;
+
+        this.m_responses().add(pid);
+        this.m_vote[vote].count++;
+
+        if (this.m_vote[vote].order == Number.MAX_SAFE_INTEGER) {
+            this.m_vote[vote].order = this.m_responses.size;
+        }
+        return this.m_responses().size >= this.m_num_players();
+    }
+
+    // Sort the votes and return the ranking
+    getEpisodeRanking() {
+        if (!this.m_vote_sorted) {
+            this.m_vote.sort(function(a, b) {
+                if (a.count == b.count) {
+                    return b.order - a.order;
+                } else {
+                    return b.count - a.count;
+                }
+            })
+            this.m_vote_sorted = true;
+        }
+        return this.m_vote;
+    }
 }
+
+export default EPISODE;
