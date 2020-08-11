@@ -1,5 +1,5 @@
 #punshment_container{
-	width:auto;
+    width:auto;
 	display:inline-block;
 	float:center;
 	padding-bottom:2%;
@@ -16,6 +16,38 @@
 	padding-top:5%;
     text-align:center;
 	font-size:40px;
+}
+
+.punishmentInput {
+    width:400px;
+    height:300px;
+    
+    font-family:Arial, Helvetica, sans-serif;
+    border: 2px solid black;
+    border-radius: 6px;
+    box-shadow: 1px 4px #272424;
+    box-shadow: -1px 4px #272424;
+    padding:5px;
+    text-align:center;
+    //TODO: figure out how to make text wrap
+    word-wrap: break-word;
+    word-break: break-all;
+    font-size:24px;
+    //paper? piece of napkin?
+    background-image: url("../images/wex.png");
+    background-position: center;
+
+    &:focus{
+        box-shadow: 2px 4px black;
+        box-shadow: -2px 4px black;
+        outline:none;
+        &::-webkit-input-placeholder { color:transparent; }
+        &:-moz-placeholder { color:transparent; }
+    }
+
+    &:placeholder{
+        color:transparent;
+    }
 }
 
 p {
