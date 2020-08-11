@@ -165,7 +165,7 @@ class game {
 
     // Check if this is a valid pair to choose
     validTarget(targets) {
-        return this.m_episode.isValidTarget(targets) && !(targets in this.m_invalid_sets));
+        return this.m_episode.isValidTarget(targets) && !(targets in this.m_invalid_sets);
     }
 
     // Receiving targets choices of truth or dare

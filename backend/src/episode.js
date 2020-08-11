@@ -20,13 +20,7 @@ class EPISODE {
         this.m_prompt = "";
         this.m_vote = [];
         this.m_target_id_hash.clear();
-        for (var i = 0; i < this.m_num_targets; i++) {
-            this.m_vote.push({
-                "pidx": m_targets[i],
-                "count": 0,
-                "order": Number.MAX_SAFE_INTEGER
-            });
-        }
+
         this.m_vote_sorted = false;
     }
 
@@ -41,6 +35,13 @@ class EPISODE {
     
     setTargets(targets) {
         this.m_targets = targets;
+        for (var i = 0; i < this.m_num_targets; i++) {
+            this.m_vote.push({
+                "pidx": this.m_targets[i],
+                "count": 0,
+                "order": Number.MAX_SAFE_INTEGER
+            });
+        }
     }
 
     setJudge(id) {
