@@ -1,8 +1,9 @@
 
 
 class PLAYER {
-    constructor(id, name) {
+    constructor(id, pid, name) {
         this.id = id;
+        this.pid = pid;
         this.name = name;
         this.punishment = '';
         this.points = 0;
