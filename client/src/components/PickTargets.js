@@ -8,13 +8,14 @@ class PickTargets extends Component {
             "playerList": [],
             "invalidPairs": [],
             "judge": null,
-            "targetA": null,
-            "targetB": null
+            "targetAID": null,
+            "targetBID": null
             };
 
         // functions
         this.submitTargets = this.submitTargets.bind(this);
         this.generatePossibleTargets = this.generatePossibleTargets.bind(this);
+        this.generatePair = this.generatePair.bind(this);
         this.generatePossibleTargetsList = this.generatePossibleTargetsList.bind(this);
     }
 
@@ -23,32 +24,45 @@ class PickTargets extends Component {
     }
 
     submitTargets(){
-        this.props.emitters.sendTargets(this.state.targetA, this.state.targetB);
+        //TODO change this to send it as one string
+        this.props.emitters.sendTargets(this.state.targetAID, this.state.targetBID);
 
         // trigger page change
         this.props.triggerPageChange("truthOrDare");
     }
 
-    generatePossibleTargetsList(targetA){
+    //TODO think of clearer parameter names?
+    generatePair(idA, idB){
+        var resPair = [];
+        resPair.push(idA);
+        resPair.push(idB);
+        resPair.sort();
+        resPair = toString(resPair);
+        return resPair
+    }
+
+    generatePossibleTargetsList(targetAID){
+        //list of player names
         var possibleTargetsList = [];
-        var player = null;
         
         //if first target has been chosen
-        if (targetA != null){
+        if (targetAID != null){
             //TODO: fix the typing for this
-            for (player in this.state.playerList){
-                //assuming given list with 2 player objects
-                if (!([targetA, player] in this.state.invalidPairs) ||
-                     !([player,targetA] in this.state.invalidPairs)){
-                    possibleTargetsList.push(player);
+            for (var i = 0; i < this.state.playerList.length; i++ ){
+                //given list of strings w sorted pair ids
+                
+                var currPair = this.generatePair(targetAID, i);
+                    
+                if (!(currPair in this.state.invalidPairs)){
+                    possibleTargetsList.push(this.state.playerList[i]);
                 }
             }
         } 
         else {
             if (this.state.playerList != undefined){
-                for (player in this.state.playerList){
-                    if (player != this.state.judge){
-                        possibleTargetsList.push(player)
+                for (i = 0; i < this.state.playerList.length; i++ ){
+                    if (this.state.playerList[i] != this.state.judge){
+                        possibleTargetsList.push(this.state.playerList[i])
                     }
                 };
             }
@@ -58,16 +72,15 @@ class PickTargets extends Component {
 
     generatePossibleTargets(target){
         //if the first target has not been chosen yet
-        if (this.state.targetA == null){
-            this.state.targetA = target
-            this.generatePossibleTargetsList(target)
+        var targetID = this.state.playerList.indexOf(target);
+        if (this.state.targetAID == null){
+            this.state.targetAID = targetID
+            return this.generatePossibleTargetsList(targetID)
         } else {
-            this.state.targetB = target
-        }
-        
+            this.state.targetBID = targetID
+            return []
+        }   
     }
-
-
 
     render(){
         const possibleTargets = this.generatePossibleTargets(null);
@@ -76,8 +89,8 @@ class PickTargets extends Component {
         if (possibleTargets != undefined){
             possibleTargets.forEach(function(target){
                 possibleTargetElements.push(
-                    <li key={target.name} onClick={this.props.generatePossibleTargets(target)}>
-                        {target.name}
+                    <li key={target} onClick={this.props.generatePossibleTargets(target)}>
+                        {target}
                     </li>
                 )
             })

@@ -27,10 +27,16 @@ class connectionHandler{
     
     updateUser(data){
         console.log("Received Data for User " + String(data.userid));
-    }
+	}
+	
+	invalidTargets(data){
+		//update var names to correct ones
+		this.react.setState({"invalidPairs": data.invalidPairs})
+	}
 
 	eventHandlers(){
 		const client = this.client;
+
 		client.on("updateRoomPlayers",function(data){
 			this.updateRoomPlayers(data);
 		}.bind(this));
@@ -41,6 +47,10 @@ class connectionHandler{
         
         client.on("updateUser",function(data){
 			this.updateUser(data);
+		}.bind(this));
+		
+		client.on("invalidTargets",function(data){
+			this.invalidTargets(data);
         }.bind(this));
 	}
 
