@@ -1,13 +1,15 @@
 import PLAYER from "./player/player.js";
 import EPISODE from "./episode.js";
 
-//Packet IDs for game updates
-const upId = {
+// game states
+const state = {
+    PREGAME: 0,
     STARTGAME: 1
 }
-// Players { A B C D E F }
+
 class game {
 	constructor() {
+        this.state = 0;
 		this.m_id = -1;
         this.m_players = [];
         this.m_max_players = 6;
@@ -16,6 +18,11 @@ class game {
         this.m_invalid_sets = {};
         this.m_id_to_name = [];
         this.m_episode = new EPISODE();
+        this.m_cur_round = 0;
+        this.m_num_pun_rcvd = 0;
+
+        this.m_num_rounds = 3;
+        this.m_owner_only_continue = true;
     }
     
     //Helper Functions
@@ -33,7 +40,7 @@ class game {
 		if (this.m_players.length < this.m_max_players) {
             this.m_ranking.push({"id": this.m_players.length, "points": 0});
             this.m_id_to_name.push(playerName);
-            this.m_players.push(new PLAYER(this.m_players.length, pid, playerName));
+            this.m_players.push(new PLAYER(pid, playerName));
 			return true;
 		} else {
 			return false;
@@ -41,7 +48,7 @@ class game {
 	}
 
 	removePlayer(playerName) {
-		this.m_players = this.m_players.filter( (player) => player.name != playerName);
+		this.m_players = this.m_players.filter( (player) => player.getName() != playerName);
 	}
 
 	findPlayer(pid) {
@@ -92,11 +99,27 @@ class game {
         }
     }
 
+    // Receive punishment from a user
+    rcvPunish(pid, punishment) {
+        if (this.m_num_pun_rcvd == m_players.length) return;
+
+        var idx = findPlayerId(pid);
+        if (this.m_players[idx].getPunishment() == undefined) {
+            this.m_players[idx].setPunishment(punishment);
+            this.m_num_pun_rcvd++;
+            sig_punishmentRcvd(pid);
+        }
+
+        if (this.m_num_pun_rcvd == m_players.length) {
+            this.startRound();
+        }
+    }
+
     // Sorting all players based on their current points
     sortByRanking() {
         // Update Points
         for (var i = 0; i < this.m_ranking.length; i++) {
-            this.m_ranking.points = this.m_players[this.m_ranking.id].points;
+            this.m_ranking.points = this.m_players[this.m_ranking.id].getPoints();
         }
         // Sort Ranking
         this.m_ranking.sort((a,b) => {
@@ -112,7 +135,8 @@ class game {
     startRound() {
         this.sortByRanking();
         this.m_episode.hardReset();
-        this.m_invalid_targets.clear();
+        this.m_rank_judge_id = 0;
+        this.m_invalid_sets = {};
         this.sendJudge();
     }
 
@@ -129,7 +153,7 @@ class game {
 
     // Broadcast to all who is the current judge
     sendJudge() {
-        global.emitters.bro_curJudge(this.m_id, this.m_players[this.judge()].name);
+        global.emitters.bro_curJudge(this.m_id, this.m_players[this.judge()].getName());
         global.emitters.sig_imJudge(this.m_players[this.m_episode.judge()].pid,
             this.m_invalid_sets, this.m_id_to_name);
     }
@@ -178,7 +202,7 @@ class game {
             bro_tarResultTOD(this.m_id, this.m_episode.truth());
 
             // ask the judge to provide a prompt
-            sig_judgeChoosePrompt(this.m_players[this.m_episode.judge()].id, "");
+            sig_judgeChoosePrompt(this.m_players[this.m_episode.judge()].pid, "");
 
             this.m_episode.resetNumResponses();
         }
@@ -217,7 +241,7 @@ class game {
             var voteInfo = this.m_episode.getRanking();
             for (var i = 0; i < voteInfo.length; i++) {
                 nameRank.push({
-                    "name": this.m_players[voteInfo[i].pidx].name,
+                    "name": this.m_players[voteInfo[i].pidx].getName(),
                     "vote": voteInfo[i].count
                 })
             }
@@ -227,7 +251,50 @@ class game {
 
     // Display stats and handle events based on number of points earned
 	endRound() {
-        // WIP
+        // Send ranking of players to all players
+        this.sortByRanking();
+        var rankName = [];
+        for (var i = 0; i < this.m_ranking; i++) {
+            rankName.push(this.m_players[this.m_ranking[i].id].getName());
+        }
+        bro_roundRank(this.m_id, rankName);
+
+        if (this.m_owner_only_continue) {
+            sig_contNextRound(this.m_players[0].pid);
+        } else {
+            bro_contNextRound(this.m_id);
+        }
+
+        // Cleanup and increment
+        this.cur_round++;
+    }
+
+    // Receiving continue to next round signal
+    nextRound(pid) {
+        if (this.m_owner_only_continue && pid != this.m_players[0].pid) return;
+
+        // Check if last round has been reached
+        if (this.m_cur_round < this.m_num_rounds) {
+            this.startRound();
+        } else {
+            this.endGame();
+        }
+    }
+
+    // Conclude the game, including declaring who has to do punishment
+    endGame() {
+        this.sortByRanking();
+        var randPlayerIdx = Math.floor(Math.random() * this.m_players.length);
+        var punChosen = this.m_players[randPlayerIdx].getPunishment();
+        var punOwner = this.m_players[randPlayerIdx].getName();
+        var rankInfo = [];
+        for (var i = 0; i < this.m_ranking.length; i++) {
+            rankNamePoint.push({
+                "name": this.m_players[this.m_ranking[i].id].getName(),
+                "points": this.m_ranking[i].points,
+                "punishment": this.m_players[this.m_ranking[i].id].getPunishment()
+            })
+        }
     }
 }
 

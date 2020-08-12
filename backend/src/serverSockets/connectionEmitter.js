@@ -30,8 +30,7 @@ class connectionEmitter{
 
     bro_beginGame(gameid) {
         if (this.debug) {
-            console.log("Broadcasting Begin Game");
-            console.log("Waiting for user punishments");
+            console.log("Broadcasting Begin Game, waiting for user punishments");
         }
         this.server.to(gameid).emit("beginGame");
     }
@@ -41,6 +40,13 @@ class connectionEmitter{
             console.log("Not enough players");
         }
         this.server.to(pid).emit("notEnoughPlayers");
+    }
+
+    sig_punishmentRcvd(pid) {
+        if (this.debug) {
+            console.log("Signal to player " + toString(pid) + " punishment has been received");
+        }
+        this.server.to(pid).emit("punishmentRcvd");
     }
 
     bro_curJudge(gameid, name) {
@@ -125,6 +131,37 @@ class connectionEmitter{
             console.log("Send result of vote to everyone");
         }
         this.server.to(gameid).emit("resultVote", {"result": vote_results});
+    }
+
+    bro_roundRank(gameid, ranking) {
+        if (this.debug) {
+            console.log("Sending ranking to all players")
+        }
+        this.server.to(gameid).emit("roundRank", {"ranking": ranking});
+    }
+
+    sig_contNextRound(pid) {
+        if (this.debug) {
+            console.log("Waiting for room owner to continue the game");
+        }
+        this.server.to(pid).emit("nextRound");
+    }
+
+    bro_contNextRound(gameid) {
+        if (this.debug) {
+            console.log("Waiting for someone to continue the game");
+        }
+        this.server.to(gameid).emit("nextRound");
+    }
+
+    bro_endGame(gameid, punChosen, punOwner, rankInfo) {
+        if (this.debug) {
+            console.log("End of game, sending punishment and ranking to everyone");
+        }
+        this.server.to(gameid).emit("endGame", {
+            "punInfo": {"punishment": punChosen, "owner": punOwner},
+            "ranking": rankInfo
+        });
     }
 }
 

@@ -1,12 +1,23 @@
 
 
 class PLAYER {
-    constructor(id, pid, name) {
-        this.id = id;
+    constructor(pid, name) {
         this.pid = pid;
         this.name = name;
-        this.punishment = '';
+        this.punishment = undefined;
         this.points = 0;
+    }
+
+    getName() {
+        return this.name;
+    }
+
+    getPunishment() {
+        return this.punishment;
+    }
+
+    getPoints() {
+        return this.points;
     }
 
     setPunishment(punishment) {
