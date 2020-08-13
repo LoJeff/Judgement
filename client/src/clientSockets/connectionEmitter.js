@@ -35,9 +35,9 @@ class connectionEmitter {
 		client.emit("sendPunishment",data);
 	}
 
-	sendTargets(targetA, targetB){
+	sendTargets(targetPair){
 		const client = this.client;
-		const data = {"targetA": targetA, "targetB": targetB};
+		const data = {"targetPair": targetPair};
 		client.emit("sendPunishment",data);
 	}
 
