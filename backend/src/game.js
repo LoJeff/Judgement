@@ -46,7 +46,7 @@ class game {
 	addPlayer(pid,playerName) {
         console.log("PLAYER ID: " + pid);
 		if (this.m_players.length < this.m_max_players) {
-            this.m_ranking.push({"id": this.m_players.length, "points": 0});
+            this.m_ranking.push({"id": this.m_players.length, "points": 0, "rank":-1});
             this.m_id_to_name.push(playerName);
             this.m_players.push(new PLAYER(pid, playerName));
 			return true;
@@ -130,6 +130,7 @@ class game {
 
     // Sorting all players based on their current points
     sortByRanking() {
+        if (this.m_ranking.length < 2) return;
         // Update Points
         for (var i = 0; i < this.m_ranking.length; i++) {
             this.m_ranking.points = this.m_players[this.m_ranking.id].getPoints();
@@ -142,6 +143,15 @@ class game {
                 return b.points - a.points;
             }
         });
+        // Update Rank
+        this.m_ranking[0].rank = 1;
+        for (var i = 1; i < this.m_ranking.length; i++) {
+            if (this.m_ranking[i].points == this.m_ranking[i-1].points) {
+                this.m_ranking[i].rank = this.m_ranking[i-1].rank;
+            } else {
+                this.m_ranking[i].rank = i+1;
+            }
+        }
     }
 
     // Reset the round and ask current judge to make a choice
@@ -287,7 +297,10 @@ class game {
         this.sortByRanking();
         var rankName = [];
         for (var i = 0; i < this.m_ranking; i++) {
-            rankName.push(this.m_players[this.m_ranking[i].id].getName());
+            rankName.push({
+                "name": this.m_players[this.m_ranking[i].id].getName(),
+                "rank": this.m_ranking[i].rank
+            });
         }
         bro_roundRank(this.m_id, rankName);
 
@@ -330,7 +343,7 @@ class game {
                 "punishment": this.m_players[this.m_ranking[i].id].getPunishment()
             })
         }
-        bro_endGame(this.m_id, punChosen, punOwner, rankInfo);
+        bro_endGame(this.m_id, {"punishment": punChosen, "owner": punOwner}, rankInfo);
     }
 }
 
