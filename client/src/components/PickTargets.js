@@ -7,15 +7,19 @@ class PickTargets extends Component {
         this.state = {
             "playerList": [],
             "invalidPairs": [],
-            "judge": null,
-            "targetA": null,
-            "targetB": null
+            //isJudge may be redundant, keep for now
+            "isJudge": false,
+            "curJudge": null,
+            "targetAID": null,
+            "targetBID": null
             };
 
         // functions
         this.submitTargets = this.submitTargets.bind(this);
         this.generatePossibleTargets = this.generatePossibleTargets.bind(this);
+        this.generatePair = this.generatePair.bind(this);
         this.generatePossibleTargetsList = this.generatePossibleTargetsList.bind(this);
+        this.isIdJudge = this.isIdJudge.bind(this);
     }
 
     componentDidMount(){
@@ -23,32 +27,49 @@ class PickTargets extends Component {
     }
 
     submitTargets(){
-        this.props.emitters.sendTargets(this.state.targetA, this.state.targetB);
+        this.props.emitters.sendTargets(this.generatePossibleTargets(this.state.targetAID, this.state.targetBID));
 
         // trigger page change
         this.props.triggerPageChange("truthOrDare");
     }
 
-    generatePossibleTargetsList(targetA){
+    //TODO think of clearer parameter names?
+    generatePair(idA, idB){
+        var resPair = [];
+        resPair.push(idA);
+        resPair.push(idB);
+        resPair.sort();
+        resPair = toString(resPair);
+        return resPair
+    }
+
+    isIdJudge(ID){
+        return this.state.playerList[ID] == this.state.curJudge
+    }
+
+    generatePossibleTargetsList(targetAID){
+        //list of player names
         var possibleTargetsList = [];
-        var player = null;
         
         //if first target has been chosen
-        if (targetA != null){
-            //TODO: fix the typing for this
-            for (player in this.state.playerList){
-                //assuming given list with 2 player objects
-                if (!([targetA, player] in this.state.invalidPairs) ||
-                     !([player,targetA] in this.state.invalidPairs)){
-                    possibleTargetsList.push(player);
+        if (targetAID != null){
+            for (var i = 0; i < this.state.playerList.length; i++ ){
+                
+                var currPair = this.generatePair(targetAID, i);
+                
+                //add possible targets to list
+                if (!(currPair in this.state.invalidPairs) ||
+                i != targetAID || !this.isIdJudge){
+                    possibleTargetsList.push(this.state.playerList[i]);
                 }
             }
         } 
         else {
             if (this.state.playerList != undefined){
-                for (player in this.state.playerList){
-                    if (player != this.state.judge){
-                        possibleTargetsList.push(player)
+                //create list of targets, not including judge
+                for (i = 0; i < this.state.playerList.length; i++ ){
+                    if (!this.isIdJudge){
+                        possibleTargetsList.push(this.state.playerList[i])
                     }
                 };
             }
@@ -58,16 +79,15 @@ class PickTargets extends Component {
 
     generatePossibleTargets(target){
         //if the first target has not been chosen yet
-        if (this.state.targetA == null){
-            this.state.targetA = target
-            this.generatePossibleTargetsList(target)
+        var targetID = this.state.playerList.indexOf(target);
+        if (this.state.targetAID == null){
+            this.state.targetAID = targetID
+            return this.generatePossibleTargetsList(targetID)
         } else {
-            this.state.targetB = target
-        }
-        
+            this.state.targetBID = targetID
+            return []
+        }   
     }
-
-
 
     render(){
         const possibleTargets = this.generatePossibleTargets(null);
@@ -76,15 +96,15 @@ class PickTargets extends Component {
         if (possibleTargets != undefined){
             possibleTargets.forEach(function(target){
                 possibleTargetElements.push(
-                    <li key={target.name} onClick={this.props.generatePossibleTargets(target)}>
-                        {target.name}
+                    <li key={target} onClick={this.props.generatePossibleTargets(target)}>
+                        {target}
                     </li>
                 )
             })
         }
 
         const showUserSpecificScreen = () => {
-            if ( true ){
+            if ( this.state.isJudge ){
                 return(
                     <div>
                         <p>I am a judge wooo</p>
@@ -98,7 +118,7 @@ class PickTargets extends Component {
                 )
             } else {
                 return(
-                <p>Sit tight! The judge is deciding who to test.</p>
+                <p>Sit tight! Judge {this.state.curJudge} is deciding who to test.</p>
                 )
             }
         }
@@ -114,9 +134,11 @@ class PickTargets extends Component {
             </div>
 
             <div>
-                <div id="submit_button_container">
-                    <button className="popButton" type="submit" onClick={this.submitTargets}>Judge!
-                    </button>
+                <div id="interactive_set">
+                    <div id="submit_button_container">
+                        <button className="popButton" type="submit" onClick={this.submitTargets}>Judge!
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
