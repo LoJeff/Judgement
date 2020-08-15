@@ -13,8 +13,16 @@ class PerformTruthorDare extends Component {
         };
 
         // functions
+        //TODO: figure this out with correct parameters
+        //figure out how to import functions
+        //Vote.getTargetNameFromString(0, this.state.playerList, this.state.curTargets);
         this.continueGame = this.continueGame.bind(this);
         this.displayPlayerNamesFromString = this.displayPlayerNamesFromString.bind(this);
+        this.getTargetNameFromString = this.getTargetNameFromString.bind(this);
+    }
+
+    getTargetNameFromString(playerIndex, playerList, string){
+        return playerList[string.split(",")[playerIndex]]
     }
 
     componentDidMount(){
@@ -36,7 +44,7 @@ class PerformTruthorDare extends Component {
             if (i == idsFromString.length - 1) {
                 result += " and ";
             }
-            result += getTargetNameFromString(i, playerList, string) + " ";
+            result += this.getTargetNameFromString(i, playerList, string) + " ";
         }
     }
 
@@ -69,7 +77,7 @@ class PerformTruthorDare extends Component {
                 return (
                     <div>
                         <h2>Jury</h2>
-                        <p> {displayPlayerNamesFromString(this.state.playerList, this.state.curTargets)} are performing! Prepare to vote!</p>
+                        <p> {this.props.displayPlayerNamesFromString(this.state.playerList, this.state.curTargets)} are performing! Prepare to vote!</p>
                     </div>
                 )
             }

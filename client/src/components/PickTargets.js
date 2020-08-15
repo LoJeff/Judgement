@@ -94,7 +94,7 @@ class PickTargets extends Component {
     }
 
     render(){
-        const possibleTargets = this.generatePossibleTargets(null);
+        const possibleTargets = this.generatePossibleTargetsList(null);
         const possibleTargetElements = [];
         
         if (possibleTargets != undefined){

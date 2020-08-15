@@ -15,12 +15,12 @@ class Vote extends Component {
         // functions
         this.submitVote = this.submitVote.bind(this);
         this.setPlayerVote = this.setPlayerVote.bind(this);
-        this.getTargetNameFromPair = this.getTargetNameFromPair(this);
+        this.getTargetNameFromString = this.getTargetNameFromString(this);
     }
 
     setPlayerVote(playerInt){
         this.setState((playerInt) => ({
-            playerVote: curTargets.split(",")[playerVote]
+            playerVote: this.state.curTargets.split(",")[playerInt]
         }))
     }
 
