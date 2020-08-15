@@ -28,6 +28,9 @@ class connectionEmitter{
         this.server.to(data.pid).emit("updateUser", data);
     }
 
+    /*
+    In/Out: gameid(str)
+    */
     bro_beginGame(gameid) {
         if (this.debug) {
             console.log("Broadcasting Begin Game, waiting for user punishments");
@@ -35,6 +38,9 @@ class connectionEmitter{
         this.server.to(gameid).emit("beginGame");
     }
 
+    /*
+    In/Out: pid(str)
+    */
     sig_notEnoughPlayers(pid) {
         if (this.debug) {
             console.log("Not enough players");
@@ -42,6 +48,9 @@ class connectionEmitter{
         this.server.to(pid).emit("notEnoughPlayers");
     }
 
+    /*
+    In/Out: pid(str)
+    */
     sig_punishmentRcvd(pid) {
         if (this.debug) {
             console.log("Signal to player " + toString(pid) + " punishment has been received");
@@ -49,6 +58,10 @@ class connectionEmitter{
         this.server.to(pid).emit("punishmentRcvd");
     }
 
+    /*
+    In/Out: gameid(str),
+            name(str)
+    */
     bro_curJudge(gameid, name) {
         if (this.debug) {
             console.log("Broadcasting Current Judge to all");
@@ -56,20 +69,22 @@ class connectionEmitter{
         this.server.to(gameid).emit("curJudge", {"name": name});
     }
 
-    sig_imJudge(pid, invalid_pairs, id_to_name) {
+    /*
+    In/Out: pid(str),
+            invalid_sets(2D array[int] : #invalid sets x #targets in a set),
+            id_to_name(array[str] : #players)
+    */
+    sig_imJudge(pid, invalid_sets, id_to_name) {
         if (this.debug) {
             console.log("Signal to Judge that they are the judge and give non-available pairs");
         }
-        this.server.to(pid).emit("imJudge", {"invalidPairs": invalid_pairs, "idToName": id_to_name});
-    }
-
-    bro_valTargets(gameid, targets) {
-        if (this.debug) {
-            console.log("Broadcast to all current Targets");
-        }
-        this.server.to(gameid).emit("valTargets", {"targets": targets});
+        this.server.to(pid).emit("imJudge", {"invalidSets": invalid_sets, "id_to_name": id_to_name});
     }
     
+    /*
+    In/Out: gameid(str),
+            targets(array[int] : #targets in a set)
+    */
     bro_valTargets(gameid, targets) {
         if (this.debug) {
             console.log("Broadcast to all current Targets");
@@ -77,6 +92,10 @@ class connectionEmitter{
         this.server.to(gameid).emit("valTargets", {"targets": targets});
     }
 
+    /*
+    In/Out: pid(str),
+            targets(array[int] : #targets in a set)
+    */
     sig_invalTarget(pid, targets) {
         if (this.debug) {
             console.log("Signal to Judge current Targets are invalid send again");
@@ -84,27 +103,42 @@ class connectionEmitter{
         this.server.to(pid).emit("invalTargets", {"targets": targets});
     }
 
+    /*
+    In/Out: pid(str)
+    */
     sig_tarChooseTOD(pid) {
         if (this.debug) {
             console.log("Signal to targets to choose Truth or Dare");
         }
         this.server.to(pid).emit("tarChooseTOD");
     }
-
-    bro_tarResultTOD(gameid, decision) {
+    
+    /*
+    In/Out: gameid(str),
+            truth(bool)
+    */
+    bro_tarResultTOD(gameid, truth) {
         if (this.debug) {
             console.log("Broadcast to all the result of the targets choice between Truth or Dare");
         }
-        this.server.to(gameid).emit("tarResultTOD", {"decision": decision});
+        this.server.to(gameid).emit("tarResultTOD", {"truth": truth});
     }
 
+    /*
+    In/Out: pid(str),
+            suggestion(str)
+    */
     sig_judgeChoosePrompt(pid, suggestion) {
         if (this.debug) {
             console.log("Signal to the judge to choose a prompt, give a suggestion");
         }
         this.server.to(pid).emit("judgeChoosePrompt", {"suggestion": suggestion});
     }
-
+    
+    /*
+    In/Out: gameid(str),
+            prompt(str)
+    */
     bro_judgeResultPrompt(gameid, prompt) {
         if (this.debug) {
             console.log("Broadcast to all the prompt that was chosen by the judge");
@@ -112,27 +146,43 @@ class connectionEmitter{
         this.server.to(gameid).emit("judgeResultPrompt", {"prompt": prompt});
     }
 
+    /*
+    In/Out: pid(str)
+    */
     sig_judgeReqCont(pid) {
         if (this.debug) {
-            console.log("Tell the judge to continue when truth/dares are done");
+            console.log("Tell the judge to choose to continue when truth/dares are done");
         }
         this.server.to(pid).emit("judgeReqCont");
     }
-
+    
+    /*
+    In/Out: gameid(str),
+            targets(array[int] : #targets in a set),
+            id_to_name(array[str] : #players)
+    */
     bro_playerVote(gameid, targets, id_to_name) {
         if (this.debug) {
             console.log("Judge signals to start voting");
         }
-        this.server.to(gameid).emit("playerVote", {"targets": targets, "idToName": id_to_name});
+        this.server.to(gameid).emit("playerVote", {"targets": targets, "id_to_name": id_to_name});
     }
-
+    
+    /*
+    In/Out: gameid(str)
+            vote_result(array[{name(str), vote(int)}] : #targets in a set)
+    */
     bro_getResultVote(gameid, vote_results) {
         if (this.debug) {
             console.log("Send result of vote to everyone");
         }
-        this.server.to(gameid).emit("resultVote", {"result": vote_results});
+        this.server.to(gameid).emit("resultVote", {"vote_results": vote_results});
     }
-
+    
+    /*
+    In/Out: gameid(str)
+            ranking(array[{name(str), rank(int)}] : #players)
+    */
     bro_roundRank(gameid, ranking) {
         if (this.debug) {
             console.log("Sending ranking to all players")
@@ -140,6 +190,9 @@ class connectionEmitter{
         this.server.to(gameid).emit("roundRank", {"ranking": ranking});
     }
 
+    /*
+    In/Out: pid(str)
+    */
     sig_contNextRound(pid) {
         if (this.debug) {
             console.log("Waiting for room owner to continue the game");
@@ -147,6 +200,9 @@ class connectionEmitter{
         this.server.to(pid).emit("nextRound");
     }
 
+    /*
+    In/Out: gameid(str)
+    */
     bro_contNextRound(gameid) {
         if (this.debug) {
             console.log("Waiting for someone to continue the game");
@@ -154,13 +210,18 @@ class connectionEmitter{
         this.server.to(gameid).emit("nextRound");
     }
 
-    bro_endGame(gameid, punChosen, punOwner, rankInfo) {
+    /*
+    In/Out: gameid(str),
+            pun_info({punishment(str), owner(str)}),
+            rank_info(array[{name(str), points(int), punishment(str)}] : #players)
+    */
+    bro_endGame(gameid, pun_info, rank_info) {
         if (this.debug) {
             console.log("End of game, sending punishment and ranking to everyone");
         }
         this.server.to(gameid).emit("endGame", {
-            "punInfo": {"punishment": punChosen, "owner": punOwner},
-            "ranking": rankInfo
+            "pun_info": pun_info,
+            "rank_info": rank_info
         });
     }
 }
