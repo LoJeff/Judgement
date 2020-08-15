@@ -5,21 +5,36 @@ class Vote extends Component {
         super(props);
     
         this.state = {
-            "receivedPackets": [],
+            "isJudge": false,
+            "playerVote": null,
+            "trigLeaderboard": false,
+            "curTargets": null,
+            "playerList": []
         };
 
         // functions
-        this.continueGame = this.continueGame.bind(this);
+        this.submitVote = this.submitVote.bind(this);
+        this.setPlayerVote = this.setPlayerVote.bind(this);
+        this.getTargetNameFromPair = this.getTargetNameFromPair(this);
     }
 
-    continueGame(){
-        // if turn x, y, z, show leaderboard; else, start another episode
-        // TODO: update this with condition on when to choose leaderboard
-        if (true){
-        this.props.triggerPageChange("leaderboard");
+    setPlayerVote(playerInt){
+        this.setState((playerInt) => ({
+            playerVote: curTargets.split(",")[playerVote]
+        }))
+    }
+
+    submitVote(vote){
+        this.setPlayerVote(vote);
+        this.props.emitters.sendPlayerVote(this.state.playerVote);
+
+        //if leaderboard screen is seen
+        if (this.state.trigLeaderboard){
+            this.props.triggerPageChange("leaderboard");
         }
+        //if round continues
         else {
-        this.props.triggerPageChange("pickTargets");       
+            this.props.triggerPageChange("pickTargets");       
         }
     }
 
@@ -27,19 +42,42 @@ class Vote extends Component {
         this.props.handlers.updateReact(this);
     }
 
+    getTargetNameFromString(playerIndex, playerList, string){
+        return playerList[string.split(",")[playerIndex]]
+    }
+
     render(){
 
+        const showJudgeSpecificElement = () => {
+            if ( this.state.isJudge ){
+                return(
+                    <div>
+                        //the captain can say this:
+                        <p>Remember, you are the judge! Your votes hold twice the power!</p>
+                    </div> 
+                )
+            }
+        }
         return ( 
         <div>
             <div>
-                <h1>Vote</h1>
+                <h1>Pass Judgement</h1>
+                <p>Whos appeal was stronger?</p>
+                {showJudgeSpecificElement}
             </div>
-
-            // TODO: add submit button visual modifiers in this div
             <div>
                 <div id="submit_button_container">
-					<button className="popButton" type="submit" onClick={this.continueGame}>Submit
-                    </button>
+                    <div>
+                        <button className="popButton" type="submit" onClick={this.submitVote(0)}>
+                            //this probably is not displayed properly
+                            {this.getTargetNameFromString(0, this.state.playerList, this.state.curTargets)}
+                        </button>
+                    </div>
+                    <div>
+                        <button className="popButton" type="submit" onClick={this.submitVote(1)}>
+                            {this.getTargetNameFromString(1, this.state.playerList, this.state.curTargets)}
+                        </button>
+                    </div>
 				</div>
             </div>
 

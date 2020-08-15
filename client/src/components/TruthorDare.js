@@ -17,7 +17,9 @@ class TruthorDare extends Component {
     }
 
     setTODChoice(choice){
-        this.state.tarTODChoice = choice;
+        this.setState((choice) => ({
+            tarTODChoice: choice
+        }))
     }
 
     componentDidMount(){

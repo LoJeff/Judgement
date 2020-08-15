@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import * as Vote from './Vote.js';
 
 class PerformTruthorDare extends Component {
     constructor(props){
@@ -7,11 +8,13 @@ class PerformTruthorDare extends Component {
         this.state = {
             "isTarget": false,
             "isJudge": false,
-            "curTargets": null
+            "curTargets": null,
+            "playerList": []
         };
 
         // functions
         this.continueGame = this.continueGame.bind(this);
+        this.displayPlayerNamesFromString = this.displayPlayerNamesFromString.bind(this);
     }
 
     componentDidMount(){
@@ -24,6 +27,17 @@ class PerformTruthorDare extends Component {
 
         // trigger page change
         this.props.triggerPageChange("vote");
+    }
+
+    displayPlayerNamesFromString(playerList, string){
+        var result = "";
+        var idsFromString = string.split(",");
+        for (var i = 0; i < idsFromString.length; i++){
+            if (i == idsFromString.length - 1) {
+                result += " and ";
+            }
+            result += getTargetNameFromString(i, playerList, string) + " ";
+        }
     }
 
     render(){
@@ -55,7 +69,7 @@ class PerformTruthorDare extends Component {
                 return (
                     <div>
                         <h2>Jury</h2>
-                        <p> {this.state.curTargets} are performing! Prepare to vote!</p>
+                        <p> {displayPlayerNamesFromString(this.state.playerList, this.state.curTargets)} are performing! Prepare to vote!</p>
                     </div>
                 )
             }

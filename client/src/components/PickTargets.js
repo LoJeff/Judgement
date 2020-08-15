@@ -81,10 +81,14 @@ class PickTargets extends Component {
         //if the first target has not been chosen yet
         var targetID = this.state.playerList.indexOf(target);
         if (this.state.targetAID == null){
-            this.state.targetAID = targetID
+            this.setState((targetID) => ({
+                targetAID: targetID
+            }))
             return this.generatePossibleTargetsList(targetID)
         } else {
-            this.state.targetBID = targetID
+            this.setState((targetID) => ({
+                targetBID: targetID
+            }))
             return []
         }   
     }
