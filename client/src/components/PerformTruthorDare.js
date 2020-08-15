@@ -1,23 +1,17 @@
 import React, {Component} from 'react';
 
-class TruthorDare extends Component {
+class PerformTruthorDare extends Component {
     constructor(props){
         super(props);
     
         this.state = {
-            "curTargets": null,
-            "tarTODChoice": null,
-            "isTarget": null,
-            "playerList": []
+            "isTarget": false,
+            "isJudge": false,
+            "isjury": true
         };
 
         // functions
-        this.submitChoice = this.submitChoice.bind(this);
-        this.setTODChoice = this.setTODChoice.bind(this);
-    }
-
-    setTODChoice(choice){
-        this.state.tarTODChoice = choice;
+        this.continueGame = this.continueGame.bind(this);
     }
 
     componentDidMount(){
@@ -25,11 +19,9 @@ class TruthorDare extends Component {
     }
 
     submitChoice(){
-        //setup emitter
-        this.props.emitters.sendTarTODVote(this.state.tarTODChoice)
 
         // trigger page change
-        this.props.triggerPageChange("performToD");
+        this.props.triggerPageChange("vote");
     }
 
     render(){
@@ -39,16 +31,9 @@ class TruthorDare extends Component {
                 return(
                     <div>
                         <p>I am a target wooo</p>
-                            <div id="possible_truthordare_set">
-                                //have more flushed out hover values?
-                            <button className="popButton" onClick={this.setTODChoice("Truth")}>Confess
-                            </button>
-                            </div>
-                            <button className="popButton" onClick={this.setTODChoice("Dare")}>Repent
-                        </button>
                     </div> 
                 )
-            } else {
+            } else if (this.state.isJudge) {
                 return(
                     //figure out how im getting/in what form im getting cur targets
                 <p>Sit tight! {this.state.curTargets} are in trial.</p>
@@ -80,4 +65,4 @@ class TruthorDare extends Component {
     }
 }
 
-export default TruthorDare;
+export default PerformTruthorDare;

@@ -41,6 +41,14 @@ class connectionEmitter {
 		client.emit("sendPunishment",data);
 	}
 
+	sendTarTODVote(tarVote){
+		//send Truth or Dare vote from target
+		//do I need to send who the target is?
+		const client = this.client;
+		const data = {"tarVote": tarVote}
+		client.emit("tarTODVote", data)
+	}
+
 
 }
 

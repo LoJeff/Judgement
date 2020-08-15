@@ -13,6 +13,7 @@ import Leaderboard from './Leaderboard.js';
 import Game from './Game.js';
 import Vote from './Vote.js';
 import Endgame from './Endgame.js';
+import PerformTruthorDare from './PerformTruthorDare.js';
 
 class App extends Component {
     constructor(props){
@@ -93,6 +94,12 @@ class App extends Component {
             return(<TruthorDare emitters={this.state.emitters}
                                 handlers={this.state.handlers}
                                 triggerPageChange={this.triggerPageChange}
+                />)
+        }
+        else if(this.state.pageState === "performToD"){
+            return(<PerformTruthorDare emitters={this.state.emitters}
+                         handlers={this.state.handlers}
+                         triggerPageChange={this.triggerPageChange}
                 />)
         }
         else if(this.state.pageState === "vote"){

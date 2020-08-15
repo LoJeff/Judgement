@@ -65,7 +65,6 @@ class connectionHandler{
 
 	playerVote(data){
 		this.react.setState({"curTargets": data.targets})
-		//don't need idToName here
 	}
 
 	resultVote(data){
@@ -78,6 +77,11 @@ class connectionHandler{
 
 	nextRound(data){
 		console.log("Received next round emit");
+	}
+
+	tarChooseTOD(data){
+		this.react.setState({"isTarget": true,
+							"playerList": data.idToName});
 	}
 
 	endGame(data){
@@ -120,6 +124,11 @@ class connectionHandler{
 
 		client.on("tarResultTOD",function(data){
 			this.tarResultTOD(data);
+		}.bind(this));
+
+		client.on("tarChooseTOD",function(){
+			//signal to target to choose ToD
+			this.tarChooseTOD();
 		}.bind(this));
 		
 		client.on("judgeChoosePrompt",function(data){
