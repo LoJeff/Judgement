@@ -7,7 +7,7 @@ class PerformTruthorDare extends Component {
         this.state = {
             "isTarget": false,
             "isJudge": false,
-            "isjury": true
+            "curTargets": null
         };
 
         // functions
@@ -18,7 +18,9 @@ class PerformTruthorDare extends Component {
         this.props.handlers.updateReact(this);
     }
 
-    submitChoice(){
+    continueGame(){
+        //signal judge cue to continue game
+        this.props.emitters.sigJudgeContGame();
 
         // trigger page change
         this.props.triggerPageChange("vote");
@@ -30,13 +32,31 @@ class PerformTruthorDare extends Component {
             if ( this.state.isTarget ){
                 return(
                     <div>
-                        <p>I am a target wooo</p>
+                        <h2>On Trial</h2>
+                        <p>I am a target, time to fight for my life D:</p>
                     </div> 
                 )
             } else if (this.state.isJudge) {
                 return(
-                    //figure out how im getting/in what form im getting cur targets
-                <p>Sit tight! {this.state.curTargets} are in trial.</p>
+                    <div>
+                        <h2>Judge</h2>
+                        <p> {this.state.curTargets} are performing!</p>
+                        <p>Proceed with trial?</p>
+                        <div id="submit_button_container">
+                            <button className="popButton" type="submit" onClick={this.continueGame}>
+                                Proceed
+                            </button>
+                        </div>
+                    </div>
+                )
+            //if not judge or target, then they are jury
+            //consider implement jury vote to continue round?
+            } else {
+                return (
+                    <div>
+                        <h2>Jury</h2>
+                        <p> {this.state.curTargets} are performing! Prepare to vote!</p>
+                    </div>
                 )
             }
         }
@@ -44,19 +64,11 @@ class PerformTruthorDare extends Component {
         return ( 
         <div>
             <div>
-                <h1>TruthorDare</h1>
+                <h1>Trial for: {this.state.curTargets} </h1>
             </div>
 
             <div>
                 {showUserSpecificScreen}
-            </div>
-
-            // TODO: add submit button visual modifiers in this div
-            <div>
-                <div id="submit_button_container">
-					<button className="popButton" type="submit" onClick={this.submitChoice}>Submit
-                    </button>
-				</div>
             </div>
 
         </div>
