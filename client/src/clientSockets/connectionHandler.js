@@ -41,8 +41,8 @@ class connectionHandler{
 	}
 
 	beginGame(data){
-        console.log("Received begin game");
-        this.react.props.triggerPageChange("punishment");
+		console.log("Received begin game");        
+		this.react.props.triggerPageChange("punishment");
 	}
 
 	//probably don't need this. I'll make the enter game button not activatable until enough players join?
@@ -82,8 +82,8 @@ class connectionHandler{
 
 	tarChooseTOD(data){
 		this.react.setState({"isTarget": true,
-							"playerList": data.idToName});
-	}
+							"playerList": data.idToName});	
+						}
 
 	endGame(data){
 		this.react.setState({"ranking": data.rankInfo,
@@ -160,7 +160,6 @@ class connectionHandler{
 			this.endGame(data);
         }.bind(this));
 	}
-
 }
 
 export default connectionHandler;

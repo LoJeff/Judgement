@@ -16,6 +16,7 @@ class Lobby extends Component {
 
     componentDidMount(){
         this.props.handlers.updateReact(this);
+
     }
 
     leaveGameRoom(){
