@@ -78,7 +78,7 @@ class connectionEmitter{
         if (this.debug) {
             console.log("Signal to Judge that they are the judge and give non-available pairs");
         }
-        this.server.to(pid).emit("imJudge", {"invalidSets": invalid_sets, "id_to_name": id_to_name});
+        this.server.to(pid).emit("imJudge", {"invalidSets": invalid_sets, "idToName": id_to_name});
     }
     
     /*
@@ -165,7 +165,7 @@ class connectionEmitter{
         if (this.debug) {
             console.log("Judge signals to start voting");
         }
-        this.server.to(gameid).emit("playerVote", {"targets": targets, "id_to_name": id_to_name});
+        this.server.to(gameid).emit("playerVote", {"targets": targets, "idToName": id_to_name});
     }
     
     /*
@@ -176,7 +176,7 @@ class connectionEmitter{
         if (this.debug) {
             console.log("Send result of vote to everyone");
         }
-        this.server.to(gameid).emit("resultVote", {"vote_results": vote_results});
+        this.server.to(gameid).emit("resultVote", {"voteResults": vote_results});
     }
     
     /*
@@ -220,8 +220,8 @@ class connectionEmitter{
             console.log("End of game, sending punishment and ranking to everyone");
         }
         this.server.to(gameid).emit("endGame", {
-            "pun_info": pun_info,
-            "rank_info": rank_info
+            "punInfo": pun_info,
+            "rankInfo": rank_info
         });
     }
 }
