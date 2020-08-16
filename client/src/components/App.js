@@ -18,15 +18,15 @@ import PerformTruthorDare from './PerformTruthorDare.js';
 class App extends Component {
     constructor(props){
         super(props);
-        
-        // create socket connection
-        const socket = io();
-        const emitters = new connectionEmitter(socket);
-        const handlers = new connectionHandler(socket,this);
 
         this.triggerPageChange = this.triggerPageChange.bind(this);
         this.updateGameid = this.updateGameid.bind(this);
         this.updateClientName = this.updateClientName.bind(this);
+
+        // create socket connection
+        const socket = io();
+        const emitters = new connectionEmitter(socket);
+        const handlers = new connectionHandler(socket,this);
         
         // state
         this.state = {

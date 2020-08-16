@@ -3,7 +3,7 @@
 class connectionHandler{
 	constructor(server,client){
 		this.server = server;
-		this.client = client;
+        this.client = client;
     }
 
 	joinGameRoom(client,data){
@@ -62,17 +62,27 @@ class connectionHandler{
 			var broadcastData = {"gameid":data.gameid,"playersList":playersList};
 			global.emitters.broadcast_updateRoomPlayers(broadcastData);
 		}
-	}
-
-	startGame(client,data){
-		// find game
-        var game = global.data.findGame(data.gameid);
-        game.beginGame();
+    }
+    
+    getGame(client) {
+        // First element is its own socket id, second element is game id
+        return global.data.findGame(Object.keys(client.rooms)[1]);
     }
 
     updateGame(client,data){
-        var game = global.data.findGame(data.gameid);
+        var game = this.getGame(client);
         game.update(data);
+    }
+
+    startGame(client) {
+		// find game
+        var game = this.getGame(client);
+        game.beginGame(client.id);
+    }
+
+    rcvPunish(client, data) {
+        var game = this.getGame(client);;
+        game.rcvPunish(client.id, data.punishment);
     }
 
 	eventHandlers(){
@@ -86,10 +96,6 @@ class connectionHandler{
 			this.leaveGameRoom(client,data);
 		}.bind(this));
 
-		client.on("startGame",function(data){
-			this.startGame(client,data);
-        }.bind(this));
-
         client.on("updateGame", function(data){
             this.updateGame(client,data);
         })
@@ -102,7 +108,15 @@ class connectionHandler{
 			} catch(err) {
 				console.log(err);
 			}
-		}.bind(this));
+        }.bind(this));
+
+        client.on("startGame",function(data){
+			this.startGame(client,data);
+        }.bind(this));
+        
+        client.on("sendPunishment",function(data){
+            this.rcvPunish(client,data);
+        }.bind(this))
 	}
 
 }

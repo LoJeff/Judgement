@@ -112,18 +112,18 @@ class game {
     // Receive punishment from a user
     rcvPunish(pid, punishment) {
         if (this.state != state.PUNISHMENT) return;
-        if (this.m_num_pun_rcvd == m_players.length) return;
+        if (this.m_num_pun_rcvd == this.m_players.length) return;
 
-        var idx = findPlayerId(pid);
+        var idx = this.findPlayerId(pid);
         // Check if punishment was already provided by this player
         if (this.m_players[idx].getPunishment() == undefined) {
             this.m_players[idx].setPunishment(punishment);
             this.m_num_pun_rcvd++;
-            sig_punishmentRcvd(pid);
+            global.emitters.sig_punishmentRcvd(pid);
         }
 
         // Check if everyone has provided a punishment
-        if (this.m_num_pun_rcvd == m_players.length) {
+        if (this.m_num_pun_rcvd == this.m_players.length) {
             this.startRound();
         }
     }
@@ -133,7 +133,7 @@ class game {
         if (this.m_ranking.length < 2) return;
         // Update Points
         for (var i = 0; i < this.m_ranking.length; i++) {
-            this.m_ranking.points = this.m_players[this.m_ranking.id].getPoints();
+            this.m_ranking.points = this.m_players[this.m_ranking[i].id].getPoints();
         }
         // Sort Ranking
         this.m_ranking.sort((a,b) => {
@@ -177,7 +177,7 @@ class game {
     // Broadcast to all who is the current judge
     sendJudge() {
         this.state = state.CHOOSETARGET;
-        global.emitters.bro_curJudge(this.m_id, this.m_players[this.judge()].getName());
+        global.emitters.bro_curJudge(this.m_id, this.m_players[this.m_episode.judge()].getName());
         global.emitters.sig_imJudge(this.m_players[this.m_episode.judge()].pid,
             this.m_invalid_sets, this.m_id_to_name);
     }
@@ -194,7 +194,7 @@ class game {
 
         if (this.validTarget(targets)) {
             // Found valid targets broadcast to all who the targets are
-            bro_valTargets(this.m_id, targets);
+            global.emitters.bro_valTargets(this.m_id, targets);
 
             this.pushInvalidTargets(targets);
             this.m_episode.setTargets(targets);
@@ -205,11 +205,11 @@ class game {
             // Request for choosing truth or dare to all targets
             this.state = state.TARCHOOSETOD;
             for (var i = 0; i < this.m_episode.maxTargets(); i++) {
-                sig_tarChooseTOD(this.m_players[this.m_episode.target(i)].pid);
+                global.emitters.sig_tarChooseTOD(this.m_players[this.m_episode.target(i)].pid);
             }
         } else {
             // Target is rejected try again
-            sig_invalTarget(this.m_players[this.m_episode.judge()].pid, targets)
+            global.emitters.sig_invalTarget(this.m_players[this.m_episode.judge()].pid, targets)
         }
     }
 
@@ -226,11 +226,11 @@ class game {
 
         if (this.m_episode.tarChooseTOD(choice, pid)) {
             // broadcast to all users the decision
-            bro_tarResultTOD(this.m_id, this.m_episode.truth());
+            global.emitters.bro_tarResultTOD(this.m_id, this.m_episode.truth());
 
             // ask the judge to provide a prompt
             this.state = state.JUDGEPROMPT;
-            sig_judgeChoosePrompt(this.m_players[this.m_episode.judge()].pid, "");
+            global.emitters.sig_judgeChoosePrompt(this.m_players[this.m_episode.judge()].pid, "");
 
             this.m_episode.resetNumResponses();
         }
@@ -244,11 +244,11 @@ class game {
         this.m_episode.setPrompt(prompt);
         
         // broadcast to all users what the prompt is
-        bro_judgeResultPrompt(this.m_id, this.m_episode.prompt());
+        global.emitters.bro_judgeResultPrompt(this.m_id, this.m_episode.prompt());
 
         // tell the judge that he/she needs to choose to continue
         this.state = state.JUDGECONTTOD;
-        sig_judgeReqCont(this.m_players[this.m_episode.judge()].pid);
+        global.emitters.sig_judgeReqCont(this.m_players[this.m_episode.judge()].pid);
     }
 
     // Receiving judges request to continue to voting
@@ -258,7 +258,7 @@ class game {
 
         // Broadcast to all to begin voting
         this.state = state.VOTE;
-        bro_playerVote(this.m_id, this.m_episode.targets(), this.m_id_to_name);
+        global.emitters.bro_playerVote(this.m_id, this.m_episode.targets(), this.m_id_to_name);
     }
 
     // Receiving votes from a player
@@ -279,7 +279,7 @@ class game {
                 })
             }
             this.state = state.JUDGECONTEP;
-            bro_getResultVote(this.m_id, nameRank);
+            global.emitters.bro_getResultVote(this.m_id, nameRank);
         }
     }
 
@@ -302,13 +302,13 @@ class game {
                 "rank": this.m_ranking[i].rank
             });
         }
-        bro_roundRank(this.m_id, rankName);
+        global.emitters.bro_roundRank(this.m_id, rankName);
 
         this.state = state.NEXTROUND;
         if (this.m_owner_only_continue) {
-            sig_contNextRound(this.m_players[0].pid);
+            global.emitters.sig_contNextRound(this.m_players[0].pid);
         } else {
-            bro_contNextRound(this.m_id);
+            global.emitters.bro_contNextRound(this.m_id);
         }
 
         // Cleanup and increment
@@ -343,7 +343,7 @@ class game {
                 "punishment": this.m_players[this.m_ranking[i].id].getPunishment()
             })
         }
-        bro_endGame(this.m_id, {"punishment": punChosen, "owner": punOwner}, rankInfo);
+        global.emitters.bro_endGame(this.m_id, {"punishment": punChosen, "owner": punOwner}, rankInfo);
     }
 }
 

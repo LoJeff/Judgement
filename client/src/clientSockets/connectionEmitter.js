@@ -17,10 +17,9 @@ class connectionEmitter {
 		client.emit("leaveGameRoom",data);
 	}
 
-	startGame(gameid){
+	startGame(){
 		const client = this.client;
-		const data = {"gameid": gameid};
-		client.emit("startGame",data);
+		client.emit("startGame");
 	}
 
 	dummyFunction() {
@@ -38,7 +37,7 @@ class connectionEmitter {
 	sendTargets(targetPair){
 		const client = this.client;
 		const data = {"targetPair": targetPair};
-		client.emit("sendPunishment",data);
+		client.emit("sendTargets",data);
 	}
 
 	sendTarTODVote(tarVote){

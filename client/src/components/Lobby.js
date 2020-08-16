@@ -29,7 +29,7 @@ class Lobby extends Component {
 
     startGame(){
             // emit game start to server
-            this.props.emitters.startGame(this.props.gameid);
+            this.props.emitters.startGame();
             // trigger page change to enter punishment page
             this.props.triggerPageChange("punishment");
     }
