@@ -1,4 +1,4 @@
-# Auto Battler IO game
+# Judgement (Where friendships are broken)
 
 ## Developer commands:
  To load the node modules:
