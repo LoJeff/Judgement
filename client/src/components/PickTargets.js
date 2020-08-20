@@ -6,7 +6,7 @@ class PickTargets extends Component {
     
         this.state = {
             "playerList": [],
-            "invalidPairs": [],
+            "invalidSets": [],
             //isJudge may be redundant, keep for now
             "isJudge": false,
             "curJudge": null,

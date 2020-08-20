@@ -30,7 +30,7 @@ class connectionHandler{
 	}
 	
 	imJudge(data){
-		this.react.setState({"invalidPairs": data.invalidSets,
+		this.react.setState({"invalidSets": data.invalidSets,
 							"playerList": data.idToName,
 							"isJudge": true
 						});

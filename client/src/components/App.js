@@ -10,7 +10,6 @@ import Punishment from './Punishment.js';
 import PickTargets from './PickTargets.js';
 import TruthorDare from './TruthorDare.js';
 import Leaderboard from './Leaderboard.js';
-import Game from './Game.js';
 import Vote from './Vote.js';
 import Endgame from './Endgame.js';
 import PerformTruthorDare from './PerformTruthorDare.js';
@@ -107,12 +106,6 @@ class App extends Component {
                          handlers={this.state.handlers}
                          triggerPageChange={this.triggerPageChange}
                 />)
-        }
-        else if(this.state.pageState === "game"){
-            return(<Game emitters={this.state.emitters}
-                         handlers={this.state.handlers}
-                         triggerPageChange={this.triggerPageChange}
-                          />);
         }
         else if(this.state.pageState === "leaderboard"){
             return(<Leaderboard emitters={this.state.emitters}
