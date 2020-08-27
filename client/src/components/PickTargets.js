@@ -108,7 +108,7 @@ class PickTargets extends Component {
         }
 
         const showUserSpecificScreen = () => {
-            if ( this.state.isJudge ){
+            if ( this.state.isJudge ) {
                 return(
                     <div>
                         <p>I am a judge wooo</p>
@@ -118,7 +118,14 @@ class PickTargets extends Component {
                                 </ul>
                                 
                             </div>
-                    </div> 
+
+                            <div id="interactive_set">
+                                <div id="submit_button_container">
+                                    <button className="popButton" type="submit" onClick={this.submitTargets}>Judge!
+                                    </button>
+                                </div>
+                            </div>
+                    </div>
                 )
             } else {
                 return(
@@ -135,15 +142,6 @@ class PickTargets extends Component {
 
             <div> 
                 {showUserSpecificScreen()}
-            </div>
-
-            <div>
-                <div id="interactive_set">
-                    <div id="submit_button_container">
-                        <button className="popButton" type="submit" onClick={this.submitTargets}>Judge!
-                        </button>
-                    </div>
-                </div>
             </div>
         </div>
 

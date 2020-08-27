@@ -41,13 +41,15 @@ class connectionHandler{
 	}
 
 	beginGame(data){
-		console.log("Received begin game");        
+		console.log("Received begin game");
+		this.react.setState({"enoughPlayers": true})        
 		this.react.props.triggerPageChange("punishment");
 	}
 
 	//probably don't need this. I'll make the enter game button not activatable until enough players join?
 	notEnoughPlayers(data){
 		console.log("Received not enough players");
+		this.react.setState({"enoughPlayers": false});
 	}
 
 	//the targets final decision of truth or dare

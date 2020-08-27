@@ -10,6 +10,8 @@ class Lobby extends Component {
         // state
         this.state = {
             "playersList": [],
+            "enoughPlayers": false,
+            "displayNotEnoughPlayers": null
         };
     }
 
@@ -28,18 +30,43 @@ class Lobby extends Component {
     }
 
     startGame(){
-            // emit game start to server
-            this.props.emitters.startGame();
+        // emit game start to server
+        this.props.emitters.startGame();
+
+        if (this.state.enoughPlayers) {
             // trigger page change to enter punishment page
             this.props.triggerPageChange("punishment");
+        } else {
+            this.setState(() => ({
+                displayNotEnoughPlayers: true
+            }))
+
+        }
     }
 
     render(){
         const playersListElements = [];
-        if(this.state.playersList !== undefined){
+        if (this.state.playersList !== undefined){
             this.state.playersList.forEach(function(player){
                 playersListElements.push(<li key={player.id}>{player.name} (id:{player.id})</li>)
             });
+        }
+
+        const displayNotEnoughPlayers = () => {
+            console.log("in not enough player display")
+            if (this.state.displayNotEnoughPlayers) {
+                return(
+                    <div>
+                        <p>Waiting for more passengers! Ship cannot set sail until at least 3 passengers are on board.</p>
+                    </div>
+                )
+            } else if (this.state.displayNotEnoughPlayers === false) {
+                return(
+                    <div>
+                        <p> Setting sail! What could possibly go wrong?</p>
+                    </div>
+                )
+            }
         }
 
         return(
@@ -52,9 +79,12 @@ class Lobby extends Component {
                 <ul>
                     {playersListElements}
                 </ul>
+                <div>
+                    {displayNotEnoughPlayers()}
+                </div>
                 <button className="popButton" onClick={this.leaveGameRoom}>Abandon Ship</button>
                 <button className="popButton" onClick={this.startGame}>Start Voyage</button>
-			</div>
+            </div>
         );
     }
 }
