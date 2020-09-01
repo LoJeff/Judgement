@@ -58,6 +58,7 @@ class connectionHandler{
 	//the targets final decision of truth or dare
 	tarResultTOD(data){
 		this.react.setState({"tarResultTOD": data.decision});
+		this.react.props.triggerPageChange("performToD");
 	}
 
 	//tells judge to choose our prompt, or give own suggestion
