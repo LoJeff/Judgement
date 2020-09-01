@@ -24,6 +24,11 @@ class globalData {
 
 	findGame(gameid){
 		var foundGame = this.gameArray.find((game) => game.getId() == gameid);
+		if (foundGame == undefined){
+			console.log("FOUNDGAME UNDEFINED D:")
+		} else {
+			console.log("FINDGAME GAMEKEY: "+Object.keys(foundGame));
+		}
 		return foundGame;
 	}
 

@@ -12,6 +12,7 @@ class connectionHandler{
 
 		// if game does not exist
 		if(global.data.findGame(data.gameid) === undefined){
+			console.log("DATA GAMEID: "+data.gameid);
 			global.data.createNewGame(data.gameid);
 		}
 
@@ -65,7 +66,8 @@ class connectionHandler{
     }
     
     getGame(client) {
-        // First element is its own socket id, second element is game id
+		// First element is its own socket id, second element is game id
+		console.log("KEYS: "+ Object.keys(client.rooms));
         return global.data.findGame(Object.keys(client.rooms)[1]);
     }
 
@@ -110,11 +112,12 @@ class connectionHandler{
 			}
         }.bind(this));
 
-        client.on("startGame",function(data){
-			this.startGame(client,data);
+        client.on("startGame",function(){
+			this.startGame(client);
         }.bind(this));
         
         client.on("sendPunishment",function(data){
+			console.log("DATA KEY: "+Object.keys(data));
             this.rcvPunish(client,data);
         }.bind(this))
 	}
