@@ -52,6 +52,11 @@ class connectionHandler{
 		this.react.setState({"enoughPlayers": false});
 	}
 
+	//broadcasts to targets the current targets
+	valTargets(data){
+		this.react.setState({"targets": data.targets});
+	}
+
 	//the targets final decision of truth or dare
 	tarResultTOD(data){
 		this.react.setState({"tarResultTOD": data.decision});
@@ -127,6 +132,10 @@ class connectionHandler{
 
 		client.on("tarResultTOD",function(data){
 			this.tarResultTOD(data);
+		}.bind(this));
+
+		client.on("valTargets",function(data){
+			this.valTargets(data);
 		}.bind(this));
 
 		client.on("tarChooseTOD",function(){
