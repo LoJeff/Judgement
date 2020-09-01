@@ -29,7 +29,7 @@ class Endgame extends Component {
 
             </div>
 
-            // TODO: add submit button visual modifiers in this div
+        {/**  TODO: add submit button visual modifiers in this div */}
             <div>
                 <div id="submit_button_container">
                     <button className="popButton" type="submit" onClick={this.playAgain}>Play Again!

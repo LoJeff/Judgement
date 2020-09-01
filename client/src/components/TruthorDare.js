@@ -42,7 +42,7 @@ class TruthorDare extends Component {
                     <div>
                         <p>I am a target wooo</p>
                             <div id="possible_truthordare_set">
-                                //have more flushed out hover values?
+                                {/**have more flushed out hover values?*/}
                             <button className="popButton" onClick={this.setTODChoice("Truth")}>Confess
                             </button>
                             </div>
@@ -65,7 +65,7 @@ class TruthorDare extends Component {
             </div>
 
             <div>
-                {showUserSpecificScreen}
+                {showUserSpecificScreen()}
             </div>
 
             // TODO: add submit button visual modifiers in this div

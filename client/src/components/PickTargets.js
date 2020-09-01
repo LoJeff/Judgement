@@ -43,7 +43,7 @@ class PickTargets extends Component {
     }
 
     isIdJudge(ID){
-        return this.state.playerList[ID] == this.state.curJudge
+        return this.state.playerList[ID] === this.state.curJudge
     }
 
     generatePossibleTargetsList(targetAID){
@@ -58,13 +58,13 @@ class PickTargets extends Component {
                 
                 //add possible targets to list
                 if (!(currPair in this.state.invalidSets) ||
-                i != targetAID || !this.isIdJudge){
+                i !== targetAID || !this.isIdJudge){
                     possibleTargetsList.push(this.state.playerList[i]);
                 }
             }
         } 
         else {
-            if (this.state.playerList != undefined){
+            if (this.state.playerList !== undefined){
                 //create list of targets, not including judge
                 for (i = 0; i < this.state.playerList.length; i++ ){
                     if (!this.isIdJudge){
@@ -79,7 +79,7 @@ class PickTargets extends Component {
     generatePossibleTargets(target){
         //if the first target has not been chosen yet
         var targetID = this.state.playerList.indexOf(target);
-        if (this.state.targetAID == null){
+        if (this.state.targetAID === null){
             this.setState((targetID) => ({
                 targetAID: targetID
             }))
@@ -96,11 +96,11 @@ class PickTargets extends Component {
         const possibleTargets = this.generatePossibleTargetsList(null);
         const possibleTargetElements = [];
         
-        if (possibleTargets != undefined){
+        if (possibleTargets !== undefined){
             possibleTargets.forEach(function(target){
                 possibleTargetElements.push(
-                    <li key={target} onClick={this.props.generatePossibleTargets(target)}>
-                        {target}
+                    <li key={target.id} onClick={this.props.generatePossibleTargets(target)}>
+                        {target} (id: {target.id})
                     </li>
                 )
             })
@@ -108,6 +108,8 @@ class PickTargets extends Component {
 
         const showUserSpecificScreen = () => {
             if ( this.state.isJudge ) {
+                console.log("POSSIBLETARGET ELEMENTS: "+possibleTargetElements);
+                console.log("POSSIBLETARGETS: "+possibleTargets);
                 return(
                     <div>
                         <p>I am a judge wooo</p>

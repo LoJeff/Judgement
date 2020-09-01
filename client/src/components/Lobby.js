@@ -53,7 +53,6 @@ class Lobby extends Component {
         }
 
         const displayNotEnoughPlayers = () => {
-            console.log("in not enough player display")
             if (this.state.displayNotEnoughPlayers) {
                 return(
                     <div>

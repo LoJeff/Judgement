@@ -33,20 +33,21 @@
 }
 
 ul {
-	background: url(../images/wex.png);
+	background-color: rgb(12, 2, 20);
 	padding: 20;
 }
 
 ul li {
 	margin: 10;
+	color: rgb(171, 218, 210);
 }
 
 h2 {
 	font-family: Century Schoolbook;
 	color: black;
 	  text-shadow: 0 1px 0 black,
-	  			0 -1px 0 rgb(152, 14, 216),
-			   0 2px 0 rgb(152, 14, 216),
+	  			0 -1px 0 rgb(15, 255, 215),
+			   0 2px 0 rgb(15, 255, 215),
 			   0 -2px 0 black,
 			   0 3px 0 black,
 			   0 -3px 0 rgb(48, 9, 66),

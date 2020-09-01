@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import * as Vote from './Vote.js';
 
 class PerformTruthorDare extends Component {
     constructor(props){
@@ -41,11 +40,12 @@ class PerformTruthorDare extends Component {
         var result = "";
         var idsFromString = string.split(",");
         for (var i = 0; i < idsFromString.length; i++){
-            if (i == idsFromString.length - 1) {
+            if (i === idsFromString.length - 1) {
                 result += " and ";
             }
             result += this.getTargetNameFromString(i, playerList, string) + " ";
         }
+        return result;
     }
 
     render(){

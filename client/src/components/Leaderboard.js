@@ -35,7 +35,6 @@ class Leaderboard extends Component {
                 <h1>Leaderboard</h1>
             </div>
 
-            // TODO: add submit button visual modifiers in this div
             <div>
                 <div id="submit_button_container">
 					<button className="popButton" type="submit" onClick={this.proceedGame}>Submit
@@ -43,10 +42,10 @@ class Leaderboard extends Component {
 				</div>
             </div>
 
-            // TODO: if not end game, display enter rule to top player. (have this as another screen?)
-            // figure out how to display conditional elements
+            { /**TODO: if not end game, display enter rule to top player. (have this as another screen?) */}
+            { /**figure out how to display conditional elements*/ }
             <div>
-                // if current user.score == highest score
+                {/** if current user.score == highest score */ }
             </div>
 
         </div>
