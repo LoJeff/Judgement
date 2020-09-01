@@ -7,7 +7,6 @@ class PickTargets extends Component {
         this.state = {
             "playerList": [],
             "invalidSets": [],
-            //isJudge may be redundant, keep for now
             "isJudge": false,
             "curJudge": null,
             "targetAID": null,
@@ -58,7 +57,7 @@ class PickTargets extends Component {
                 var currPair = this.generatePair(targetAID, i);
                 
                 //add possible targets to list
-                if (!(currPair in this.state.invalidPairs) ||
+                if (!(currPair in this.state.invalidSets) ||
                 i != targetAID || !this.isIdJudge){
                     possibleTargetsList.push(this.state.playerList[i]);
                 }
