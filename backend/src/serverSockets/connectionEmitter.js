@@ -155,6 +155,16 @@ class connectionEmitter{
         }
         this.server.to(pid).emit("judgeReqCont");
     }
+
+    /*
+    In/Out: gameid(str)
+    */
+    bro_waitForTrial(gameid) {
+        if (this.debug) {
+            console.log("Tell everyone that we are currently in the process of the trial");
+        }
+        this.server.to(gameid).emit("waitForTrial");
+    }
     
     /*
     In/Out: gameid(str),

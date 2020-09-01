@@ -248,6 +248,7 @@ class game {
 
         // tell the judge that he/she needs to choose to continue
         this.state = state.JUDGECONTTOD;
+        global.emitters.bro_waitForTrial(this.m_id);
         global.emitters.sig_judgeReqCont(this.m_players[this.m_episode.judge()].pid);
     }
 
