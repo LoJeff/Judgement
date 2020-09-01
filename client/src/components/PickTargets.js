@@ -113,7 +113,7 @@ class PickTargets extends Component {
                         <p>I am a judge wooo</p>
                             <div id="possible_targets_set">
                                 <ul class="target_container">
-                                    {possibleTargets}
+                                    {possibleTargetElements}
                                 </ul>
                                 
                             </div>

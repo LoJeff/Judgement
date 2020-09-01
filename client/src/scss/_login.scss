@@ -35,6 +35,11 @@
 
 ul {
 	background: url(../images/wex.png);
+	padding: 20;
+}
+
+ul li {
+	margin: 10;
 }
 
 h2 {
@@ -48,7 +53,6 @@ h2 {
 			   0 -3px 0 rgb(48, 9, 66),
 			   0 4px 0 rgb(48, 9, 66),
 			   0 -4px 0 rgb(48, 9, 66);
-	//image is a puddle of water
 	background-image: url("../images/space1.png");
 	background-repeat: no-repeat;
 	background-position: center;
