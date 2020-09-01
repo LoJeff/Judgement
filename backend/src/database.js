@@ -3,7 +3,7 @@ import mongo from 'mongodb';
 class database {
 	constructor(){
 		this.connectionURL = "mongodb://localhost:27017";
-		this.dbName = 'DoublePoke';
+		this.dbName = 'Judgement';
 
 		this.mongoClient = mongo.MongoClient;
 
