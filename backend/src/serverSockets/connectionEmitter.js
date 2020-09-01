@@ -53,7 +53,7 @@ class connectionEmitter{
     */
     sig_punishmentRcvd(pid) {
         if (this.debug) {
-            console.log("Signal to player " + toString(pid) + " punishment has been received");
+            console.log("Signal to player " + pid + " punishment has been received");
         }
         this.server.to(pid).emit("punishmentRcvd");
     }

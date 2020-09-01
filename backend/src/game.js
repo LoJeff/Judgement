@@ -253,7 +253,7 @@ class game {
     }
 
     // Receiving judges request to continue to voting
-    rcvJudgeCont() {
+    rcvJudgeCont(pid) {
         if (this.state != state.JUDGECONTTOD) return;
         if (pid != this.m_players[this.m_episode.judge()].pid) return;
 
