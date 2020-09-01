@@ -3,16 +3,11 @@ class connectionHandler{
 	constructor(client,react){
 		this.client = client;
 		this.react = react;
-		this.chatReact = null;
 	}
 
 	updateReact(newReact){
 		this.react = newReact;
     }
-    
-    updateChatReact(newChatReact){
-		this.chatReact = newChatReact;
-	}
 
 	// Notifies the client that a new member has joined the game room
 	updateRoomPlayers(data){
@@ -50,6 +45,10 @@ class connectionHandler{
 	notEnoughPlayers(data){
 		console.log("Received not enough players");
 		this.react.setState({"enoughPlayers": false});
+	}
+
+	cueWaitForTrial(data){
+		this.react.props.triggerPageChange("truthOrDare")
 	}
 
 	//broadcasts to targets the current targets
@@ -132,6 +131,10 @@ class connectionHandler{
 
 		client.on("tarResultTOD",function(data){
 			this.tarResultTOD(data);
+		}.bind(this));
+
+		client.on("waitForTrial",function(data){
+			this.cueWaitForTrial();
 		}.bind(this));
 
 		client.on("valTargets",function(data){
