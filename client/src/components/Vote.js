@@ -63,7 +63,7 @@ class Vote extends Component {
             <div>
                 <h1>Pass Judgement</h1>
                 <p>Whos appeal was stronger?</p>
-                {showJudgeSpecificElement}
+                {showJudgeSpecificElement()}
             </div>
             <div>
                 <div id="submit_button_container">

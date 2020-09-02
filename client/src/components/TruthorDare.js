@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-class TruthorDare extends Component {
+class TruthOrDare extends Component {
     constructor(props){
         super(props);
     
@@ -33,7 +33,7 @@ class TruthorDare extends Component {
         this.props.emitters.sendTarTODVote(this.state.tarTODChoice)
 
         // trigger page change
-        this.props.triggerPageChange("performToD");
+        this.props.triggerPageChange("deliverToD");
     }
 
     render(){
@@ -75,4 +75,4 @@ class TruthorDare extends Component {
     }
 }
 
-export default TruthorDare;
+export default TruthOrDare;

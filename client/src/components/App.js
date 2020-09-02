@@ -8,11 +8,12 @@ import Login from './Login.js';
 import Lobby from './Lobby.js';
 import Punishment from './Punishment.js';
 import PickTargets from './PickTargets.js';
-import TruthorDare from './TruthorDare.js';
+import TruthOrDare from './TruthOrDare.js';
+import DeliverTruthOrDare from './DeliverTruthOrDare';
 import Leaderboard from './Leaderboard.js';
 import Vote from './Vote.js';
 import Endgame from './Endgame.js';
-import PerformTruthorDare from './PerformTruthorDare.js';
+import PerformTruthOrDare from './PerformTruthOrDare.js';
 
 class App extends Component {
     constructor(props){
@@ -90,13 +91,19 @@ class App extends Component {
                 />)
         }
         else if(this.state.pageState === "truthOrDare"){
-            return(<TruthorDare emitters={this.state.emitters}
+            return(<TruthOrDare emitters={this.state.emitters}
+                                handlers={this.state.handlers}
+                                triggerPageChange={this.triggerPageChange}
+                />)
+        }        
+        else if(this.state.pageState === "deliverToD"){
+            return(<DeliverTruthOrDare emitters={this.state.emitters}
                                 handlers={this.state.handlers}
                                 triggerPageChange={this.triggerPageChange}
                 />)
         }
         else if(this.state.pageState === "performToD"){
-            return(<PerformTruthorDare emitters={this.state.emitters}
+            return(<PerformTruthOrDare emitters={this.state.emitters}
                          handlers={this.state.handlers}
                          triggerPageChange={this.triggerPageChange}
                 />)

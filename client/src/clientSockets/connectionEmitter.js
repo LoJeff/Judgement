@@ -42,11 +42,18 @@ class connectionEmitter {
 
 	sendTarTODVote(tarVote){
 		//send Truth or Dare vote from target
-		//do I need to send who the target is?
 		//"Truth" for truth, "Dare" for dare
 		const client = this.client;
 		const data = {"tarVote": tarVote}
 		client.emit("tarTODVote", data)
+	}
+
+	sendJudgePrompt(prompt){
+		//send final prompt chosen by judge
+		//sends String of prompt
+		const client = this.client;
+		const data = {"prompt": prompt}
+		client.emit("sendJudgePrompt", data)
 	}
 
 	sigJudgeContGame(){

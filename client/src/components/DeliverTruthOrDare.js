@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-class PerformTruthOrDare extends Component {
+class DeliverTruthOrDare extends Component {
     constructor(props){
         super(props);
     
@@ -8,13 +8,15 @@ class PerformTruthOrDare extends Component {
             "isTarget": false,
             "isJudge": false,
             "curTargets": null,
-            "playerList": []        };
+            "playerList": [],
+            "suggestion": ""
+            };
 
         // functions
         //TODO: figure this out with correct parameters
         //figure out how to import functions
         //Vote.getTargetNameFromString(0, this.state.playerList, this.state.curTargets);
-        this.continueGame = this.continueGame.bind(this);
+        this.continueToTrial = this.continueToTrial.bind(this);
         this.displayPlayerNamesFromString = this.displayPlayerNamesFromString.bind(this);
         this.getTargetNameFromString = this.getTargetNameFromString.bind(this);
     }
@@ -27,9 +29,8 @@ class PerformTruthOrDare extends Component {
         this.props.handlers.updateReact(this);
     }
 
-    continueGame(){
-        //signal judge cue to continue game
-        this.props.emitters.sigJudgeContGame();
+    continueToTrial(trial){
+        this.props.emitters.sendJudgePrompt(trial);
 
         // trigger page change
         this.props.triggerPageChange("vote");
@@ -53,20 +54,33 @@ class PerformTruthOrDare extends Component {
             if ( this.state.isTarget ){
                 return(
                     <div>
-                        <h2>Currently on Trial</h2>
-                        <p>I am a target, time to fight for my life D:</p>
+                        <h2>Awaiting Trial</h2>
+                        <p>Pay Attention! Judge is about announce the Trial!</p>
                     </div> 
                 )
             } else if (this.state.isJudge) {
                 return(
                     <div>
                         <h2>Judge</h2>
-                        <p> {this.state.curTargets} are performing!</p>
-                        <p>Proceed with trial?</p>
+                        <p> Give {this.state.curTargets} a trial.</p>
+                        <p>Come up with your own trial or choose one of ours?</p>
+                        <div id="interactive_set">
+                            <div className="row_of_input">
+                                <div id="punishment_container">
+                                        <form > <input className="punishmentInput" type="text" id="customTrial" placeholder="Enter Trial!"/></form>
+                                </div>
+                            </div>
+
+                            <div id="submit_button_container">
+                                <button className="popButton" type="submit" onClick={this.continueToTrial(document.getElementById("customTrial").value)}>Submit Custom Trial
+                                </button>
+                            </div>
+
                         <div id="submit_button_container">
-                            <button className="popButton" type="submit" onClick={this.continueGame}>
-                                Proceed
+                            <button className="popButton" type="submit" onClick={this.continueToTrial(this.state.suggestion)}>
+                                Suggestion: {this.state.suggestion}
                             </button>
+                        </div>
                         </div>
                     </div>
                 )
@@ -76,7 +90,7 @@ class PerformTruthOrDare extends Component {
                 return (
                     <div>
                         <h2>Jury</h2>
-                        <p> {this.props.displayPlayerNamesFromString(this.state.playerList, this.state.curTargets)} are performing! Prepare to vote!</p>
+                        <p>Awaiting Judge Trial for, {this.props.displayPlayerNamesFromString(this.state.playerList, this.state.curTargets)} </p>
                     </div>
                 )
             }
@@ -85,7 +99,7 @@ class PerformTruthOrDare extends Component {
         return ( 
         <div>
             <div>
-                <h1>Trial for: {this.state.curTargets} </h1>
+                <h1>Awaiting Trial for: {this.state.curTargets} </h1>
             </div>
 
             <div>
@@ -98,4 +112,4 @@ class PerformTruthOrDare extends Component {
     }
 }
 
-export default PerformTruthOrDare;
+export default DeliverTruthOrDare;

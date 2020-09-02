@@ -71,6 +71,7 @@ class connectionHandler{
 	}
 
 	playerVote(data){
+		this.react.props.triggerPageChange("deliverToD");
 		this.react.setState({"curTargets": data.targets})
 	}
 
