@@ -8,7 +8,9 @@ class PerformTruthOrDare extends Component {
             "isTarget": false,
             "isJudge": false,
             "curTargets": null,
-            "playerList": []        };
+            "playerList": [],
+            "curTrial": ""        
+        };
 
         // functions
         //TODO: figure this out with correct parameters
@@ -54,7 +56,7 @@ class PerformTruthOrDare extends Component {
                 return(
                     <div>
                         <h2>Currently on Trial</h2>
-                        <p>I am a target, time to fight for my life D:</p>
+                        <p>The Judge has submitted their trial"</p>
                     </div> 
                 )
             } else if (this.state.isJudge) {
@@ -76,7 +78,8 @@ class PerformTruthOrDare extends Component {
                 return (
                     <div>
                         <h2>Jury</h2>
-                        <p> {this.props.displayPlayerNamesFromString(this.state.playerList, this.state.curTargets)} are performing! Prepare to vote!</p>
+                <p> {this.props.displayPlayerNamesFromString(this.state.playerList, this.state.curTargets)} are currently on Trial! They received this order from the Judge.</p>
+                <p> Be prepared to vote on who passes the trial! </p>
                     </div>
                 )
             }

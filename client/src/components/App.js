@@ -9,7 +9,7 @@ import Lobby from './Lobby.js';
 import Punishment from './Punishment.js';
 import PickTargets from './PickTargets.js';
 import TruthOrDare from './TruthOrDare.js';
-import DeliverTruthOrDare from './DeliverTruthOrDare';
+import DeliverTruthOrDare from './DeliverTruthOrDare.js';
 import Leaderboard from './Leaderboard.js';
 import Vote from './Vote.js';
 import Endgame from './Endgame.js';

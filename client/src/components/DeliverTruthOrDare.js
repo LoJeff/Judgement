@@ -30,6 +30,7 @@ class DeliverTruthOrDare extends Component {
     }
 
     continueToTrial(trial){
+        // send string of trial, suggested by us or custom input by Judge
         this.props.emitters.sendJudgePrompt(trial);
 
         // trigger page change
@@ -55,7 +56,7 @@ class DeliverTruthOrDare extends Component {
                 return(
                     <div>
                         <h2>Awaiting Trial</h2>
-                        <p>Pay Attention! Judge is about announce the Trial!</p>
+                        <p>Pay Attention! Judge is about to announce the Trial!</p>
                     </div> 
                 )
             } else if (this.state.isJudge) {
@@ -75,7 +76,7 @@ class DeliverTruthOrDare extends Component {
                                 <button className="popButton" type="submit" onClick={this.continueToTrial(document.getElementById("customTrial").value)}>Submit Custom Trial
                                 </button>
                             </div>
-
+                            
                         <div id="submit_button_container">
                             <button className="popButton" type="submit" onClick={this.continueToTrial(this.state.suggestion)}>
                                 Suggestion: {this.state.suggestion}
