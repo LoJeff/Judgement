@@ -66,6 +66,11 @@ class connectionHandler{
 		this.react.setState({"suggest": data.suggestion});
 	}
 
+	//broadcast the trial that judge chose
+	judgeResultPrompt(data){
+		this.react.setState({"curTrial": data.prompt});
+	}
+
 	judgeReqCont(data){
 		console.log("Received: tell judge to continue when trial is over");
 	}
@@ -149,6 +154,10 @@ class connectionHandler{
 		
 		client.on("judgeChoosePrompt",function(data){
 			this.judgeChoosePrompt(data);
+		}.bind(this));
+
+		client.on("judgeResultPrompt", function(data){
+			this.judgeResultPrompt(data);
 		}.bind(this));
 		
 		client.on("judgeReqCont",function(data){

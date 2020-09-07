@@ -39,29 +39,34 @@ class Login extends Component {
 
     render(){
         return(
-            <div>
-				<div id="title_container" className="title">
-					<h2>Judge!</h2>
-				</div>
+            <div id="login_page">
+				<div id="fancyticket_container">
+                    <div id="fancyticket">
+                        <div id="ticket_sidebar">
+                            <h2>Judge!</h2>
+
+                            <div id="interactive_set">
+                                <div className="row_of_input">
+                                    <div id="IGN_input_container">
+                                        <form > <input className="fancyInput" type="text" id="name" placeholder="Enter your IGN" /></form>
+                                    </div>
+                                    <div id="Game_ID_input_container">
+                                        <form >
+                                            <input className="fancyInput" type="text" id="gameid" placeholder="Enter your game lobby ID"/>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 				
-				<div id="interactive_set">
-					<div className="row_of_input">
-						<div id="IGN_input_container">
-							<form > <input className="fancyInput" type="text" id="name" placeholder="Enter your IGN" /></form>
-						</div>
-						<div id="Game_ID_input_container">
-							<form >
-                                <input className="fancyInput" type="text" id="gameid" placeholder="Enter your game lobby ID"/>
-                            </form>
-						</div>
-					</div>
 					
-					<div id="submit_button_container">
-						<button className="popButton" type="submit" onClick={this.joinGameRoom}>Join
+				<div className="button_set">
+					    <button className="popButton" type="submit" onClick={this.joinGameRoom}>Join 
                         </button>
-					</div>
-                    <button className="popButton" onClick={this.dummyFunction}>Giff's button</button>
-				</div>
+                        <button className="popButton" onClick={this.dummyFunction}>Giff's butt</button>
+                </div>
             </div>
         );
     }
