@@ -5,7 +5,8 @@ class Leaderboard extends Component {
         super(props);
     
         this.state = {
-            "receivedPackets": [],
+            "roundRank": [],
+            "trigEndGame": false
         };
 
         // functions
@@ -18,8 +19,10 @@ class Leaderboard extends Component {
 
     // TODO: think of better method name
     proceedGame(){
-        // if end game; Else, loop
-        if (true) {
+        //send that current user has chosen to continue
+        this.props.emitters.sig_contNextRound()
+
+        if (this.state.trigEndGame) {
             this.props.triggerPageChange("endgame");
         }
         else {
@@ -29,15 +32,27 @@ class Leaderboard extends Component {
 
     render(){
 
+        const leaderboardElements = [];
+        if (this.state.roundRank !== undefined){
+            this.state.roundRank.forEach(function(player){
+                leaderboardElements.push(<li key={this.state.roundRank.indexOf(player)}>{player[0]}</li>)
+            });
+        }
+
         return ( 
         <div>
             <div>
-                <h1>Leaderboard</h1>
+                <h1>Current Standing</h1>
             </div>
-
+            <div>
+                {leaderboardElements}
+            </div>
+            <div>
+                Take care, {leaderboardElements[leaderboardElements.length][0]}! We don't want to leave you behind!
+            </div>
             <div>
                 <div id="submit_button_container">
-					<button className="popButton" type="submit" onClick={this.proceedGame}>Submit
+					<button className="popButton" type="submit" onClick={this.proceedGame}> Continue
                     </button>
 				</div>
             </div>
