@@ -85,21 +85,31 @@ class connectionHandler{
 	}
 
 	roundRank(data){
-		this.react.setState({"roundRank": data.roundRank});
+		this.react.setState({"roundRank": data.roundRank,
+							"trigLeaderBoard": true});
 	}
 
 	nextRound(data){
-		console.log("Received next round emit");
+		this.react.setState({"totalPlayers": data.total});
 	}
 
 	tarChooseTOD(data){
 		this.react.setState({"isTarget": true,
-							"playerList": data.idToName});	
-						}
+							"playerList": data.idToName});
+	}
+
+	contWaitFor(data){
+		this.react.setState({"numWaiting": data.waiting});
+	}
+
+	waitForceStart(){
+		this.react.setState({"forceCont": true});
+	}
 
 	endGame(data){
 		this.react.setState({"ranking": data.rankInfo,
 							"punishment": data.punInfo.punishment,
+							"trigEndGame": true,
 							"punOwner": data.punInfo.punOwner
 						});
 	}
@@ -179,6 +189,14 @@ class connectionHandler{
 		client.on("nextRound",function(data){
 			this.nextRound(data);
 		}.bind(this));
+
+		client.on("contWaitFor",function(data){
+			this.contWaitFor(data);
+		}.bind(this));
+
+		client.on("waitForceStart",function(){
+			this.waitForceStart();
+		}.bind(this))
 		
 		client.on("endGame",function(data){
 			this.endGame(data);

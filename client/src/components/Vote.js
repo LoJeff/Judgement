@@ -10,7 +10,8 @@ class Vote extends Component {
             "trigLeaderboard": false,
             "curTargets": null,
             "playerList": [],
-            "resultVote": null
+            "resultVote": null,
+            "trigEndGame": false
         };
 
         // functions
@@ -29,17 +30,18 @@ class Vote extends Component {
     submitVote(vote){
         this.setPlayerVote(vote);
         this.props.emitters.sendPlayerVote(this.state.playerVote);
-
-        //if leaderboard screen is seen
-
     }
 
     contToRoundEnd(){
-        if (this.state.trigLeaderboard){
+        //if leaderboard screen is seen
+        if (this.state.trigEndGame){
+            this.props.triggerPageChange("FinalLeaderboard");
+
+        } else if (this.state.trigLeaderboard){
             this.props.triggerPageChange("leaderboard");
-        }
-        //if round continues
-        else {
+            
+        } else {
+            //if round continues
             this.props.triggerPageChange("pickTargets");       
         }
     }

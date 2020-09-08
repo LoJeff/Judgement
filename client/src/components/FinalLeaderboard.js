@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 
-class Leaderboard extends Component {
+class FinalLeaderboard extends Component {
     constructor(props){
         super(props);
     
         this.state = {
             "roundRank": [],
+            "trigEndGame": false,
             "totalPlayers": 0,
             "numWaiting": 0,
             "forceCont": false
@@ -30,7 +31,11 @@ class Leaderboard extends Component {
         //send that current user has chosen to continue
         this.props.emitters.sig_contNextRound()
 
-        if (this.state.forceCont || this.state.numWaiting === this.state.totalPlayers){
+        if (this.state.trigEndGame) {
+            //need to create deliver punishment
+            this.props.triggerPageChange("deliverPunishment");
+        }
+        else if (this.state.forceCont){
             this.props.triggerPageChange("pickTargets")
         }
     }
@@ -67,6 +72,40 @@ class Leaderboard extends Component {
             }
         }
 
+        const displaySpecificLeaderboard = () => {
+            if (this.state.trigEndGame){
+                return (
+                    <div>
+                        <div>
+                            Unfortunate! It looks like we'll have to leave {leaderboardElements[leaderboardElements.length][0]} behind!
+                        </div>
+                        <div id="submit_button_container">
+                            <button className="popButton" type="submit" onClick={this.proceedGame()}> Goodbye {leaderboardElements[leaderboardElements.length][0]}
+                            </button>
+                        </div>
+                    </div>
+                )
+
+            } else {
+                return (
+                    <div>
+                        <div>
+                            Take care, {leaderboardElements[leaderboardElements.length][0]}! We don't want to leave you behind!
+                        </div>
+                        <div>
+                            <div id="submit_button_container">
+                                <button className="popButton" type="submit" onClick={this.proceedGame()}> Continue
+                                </button>
+                            </div>
+                            {displayWaitingToContinue()}
+                            {displayForceContinue()}
+                        </div>
+                </div>
+                )
+            }
+
+        }
+
         return ( 
         <div>
             <div>
@@ -75,17 +114,9 @@ class Leaderboard extends Component {
             <div>
                 {leaderboardElements}
             </div>
-            <div>
-                Take care, {leaderboardElements[leaderboardElements.length][0]}! We don't want to leave you behind!
-            </div>
-            <div>
-                <div id="submit_button_container">
-                    <button className="popButton" type="submit" onClick={this.proceedGame()}> Continue                                
-                    </button>
-                </div>
-                {displayWaitingToContinue()}
-                {displayForceContinue()}
-            </div>
+
+            {displaySpecificLeaderboard()}
+
             { /**TODO: if not end game, display enter rule to top player. (have this as another screen?) */}
             { /**figure out how to display conditional elements*/ }
             <div>
@@ -96,4 +127,4 @@ class Leaderboard extends Component {
     }
 }
 
-export default Leaderboard;
+export default FinalLeaderboard;
