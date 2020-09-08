@@ -69,7 +69,7 @@ class Login extends Component {
                 </div>
 
                 <div id="login_title_container">
-                    Judgement!
+                    JUDGEMENT!
                 </div>
             </div>
         );
