@@ -9,18 +9,20 @@ class Vote extends Component {
             "playerVote": null,
             "trigLeaderboard": false,
             "curTargets": null,
-            "playerList": []
+            "playerList": [],
+            "resultVote": null
         };
 
         // functions
         this.submitVote = this.submitVote.bind(this);
         this.setPlayerVote = this.setPlayerVote.bind(this);
         this.getTargetNameFromString = this.getTargetNameFromString(this);
+        this.contToRoundEnd = this.contToRoundEnd(this);
     }
 
     setPlayerVote(playerInt){
         this.setState((playerInt) => ({
-            playerVote: this.state.curTargets.split(",")[playerInt]
+            playerVote: playerInt
         }))
     }
 
@@ -29,6 +31,10 @@ class Vote extends Component {
         this.props.emitters.sendPlayerVote(this.state.playerVote);
 
         //if leaderboard screen is seen
+
+    }
+
+    contToRoundEnd(){
         if (this.state.trigLeaderboard){
             this.props.triggerPageChange("leaderboard");
         }
@@ -58,6 +64,24 @@ class Vote extends Component {
                 )
             }
         }
+
+        const showVoteResult = () => {
+            if (this.state.resultVote !== null){
+                return(
+                    <div>
+                        <div>
+                            Congratulations {this.state.resultVote}! Your appeal pleased the Jury the most. 
+                        </div>
+                        <div id="subtitle_button_container">
+                            <button className="popButton" type="submit" onClick={this.contToRoundEnd()}>
+                                Continue
+                            </button>
+                        </div>
+                    </div>
+                )
+            }
+        }
+
         return ( 
         <div>
             <div>
@@ -69,7 +93,7 @@ class Vote extends Component {
                 <div id="submit_button_container">
                     <div>
                         <button className="popButton" type="submit" onClick={this.submitVote(0)}>
-                            //this probably is not displayed properly
+                            //this probably is not displayed properly?
                             {this.getTargetNameFromString(0, this.state.playerList, this.state.curTargets)}
                         </button>
                     </div>
@@ -79,6 +103,9 @@ class Vote extends Component {
                         </button>
                     </div>
 				</div>
+
+                {showVoteResult()}
+
             </div>
 
         </div>
