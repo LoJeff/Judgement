@@ -201,23 +201,35 @@ class connectionEmitter{
     }
 
     /*
-    In/Out: pid(str)
-    */
-    sig_contNextRound(pid) {
-        if (this.debug) {
-            console.log("Waiting for room owner to continue the game");
-        }
-        this.server.to(pid).emit("nextRound");
-    }
-
-    /*
     In/Out: gameid(str)
     */
     bro_contNextRound(gameid) {
         if (this.debug) {
-            console.log("Waiting for someone to continue the game");
+            console.log("Waiting for everyone to continue the game");
         }
         this.server.to(gameid).emit("nextRound");
+    }
+
+    /*
+    In/Out: gameid(str),
+            waiting(int),
+            total(int)
+    */
+    bro_contWaitFor(gameid, waiting, total) {
+        if (this.debug) {
+            console.log("Waiting for " + waiting + "/" + total + " players to continue the game");
+        }
+        this.server.to(gameid).emit("contWaitFor", {"waiting": waiting, "total": total});
+    }
+
+    /*
+    In/Out: pid(str)
+    */
+    sig_waitForceStart(pid) {
+        if (this.debug) {
+            console.log("Received continue from room owner, signal that he/she can force start");
+        }
+        this.server.to(pid).emit("waitForceStart");
     }
 
     /*

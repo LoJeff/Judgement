@@ -27,10 +27,9 @@ class game {
         this.m_id_to_name = [];
         this.m_episode = new EPISODE();
         this.m_cur_round = 0;
-        this.m_num_pun_rcvd = 0;
+        this.m_num_rcvd = 0;
 
         this.m_num_rounds = 3;
-        this.m_owner_only_continue = true;
     }
     
     //Helper Functions
@@ -112,18 +111,18 @@ class game {
     // Receive punishment from a user
     rcvPunish(pid, punishment) {
         if (this.state != state.PUNISHMENT) return;
-        if (this.m_num_pun_rcvd == this.m_players.length) return;
+        if (this.m_num_rcvd == this.m_players.length) return;
 
         var idx = this.findPlayerId(pid);
         // Check if punishment was already provided by this player
         if (this.m_players[idx].getPunishment() == undefined) {
             this.m_players[idx].setPunishment(punishment);
-            this.m_num_pun_rcvd++;
+            this.m_num_rcvd++;
             global.emitters.sig_punishmentRcvd(pid);
         }
 
         // Check if everyone has provided a punishment
-        if (this.m_num_pun_rcvd == this.m_players.length) {
+        if (this.m_num_rcvd == this.m_players.length) {
             this.startRound();
         }
     }
@@ -306,11 +305,8 @@ class game {
         global.emitters.bro_roundRank(this.m_id, rankName);
 
         this.state = state.NEXTROUND;
-        if (this.m_owner_only_continue) {
-            global.emitters.sig_contNextRound(this.m_players[0].pid);
-        } else {
-            global.emitters.bro_contNextRound(this.m_id);
-        }
+        this.m_num_rcvd = 0;
+        global.emitters.bro_contNextRound(this.m_id);
 
         // Cleanup and increment
         this.cur_round++;
@@ -318,14 +314,32 @@ class game {
 
     // Receiving continue to next round signal
     nextRound(pid) {
-        if (this.state != state.NEXTROUND) return;              
-        if (this.m_owner_only_continue && pid != this.m_players[0].pid) return;
+        if (this.state != state.NEXTROUND) return;
 
-        // Check if last round has been reached
-        if (this.m_cur_round < this.m_num_rounds) {
-            this.startRound();
-        } else {
-            this.endGame();
+        var pidx = findPlayerId(pid);
+        if (this.m_players[pidx].flag == 0) {
+            this.m_players[pidx].flag = 1;
+            this.m_num_rcvd++;
+            if (this.m_num_rcvd < this.m_players.length) {
+                global.emitters.bro_contWaitFor(this.m_id,
+                    this.m_players.length - this.m_num_rcvd, this.m_players.length);
+                if (pidx == 0) {
+                    global.emitters.sig_waitForceStart(this.m_players[0].pid);
+                }
+            }
+        }
+
+        if (this.m_num_rcvd == this.m_players.length || (pidx == 0 && this.m_players[0].flag == 1)) {
+            // reset all flags
+            this.resetPFlags();
+            this.m_num_rcvd = 0;
+
+            // Check if last round has been reached
+            if (this.m_cur_round < this.m_num_rounds) {
+                this.startRound();
+            } else {
+                this.endGame();
+            }
         }
     }
 
@@ -344,7 +358,15 @@ class game {
                 "punishment": this.m_players[this.m_ranking[i].id].getPunishment()
             })
         }
-        global.emitters.bro_endGame(this.m_id, {"punishment": punChosen, "owner": punOwner}, rankInfo);
+        global.emitters.bro_endGame(this.m_id,
+            {"punishment": punChosen, "owner": punOwner}, rankInfo);
+    }
+
+    // Resets player flags
+    resetPFlags() {
+        for (var i = 0; i < this.m_players.length; ++i) {
+            this.m_players[i].flag = 0;
+        }
     }
 }
 

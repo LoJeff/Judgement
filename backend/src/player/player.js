@@ -6,6 +6,7 @@ class PLAYER {
         this.name = name;
         this.punishment = undefined;
         this.points = 0;
+        this.flag = 0;
     }
 
     getName() {
