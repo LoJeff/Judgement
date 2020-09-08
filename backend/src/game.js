@@ -12,7 +12,8 @@ const state = {
     VOTE: 6,
     JUDGECONTEP: 7,
     NEXTROUND: 8,
-    ENDGAME: 9
+    PUNCONT: 9,
+    ENDGAME: 10
 }
 
 class game {
@@ -316,6 +317,61 @@ class game {
     nextRound(pid) {
         if (this.state != state.NEXTROUND) return;
 
+        if (this.allPlayerContCheck(pid)) {
+            // Check if last round has been reached
+            if (this.m_cur_round < this.m_num_rounds) {
+                this.startRound();
+            } else {
+                this.endGameRank();
+            }
+        }
+    }
+
+    // Conclude the game, including declaring who has to do punishment
+    endGameRank() {
+        this.state = state.PUNCONT;
+        this.sortByRanking();
+        var rankInfo = [];
+        for (var i = 0; i < this.m_ranking.length; i++) {
+            rankInfo.push({
+                "name": this.m_players[this.m_ranking[i].id].getName(),
+                "points": this.m_ranking[i].points,
+                "punishment": this.m_players[this.m_ranking[i].id].getPunishment()
+            })
+        }
+        global.emitters.bro_endGameRanking(this.m_id, rankInfo);
+    }
+
+    // Receiving continue to punishment signal
+    rcvContToPunish(pid) {
+        if (this.state != state.PUNCONT) return;
+
+        if (allPlayerContCheck(pid)) {
+            this.endGamePunish();
+        }
+    }
+
+    // Sending out the punishments to everyone
+    endGamePunish() {
+        this.state = state.ENDGAME;
+        var randPlayerIdx = Math.floor(Math.random() * this.m_players.length);
+        var punChosen = this.m_players[randPlayerIdx].getPunishment();
+        var punOwner = this.m_players[randPlayerIdx].getName();
+        var punishedName = this.m_players[this.m_ranking[i].id].getName();
+
+        global.emitters.bro_endGamePunish(this.m_id,
+            {"punishment": punChosen, "owner": punOwner}, punishedName);
+    }
+
+    // Resets player flags
+    resetPFlags() {
+        for (var i = 0; i < this.m_players.length; ++i) {
+            this.m_players[i].flag = 0;
+        }
+    }
+
+    // Handler for checking if all continues or a force continue is received
+    allPlayerContCheck(pid) {
         var pidx = findPlayerId(pid);
         if (this.m_players[pidx].flag == 0) {
             this.m_players[pidx].flag = 1;
@@ -333,39 +389,9 @@ class game {
             // reset all flags
             this.resetPFlags();
             this.m_num_rcvd = 0;
-
-            // Check if last round has been reached
-            if (this.m_cur_round < this.m_num_rounds) {
-                this.startRound();
-            } else {
-                this.endGame();
-            }
-        }
-    }
-
-    // Conclude the game, including declaring who has to do punishment
-    endGame() {
-        this.state = state.ENDGAME;
-        this.sortByRanking();
-        var randPlayerIdx = Math.floor(Math.random() * this.m_players.length);
-        var punChosen = this.m_players[randPlayerIdx].getPunishment();
-        var punOwner = this.m_players[randPlayerIdx].getName();
-        var rankInfo = [];
-        for (var i = 0; i < this.m_ranking.length; i++) {
-            rankInfo.push({
-                "name": this.m_players[this.m_ranking[i].id].getName(),
-                "points": this.m_ranking[i].points,
-                "punishment": this.m_players[this.m_ranking[i].id].getPunishment()
-            })
-        }
-        global.emitters.bro_endGame(this.m_id,
-            {"punishment": punChosen, "owner": punOwner}, rankInfo);
-    }
-
-    // Resets player flags
-    resetPFlags() {
-        for (var i = 0; i < this.m_players.length; ++i) {
-            this.m_players[i].flag = 0;
+            return true;
+        } else {
+            return false;
         }
     }
 }
