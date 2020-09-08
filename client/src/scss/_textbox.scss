@@ -1,18 +1,18 @@
 .fancyInput {
     font-family:Arial, Helvetica, sans-serif;
     border: 2px solid black;
-    border-radius: 6px;
-    box-shadow: 1px 1px #272424;
+    //box-shadow: 1px 1px #272424;
     box-shadow: -1px 1px #272424;
-    padding:5px;
-    text-align:center;
-    font-size:24px;
-    color: rgb(179, 144, 196);
-    background-image: url("../images/space1.png");
-    background-position: center;
+    text-align:left;
+    font-size:18px;
+    color: rgb(94, 117, 180);
+    background-color: rgb(0, 0, 0);
+
+    width: 90%;
+    margin: 5px;
 
     &:focus{
-        box-shadow: 1px 1px black;
+        box-shadow: -1px 1px #272424;
         outline:none;
         &::-webkit-input-placeholder { color:transparent; }
         &:-moz-placeholder { color:transparent; }

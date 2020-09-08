@@ -7,24 +7,55 @@
 }
 
 .row_of_input{
-	width:auto;
-	display:inline-block;
-	padding-bottom:2%;
+	display: flex;
+	flex-direction: column;
+	width:100%;
 }
 
 #title_container{
 	padding-top:5%;
 	text-align:center;
 	font-size:70px;
-	width:auto;
+	width:100%;
+}
+
+#login_title_container{
+	margin: 30px;
+	margin-bottom: 60px;
+
+	text-align:center;
+
+	font-size:120px;
+	-webkit-text-fill-color: transparent;
+	-webkit-text-stroke-width: 1px;
+	-webkit-text-stroke-color: rgb(15, 255, 215);
+
+	text-shadow: -5px 5px 0 rgb(10, 27, 24),
+	-7px 7px 0 rgb(197, 84, 127),
+	-9px 9px 0 rgb(197, 84, 127),
+	-11px 11px 0 rgb(128, 53, 97),
+	-16px 16px 0 rgb(88, 29, 63),
+	-15px 15px 0 rgb(77, 14, 50),
+	-17px 17px 0 rgb(66, 0, 0);
+	//text-shadow: -20px 6px 0 white;
+
+	width:100%;
+	transform: rotate(-5deg);
 }
 
 #IGN_input_container{
+	color: rgb(94, 117, 180);
+	text-align: left;
+	font-size: 14px;
 	float:left;
-	margin-right:4px;
+	margin-left: 4px;
+	margin-bottom: 5px;
 }
 
 #Game_ID_input_container{
+	color: rgb(94, 117, 180);
+	text-align: left;
+	font-size: 14px;
 	float:left;
 	margin-left:4px;
 }
@@ -38,7 +69,7 @@
 .button_set{
 	display: flex;
 	flex-direction: row;
-	margin-left: 50px;
+	margin-left: 20px;
 	float:center;
 }
 

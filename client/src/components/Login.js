@@ -43,16 +43,16 @@ class Login extends Component {
 				<div id="fancyticket_container">
                     <div id="fancyticket">
                         <div id="ticket_sidebar">
-                            <h2>Judge!</h2>
-
                             <div id="interactive_set">
                                 <div className="row_of_input">
                                     <div id="IGN_input_container">
-                                        <form > <input className="fancyInput" type="text" id="name" placeholder="Enter your IGN" /></form>
+                                        Name:
+                                        <form > <input className="fancyInput" type="text" id="name" placeholder="Enter name" /></form>
                                     </div>
                                     <div id="Game_ID_input_container">
+                                        Ship ID:
                                         <form >
-                                            <input className="fancyInput" type="text" id="gameid" placeholder="Enter your game lobby ID"/>
+                                            <input className="fancyInput" type="text" id="gameid" placeholder="Enter game ID"/>
                                         </form>
                                     </div>
                                 </div>
@@ -66,6 +66,10 @@ class Login extends Component {
 					    <button className="popButton" type="submit" onClick={this.joinGameRoom}>Join 
                         </button>
                         <button className="popButton" onClick={this.dummyFunction}>Giff's butt</button>
+                </div>
+
+                <div id="login_title_container">
+                    Judgement!
                 </div>
             </div>
         );
