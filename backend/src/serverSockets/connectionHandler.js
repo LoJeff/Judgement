@@ -1,9 +1,10 @@
 
 // This class handles all the game connections socket handlers
 class connectionHandler{
-	constructor(server,client){
+	constructor(server, client, debug = false){
 		this.server = server;
         this.client = client;
+        this.debug = debug;
     }
 
 	joinGameRoom(client,data){
@@ -83,8 +84,43 @@ class connectionHandler{
     }
 
     rcvPunish(client, data) {
-        var game = this.getGame(client);;
+        var game = this.getGame(client);
+        if (this.debug) {
+            console.log("Receiving punishment from player | pid: " + client.id);
+        }
         game.rcvPunish(client.id, data.punishment);
+    }
+
+    rcvTargets(client, data) {
+        var game = this.getGame(client);
+        if (this.debug) {
+            console.log("Receiving targets from the judge | judId: " + client.id + ", tarPair: " + data.targetPair.toString());
+        }
+        game.setTarget(data.targetPair, client.id);
+    }
+
+    rcvTarTODVote(client, data) {
+        var game = this.getGame(client);
+        if (this.debug) {
+            console.log("Receiving target vote for TOD | tarId: " + client.id + ", tarVote: " + data.tarVote.toString());
+        }
+        game.rcvTarTOD(data.tarVote, client.id);
+    }
+
+    rcvJudgeCont(client) {
+        var game = this.getGame(client);
+        if (this.debug) {
+            console.log("Receiving judges continue | judId: " + client.id);
+        }
+        game.rcvJudgeCont(client.id);
+    }
+
+    rcvPlayerVote(client, data) {
+        var game = this.getGame(client);
+        if (this.debug) {
+            console.log("Receiving vote from player | pid: " + client.id);
+        }
+        game.rcvVote(data.playerVote, client.id);
     }
 
 	eventHandlers(){
@@ -117,9 +153,24 @@ class connectionHandler{
         }.bind(this));
         
         client.on("sendPunishment",function(data){
-			console.log("DATA KEY: "+Object.keys(data));
             this.rcvPunish(client,data);
-        }.bind(this))
+        }.bind(this));
+
+        client.on("sendTargets",function(data){
+            this.rcvTargets(client,data);
+        }.bind(this));
+
+        client.on("tarTODVote",function(data){
+            this.rcvTarTODVote(client,data);
+        }.bind(this));
+
+        client.on("sigJudgeContGame",function(data){
+            this.rcvJudgeCont(client);
+        }.bind(this));
+
+        client.on("sendPlayerToDChoice",function(data){
+            this.rcvPlayerVote(client,data);
+        }.bind(this));
 	}
 
 }

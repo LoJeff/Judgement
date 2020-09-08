@@ -14,6 +14,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const server = http.createServer(app);
 const io = socketio(server);
+const debug = false;
 
 
 app.use(bodyParser.json());
@@ -23,8 +24,8 @@ app.use('/',routes);
 
 io.on('connection', function(socket){
 	console.log("socket has connected");
-	global.handlers = new connectionHandler(io,socket);
-	global.emitters = new connectionEmitter(io);
+	global.handlers = new connectionHandler(io,socket, debug);
+	global.emitters = new connectionEmitter(io, debug);
 
 	// turn on event listeners
 	global.handlers.eventHandlers();

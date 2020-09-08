@@ -93,7 +93,7 @@ class EPISODE {
 
     // Check if this is a legal pair of targets
     isValidTarget(pair) {
-        if (pair.length() != this.m_num_targets) {
+        if (pair.length != this.m_num_targets) {
             return false;
         }
 
