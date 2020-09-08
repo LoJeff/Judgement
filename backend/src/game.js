@@ -306,7 +306,7 @@ class game {
 
         this.state = state.NEXTROUND;
         this.m_num_rcvd = 0;
-        global.emitters.bro_contNextRound(this.m_id);
+        global.emitters.bro_contNextRound(this.m_id, this.m_players.length);
 
         // Cleanup and increment
         this.cur_round++;

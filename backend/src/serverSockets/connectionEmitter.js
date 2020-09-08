@@ -201,13 +201,14 @@ class connectionEmitter{
     }
 
     /*
-    In/Out: gameid(str)
+    In/Out: gameid(str),
+            total(int)
     */
-    bro_contNextRound(gameid) {
+    bro_contNextRound(gameid, total) {
         if (this.debug) {
             console.log("Waiting for everyone to continue the game");
         }
-        this.server.to(gameid).emit("nextRound");
+        this.server.to(gameid).emit("nextRound", {"total": total});
     }
 
     /*
