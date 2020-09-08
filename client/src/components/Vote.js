@@ -65,12 +65,23 @@ class Vote extends Component {
             }
         }
 
+        const voteResultElements = [];
+        if (this.state.resultVote !== undefined){
+            this.state.resultVote.forEach(function(target){
+                voteResultElements.push(<li key={this.state.resultVote.indexOf(target)}>{target[0]} had {target[1]} votes </li>)
+            });
+        }
+
         const showVoteResult = () => {
             if (this.state.resultVote !== null){
                 return(
                     <div>
                         <div>
-                            Congratulations {this.state.resultVote}! Your appeal pleased the Jury the most. 
+                            {this.state.resultVote[0][0]} wins this trial.
+                        </div>
+                        <div>
+                            Results:
+                            {voteResultElements}
                         </div>
                         <div id="subtitle_button_container">
                             <button className="popButton" type="submit" onClick={this.contToRoundEnd()}>
