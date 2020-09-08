@@ -76,7 +76,7 @@ class Leaderboard extends Component {
                 {leaderboardElements}
             </div>
             <div>
-                Take care, {leaderboardElements[leaderboardElements.length][0]}! We don't want to leave you behind!
+                Take care, {leaderboardElements[leaderboardElements.length - 1][0]}! We don't want to leave you behind!
             </div>
             <div>
                 <div id="submit_button_container">
