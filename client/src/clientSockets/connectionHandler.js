@@ -110,7 +110,8 @@ class connectionHandler{
 		this.react.setState({"ranking": data.rankInfo,
 							"punishment": data.punInfo.punishment,
 							"trigEndGame": true,
-							"punOwner": data.punInfo.punOwner
+							"punOwner": data.punInfo.punOwner,
+							"victim": data.punished
 						});
 	}
 

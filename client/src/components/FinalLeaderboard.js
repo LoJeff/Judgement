@@ -8,7 +8,8 @@ class FinalLeaderboard extends Component {
             "finalRankInfo": [],
             "totalPlayers": 0,
             "numWaiting": 0,
-            "forceCont": false
+            "forceCont": false,
+            "victim": null
         };
 
         // functions
@@ -59,7 +60,7 @@ class FinalLeaderboard extends Component {
                 return (
                     <div>
                         <div id="submit_button_container">
-                                <button className="popButton" type="submit" onClick={this.setforceContGame(true)}> Force a farewell!
+                                <button className="popButton" type="submit" onClick={this.setforceContGame(true)}> Force the farewells!
                                 </button>
                             </div>
                     </div>
@@ -77,10 +78,10 @@ class FinalLeaderboard extends Component {
             </div>
 
             <div>
-                Unfortunate! It looks like we'll have to leave {finalLeaderboardElements[finalLeaderboardElements.length - 1][0]} behind!
+                Unfortunately, it looks like we'll have to leave {this.state.victim} behind!
             </div>
             <div id="submit_button_container">
-                <button className="popButton" type="submit" onClick={this.proceedToEndGame()}> Goodbye {finalLeaderboardElements[finalLeaderboardElements.length][0]}
+                <button className="popButton" type="submit" onClick={this.proceedToEndGame()}> Goodbye {this.state.victim}
                 </button>
             </div>
 
