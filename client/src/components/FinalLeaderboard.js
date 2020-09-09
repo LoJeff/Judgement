@@ -80,7 +80,7 @@ class FinalLeaderboard extends Component {
                 Unfortunate! It looks like we'll have to leave {finalLeaderboardElements[finalLeaderboardElements.length - 1][0]} behind!
             </div>
             <div id="submit_button_container">
-                <button className="popButton" type="submit" onClick={this.proceedToEndGame()}> Goodbye {leaderboardElements[leaderboardElements.length][0]}
+                <button className="popButton" type="submit" onClick={this.proceedToEndGame()}> Goodbye {finalLeaderboardElements[finalLeaderboardElements.length][0]}
                 </button>
             </div>
 
