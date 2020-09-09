@@ -5,7 +5,9 @@ class Endgame extends Component {
         super(props);
     
         this.state = {
-            "receivedPackets": [],
+            "punishment": null,
+            "punOwner": null,
+            "victim": null
         };
 
         // functions
@@ -25,11 +27,28 @@ class Endgame extends Component {
         return (
         <div>
             <div>
-                <h1>EndGame</h1>
-
+                <h1>The End</h1>
             </div>
 
-        {/**  TODO: add submit button visual modifiers in this div */}
+            <div>
+                Urgent message for: {this.state.victim}
+            </div>
+
+            <div>
+                {/**message in a box*/}
+                To whom it may concern,
+
+                We may be able to fit one more passenger on the escape panel. However, since it would be at the cost of our seated comfort, you must earn this spot.
+                To repent and salvage your soul, execute the following punishment submitted by {this.state.punOwner}.
+            </div>
+            <div>
+                {this.state.punishment}
+            </div>
+            <div>
+                Upon completion, we will consider saving your sorry ass.
+
+                Yours Truly, the Captain
+            </div>
             <div>
                 <div id="submit_button_container">
                     <button className="popButton" type="submit" onClick={this.playAgain}>Play Again!
