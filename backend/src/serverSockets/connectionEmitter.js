@@ -235,16 +235,27 @@ class connectionEmitter{
 
     /*
     In/Out: gameid(str),
-            pun_info({punishment(str), owner(str)}),
             rank_info(array[{name(str), points(int), punishment(str)}] : #players)
     */
-    bro_endGame(gameid, pun_info, rank_info) {
+    bro_endGameRanking(gameid, rank_info) {
         if (this.debug) {
-            console.log("End of game, sending punishment and ranking to everyone");
+            console.log("End of game, sending ranking to everyone and waiting for continue");
+        }
+        this.server.to(gameid).emit("endGame", {
+            "rankInfo": rank_info
+        });
+    }
+    /*
+    In/Out: gameid(str),
+            pun_info({punishment(str), owner(str)})
+    */
+    bro_endGamePunish(gameid, pun_info, name) {
+        if (this.debug) {
+            console.log("End of game, sending punishment to everyone");
         }
         this.server.to(gameid).emit("endGame", {
             "punInfo": pun_info,
-            "rankInfo": rank_info
+            "punished": name
         });
     }
 }
