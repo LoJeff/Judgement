@@ -85,26 +85,62 @@ class connectionHandler{
 
     rcvPunish(client, data) {
         var game = this.getGame(client);
-        if (this.debug) {
-            console.log("Receiving punishment from player | pid: " + client.id);
+        
+        if ("punishment" in data) {
+            if (this.debug) {
+                console.log("Receiving punishment from player | pid: " + client.id);
+            }
+            game.rcvPunish(client.id, data.punishment);
+        } else {
+            if (this.debug) {
+                console.log("Did not receive punishment from player | pid: " + client.id);
+            }
         }
-        game.rcvPunish(client.id, data.punishment);
     }
 
     rcvTargets(client, data) {
         var game = this.getGame(client);
-        if (this.debug) {
-            console.log("Receiving targets from the judge | judId: " + client.id + ", tarPair: " + data.targetPair.toString());
+        
+        if ("targetPair" in data) {
+            if (this.debug) {
+                console.log("Receiving targets from the judge | judId: " + client.id + ", tarPair: " + data.targetPair.toString());
+            }
+            game.setTarget(data.targetPair, client.id);
+        } else {
+            if (this.debug) {
+                console.log("Did not receive targets from the judge | judId: " + client.id + ", tarPair: " + data.targetPair.toString());
+            }
         }
-        game.setTarget(data.targetPair, client.id);
     }
 
     rcvTarTODVote(client, data) {
         var game = this.getGame(client);
-        if (this.debug) {
-            console.log("Receiving target vote for TOD | tarId: " + client.id + ", tarVote: " + data.tarVote.toString());
+
+        if ("tarVote" in data) {
+            if (this.debug) {
+                console.log("Receiving target vote for TOD | tarId: " + client.id + ", tarVote: " + data.tarVote.toString());
+            }
+            game.rcvTarTOD(data.tarVote, client.id);
+        } else {
+            if (this.debug) {
+                console.log("Did not receive target vote for TOD | tarId: " + client.id + ", tarVote: " + data.tarVote.toString());
+            }
         }
-        game.rcvTarTOD(data.tarVote, client.id);
+    }
+
+    rcvJudgePrompt(client, data) {
+        var game = this.getGame(client);
+        
+        if ("prompt" in data) {
+            if (this.debug) {
+                console.log("Receiving judges prompt | judId: " + client.id);
+            }
+            game.rcvJudgePrompt(data.prompt, client.id);
+        } else {
+            if (this.debug) {
+                console.log("Did not receive a prompt | judId: " + client.id);
+            }
+        }
     }
 
     rcvJudgeCont(client) {
@@ -117,10 +153,24 @@ class connectionHandler{
 
     rcvPlayerVote(client, data) {
         var game = this.getGame(client);
-        if (this.debug) {
-            console.log("Receiving vote from player | pid: " + client.id);
+        if ("playerVote" in data) {
+            if (this.debug) {
+                console.log("Receiving vote from player | pid: " + client.id);
+            }
+            game.rcvVote(data.playerVote, client.id);
+        } else {
+            if (this.debug) {
+                console.log("Did not receive playerVote from player | pid: " + client.id);
+            }
         }
-        game.rcvVote(data.playerVote, client.id);
+    }
+
+    rcvContToPunish(client) {
+        var game = this.getGame(client);
+        if (this.debug) {
+            console.log("Receiving end game continue | pid: " + client.id);
+        }
+        game.rcvContToPunish(client.id);
     }
 
 	eventHandlers(){
@@ -164,6 +214,10 @@ class connectionHandler{
             this.rcvTarTODVote(client,data);
         }.bind(this));
 
+        client.on("sendJudgePrompt",function(data){
+            this.rcvJudgePrompt(client, data);
+        }.bind(this));
+
         client.on("sigJudgeContGame",function(data){
             this.rcvJudgeCont(client);
         }.bind(this));
@@ -171,6 +225,10 @@ class connectionHandler{
         client.on("sendPlayerToDChoice",function(data){
             this.rcvPlayerVote(client,data);
         }.bind(this));
+
+        client.on("sig_contToPunishment",function(data){
+            this.rcvContToPunish(client);
+        }.bind(this)); 
 	}
 
 }

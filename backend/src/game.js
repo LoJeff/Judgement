@@ -237,7 +237,7 @@ class game {
     }
 
     // Receiving judges truth or dare prompt
-    rcvJudgeTOD(prompt, pid) {
+    rcvJudgePrompt(prompt, pid) {
         if (this.state != state.JUDGEPROMPT) return;
         if (pid != this.m_players[this.m_episode.judge()].pid) return;
 
