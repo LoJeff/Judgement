@@ -26,8 +26,8 @@ class FinalLeaderboard extends Component {
     }
     
     proceedToEndGame(){
-        //send that current user has chosen to continue
-        this.props.emitters.sig_contNextRound()
+        //send that current user has chosen to continue to punishment
+        this.props.emitters.sig_contToPunishment()
 
         if (this.state.forceCont || this.state.numWaiting === this.state.totalPlayers) {
             //need to create deliver punishment

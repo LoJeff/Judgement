@@ -76,6 +76,12 @@ class connectionEmitter {
 		const client = this.client
 		client.emit("sig_contNextRound")
 	}
+
+	sig_contToPunishment(){
+		//signal current user clicks to continue to final punishment
+		const client = this.client
+		client.emit("sig_contToPunishment")
+	}
 }
 
 export default connectionEmitter;
