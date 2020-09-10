@@ -69,20 +69,25 @@ class Lobby extends Component {
         }
 
         return(
-            <div>
-                <h1>Welcome {this.props.clientName}</h1>
-                <h1>Currently aboard The {this.props.gameid}</h1>
-                <br/>
-
-                <h1>Passengers Onboard: </h1>
-                <ul>
-                    {playersListElements}
-                </ul>
-                <div>
-                    {displayNotEnoughPlayers()}
+            <div id='lobby'>
+                <div id='title_container'>
+                    <h1>Welcome: {this.props.clientName}</h1>
+                    <h1>Currently aboard: {this.props.gameid}</h1>
                 </div>
-                <button className="popButton" onClick={this.leaveGameRoom}>Abandon Ship</button>
-                <button className="popButton" onClick={this.startGame}>Start Voyage</button>
+                <div id='list_container'>
+                    <div id='list_title'>Passengers </div>
+                    <hr/>
+                    <ul>
+                        {playersListElements}
+                    </ul>
+                    <div>
+                        {displayNotEnoughPlayers()}
+                    </div>
+                </div>
+                <div className='button_set'>
+                    <button className="popButton" onClick={this.leaveGameRoom}>Abandon Ship</button>
+                    <button className="popButton" onClick={this.startGame}>Start Voyage</button>
+                </div>
             </div>
         );
     }

@@ -45,7 +45,7 @@
 }
 
 #IGN_input_container{
-	color: rgb(94, 117, 180);
+	color: rgb(218, 212, 127);
 	text-align: left;
 	font-size: 14px;
 	float:left;
@@ -54,7 +54,7 @@
 }
 
 #Game_ID_input_container{
-	color: rgb(94, 117, 180);
+	color: rgb(218, 212, 127);
 	text-align: left;
 	font-size: 14px;
 	float:left;
@@ -67,19 +67,3 @@
 	text-align:center;
 }
 
-.button_set{
-	display: flex;
-	flex-direction: row;
-	margin-left: 20px;
-	float:center;
-}
-
-ul {
-	background-color: rgb(12, 2, 20);
-	padding: 20;
-}
-
-ul li {
-	margin: 10;
-	color: rgb(171, 218, 210);
-}
