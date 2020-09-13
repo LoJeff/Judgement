@@ -13,9 +13,6 @@ class DeliverTruthOrDare extends Component {
             };
 
         // functions
-        //TODO: figure this out with correct parameters
-        //figure out how to import functions
-        //Vote.getTargetNameFromString(0, this.state.playerList, this.state.curTargets);
         this.continueToTrial = this.continueToTrial.bind(this);
         this.displayPlayerNamesFromString = this.displayPlayerNamesFromString.bind(this);
         this.getTargetNameFromString = this.getTargetNameFromString.bind(this);

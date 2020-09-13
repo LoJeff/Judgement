@@ -14,6 +14,7 @@ import Leaderboard from './Leaderboard.js';
 import Vote from './Vote.js';
 import Endgame from './Endgame.js';
 import PerformTruthOrDare from './PerformTruthOrDare.js';
+import FinalLeaderboard from './FinalLeaderboard.js';
 
 class App extends Component {
     constructor(props){
@@ -116,6 +117,12 @@ class App extends Component {
         }
         else if(this.state.pageState === "leaderboard"){
             return(<Leaderboard emitters={this.state.emitters}
+                                handlers={this.state.handlers}
+                                triggerPageChange={this.triggerPageChange}
+                />)
+        }
+        else if(this.state.pageState === "finalLeaderboard"){
+            return(<FinalLeaderboard emitters={this.state.emitters}
                                 handlers={this.state.handlers}
                                 triggerPageChange={this.triggerPageChange}
                 />)

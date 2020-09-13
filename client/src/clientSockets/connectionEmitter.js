@@ -56,10 +56,10 @@ class connectionEmitter {
 		client.emit("sendJudgePrompt", data)
 	}
 
-	sigJudgeContGame(){
+	sig_judgeContGame(){
 		//send judge signal to continue game
 		const client = this.client;
-		client.emit("sigJudgeContGame")
+		client.emit("sig_judgeContGame")
 	}
 
 	sendPlayerVote(playerVote){
@@ -69,6 +69,18 @@ class connectionEmitter {
 		const data = {"playerVote": playerVote}
 		client.emit("sendPlayerToDChoice", data)
 
+	}
+
+	sig_contNextRound(){
+		//signal current user clicks to continue game from leaderboard
+		const client = this.client
+		client.emit("sig_contNextRound")
+	}
+
+	sig_contToPunishment(){
+		//signal current user clicks to continue to final punishment
+		const client = this.client
+		client.emit("sig_contToPunishment")
 	}
 }
 

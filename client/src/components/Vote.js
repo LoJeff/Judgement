@@ -9,31 +9,39 @@ class Vote extends Component {
             "playerVote": null,
             "trigLeaderboard": false,
             "curTargets": null,
-            "playerList": []
+            "playerList": [],
+            "resultVote": null,
+            "trigEndGame": false
         };
 
         // functions
         this.submitVote = this.submitVote.bind(this);
         this.setPlayerVote = this.setPlayerVote.bind(this);
         this.getTargetNameFromString = this.getTargetNameFromString(this);
+        this.contToRoundEnd = this.contToRoundEnd(this);
     }
 
     setPlayerVote(playerInt){
         this.setState((playerInt) => ({
-            playerVote: this.state.curTargets.split(",")[playerInt]
+            playerVote: playerInt
         }))
     }
 
     submitVote(vote){
         this.setPlayerVote(vote);
         this.props.emitters.sendPlayerVote(this.state.playerVote);
+    }
 
+    contToRoundEnd(){
         //if leaderboard screen is seen
-        if (this.state.trigLeaderboard){
+        if (this.state.trigEndGame){
+            this.props.triggerPageChange("FinalLeaderboard");
+
+        } else if (this.state.trigLeaderboard){
             this.props.triggerPageChange("leaderboard");
-        }
-        //if round continues
-        else {
+            
+        } else {
+            //if round continues
             this.props.triggerPageChange("pickTargets");       
         }
     }
@@ -58,6 +66,35 @@ class Vote extends Component {
                 )
             }
         }
+
+        const voteResultElements = [];
+        if (this.state.resultVote !== undefined){
+            this.state.resultVote.forEach(function(target){
+                voteResultElements.push(<li key={this.state.resultVote.indexOf(target)}>{target[0]} had {target[1]} votes </li>)
+            });
+        }
+
+        const showVoteResult = () => {
+            if (this.state.resultVote !== null){
+                return(
+                    <div>
+                        <div>
+                            {this.state.resultVote[0][0]} wins this trial.
+                        </div>
+                        <div>
+                            Results:
+                            {voteResultElements}
+                        </div>
+                        <div id="subtitle_button_container">
+                            <button className="popButton" type="submit" onClick={this.contToRoundEnd()}>
+                                Continue
+                            </button>
+                        </div>
+                    </div>
+                )
+            }
+        }
+
         return ( 
         <div>
             <div>
@@ -69,7 +106,7 @@ class Vote extends Component {
                 <div id="submit_button_container">
                     <div>
                         <button className="popButton" type="submit" onClick={this.submitVote(0)}>
-                            //this probably is not displayed properly
+                            //this probably is not displayed properly?
                             {this.getTargetNameFromString(0, this.state.playerList, this.state.curTargets)}
                         </button>
                     </div>
@@ -79,6 +116,9 @@ class Vote extends Component {
                         </button>
                     </div>
 				</div>
+
+                {showVoteResult()}
+
             </div>
 
         </div>

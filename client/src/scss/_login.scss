@@ -34,18 +34,18 @@
 
 	text-shadow: -5px 5px 0 rgb(5, 9, 20),
 	-7px 7px 0 rgb(197, 84, 127),
-	-9px 9px 0 rgb(197, 84, 127),
-	-11px 11px 0 rgb(128, 53, 97),
+	-9px 9px 0 rgb(175, 60, 110),
+	-11px 11px 0 rgb(126, 51, 94),
+	-13px 13px 0 rgb(88, 29, 63),
 	-15px 15px 0 rgb(77, 14, 50),
-	-16px 16px 0 rgb(88, 29, 63),
-	-17px 17px 0 rgb(5, 9, 20);
+	-17px 17px 0 rgb(70, 0, 0);
 
 	width:100%;
 	transform: rotate(-5deg);
 }
 
 #IGN_input_container{
-	color: rgb(94, 117, 180);
+	color: rgb(218, 212, 127);
 	text-align: left;
 	font-size: 14px;
 	float:left;
@@ -54,7 +54,7 @@
 }
 
 #Game_ID_input_container{
-	color: rgb(94, 117, 180);
+	color: rgb(218, 212, 127);
 	text-align: left;
 	font-size: 14px;
 	float:left;
@@ -67,19 +67,3 @@
 	text-align:center;
 }
 
-.button_set{
-	display: flex;
-	flex-direction: row;
-	margin-left: 20px;
-	float:center;
-}
-
-ul {
-	background-color: rgb(12, 2, 20);
-	padding: 20;
-}
-
-ul li {
-	margin: 10;
-	color: rgb(171, 218, 210);
-}
