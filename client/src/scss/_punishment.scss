@@ -1,43 +1,72 @@
+#punishment_page{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
 #punishment_container{
-    width:auto;
-	display:inline-block;
-	padding-bottom:2%;
+    width: 100%;
+    height: 100%;
+    padding: 5%;
+    display:flex;
+    margin: 40px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(5, 9, 20);
+    border-style: double none double none;
+    border-color: rgb(15, 255, 215);
+    border-width: 3px;
+}
+
+#punishment_title{
+    width: 50%;
+    text-align: left;
+    color: rgb(197, 84, 127);
+    font-size: 24px;
+
+}
+
+#punishment_description{
+    width: 50%;
+    text-align: left;
+    color: rgb(197, 84, 127);
+    font-size: 18px;
 }
 
 #subtitle_container{
     padding-top:5%;
-	color:red;
 	text-align:center;
 	font-size:40px;
 }
 
-#description_container{
-	padding-top:5%;
-    text-align:center;
-	font-size:40px;
+#punishment_container{
+    width: 100%;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.punishmentInput {
-    width:400px;
-    height:300px;
+textarea.punishmentInput {
+    width: 500px;
+    min-height: 100px;
+    margin-top: 10%;
     
     border: 2px solid black;
-    border-radius: 6px;
-    box-shadow: 1px 4px #272424;
-    box-shadow: -1px 4px #272424;
-    padding:5px;
-    text-align:center;
-    //TODO: figure out how to make text wrap
-    word-wrap: break-word;
-    word-break: break-all;
-    font-size:24px;
-    color: rgb(179, 144, 196);
+
+    font-size: 18px;
+    color: rgb(158, 154, 93);
+
     background-image: url("../images/space1.png");
     background-position: center;
 
+    resize: none;
+
     &:focus{
-        box-shadow: 2px 4px black;
-        box-shadow: -2px 4px black;
         outline:none;
         &::-webkit-input-placeholder { color:transparent; }
         &:-moz-placeholder { color:transparent; }

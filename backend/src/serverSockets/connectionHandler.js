@@ -67,9 +67,14 @@ class connectionHandler{
     }
     
     getGame(client) {
-		// First element is its own socket id, second element is game id
-		console.log("KEYS: "+ Object.keys(client.rooms));
-        return global.data.findGame(Object.keys(client.rooms)[1]);
+        var gameId;
+        if (Object.keys(client.rooms)[0] == client.id) {
+            gameId = Object.keys(client.rooms)[1];
+        } else {
+            gameId = Object.keys(client.rooms)[0];
+        }
+        
+        return global.data.findGame(gameId);
     }
 
     updateGame(client,data){

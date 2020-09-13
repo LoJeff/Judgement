@@ -62,7 +62,7 @@ class Lobby extends Component {
             } else if (this.state.displayNotEnoughPlayers === false) {
                 return(
                     <div>
-                        <p> Setting sail! What could possibly go wrong?</p>
+                        <p>Setting sail! What could possibly go wrong?</p>
                     </div>
                 )
             }
@@ -74,6 +74,7 @@ class Lobby extends Component {
                     <h1>Welcome: {this.props.clientName}</h1>
                     <h1>Currently aboard: {this.props.gameid}</h1>
                 </div>
+
                 <div id='list_container'>
                     <div id='list_title'>Passengers </div>
                     <hr/>
@@ -84,6 +85,7 @@ class Lobby extends Component {
                         {displayNotEnoughPlayers()}
                     </div>
                 </div>
+
                 <div className='button_set'>
                     <button className="popButton" onClick={this.leaveGameRoom}>Abandon Ship</button>
                     <button className="popButton" onClick={this.startGame}>Start Voyage</button>

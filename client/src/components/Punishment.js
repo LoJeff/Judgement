@@ -28,27 +28,35 @@ class Punishment extends Component {
     render(){
 
         return (
-        <div>
+        <div id='punishment_page'>
             <div id="subtitle_container" className="title">
-                <h1>Punishment</h1>
+                <h1>Survey!</h1>
             </div>
 
-            <div id="description_container">
-                <p> blahblahsome description for punishmentbalhblah</p>
+            <div id="alert_container">
+                All passengers receive a suprise notice!
             </div>
 
-            <div id="interactive_set">
-                <div className="row_of_input">
-                    <div id="punishment_container">
-                            <form > <input className="punishmentInput" type="text" id="punishment" placeholder="Enter punishment!"/></form>
-                    </div>
+            <div id="punishment_container">
+                <div id="punishment_title">
+                    Mandatory Passenger Survey
                 </div>
 
-                <div id="submit_button_container">
-					<button className="popButton" type="submit" onClick={this.enterGame}>Submit
-                    </button>
-				</div>
+                <div id="punishment_description">
+                    Before the ship can take off, please enter a suitable punishment for a fellow passenger.
+                </div>
+
+                <div>
+                    <form> <textarea class="punishmentInput" id="punishment" placeholder="Enter a punishment!"/>
+                    </form>
+                </div> 
             </div>
+
+
+            <div id="submit_button_container">
+				<button className="popButton" type="submit" onClick={this.enterGame}>Submit
+                </button>
+			</div>
 
         </div>
 

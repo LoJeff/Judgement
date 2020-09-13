@@ -43,7 +43,6 @@ class Login extends Component {
 				<div id="fancyticket_container">
                     <div id="fancyticket">
                         <div id="ticket_sidebar">
-                            <div id="interactive_set">
                                 <div className="row_of_input">
                                     <div id="IGN_input_container">
                                         Name:
@@ -56,7 +55,6 @@ class Login extends Component {
                                         </form>
                                     </div>
                                 </div>
-                            </div>
                         </div>
                     </div>
                 </div>
