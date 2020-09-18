@@ -29,8 +29,16 @@ class game {
         this.m_episode = new EPISODE();
         this.m_cur_round = 0;
         this.m_num_rcvd = 0;
+        this.m_cur_rules = [];
 
+        // Game Settings
         this.m_num_rounds = 3;
+        this.m_enable_rewards = true;
+        this.m_rewards = [[]];
+
+        this.m_rewards.sort((a, b) => {
+            return a[0] - b[0];
+        });
     }
     
     //Helper Functions
@@ -179,7 +187,7 @@ class game {
         this.state = state.CHOOSETARGET;
         global.emitters.bro_curJudge(this.m_id, this.m_players[this.m_episode.judge()].getName());
         global.emitters.sig_imJudge(this.m_players[this.m_episode.judge()].pid,
-            this.m_invalid_sets, this.m_id_to_name);
+            this.m_invalid_sets, this.m_id_to_name, this.m_episode.judge());
     }
 
     pushInvalidTargets(targets) {
@@ -279,6 +287,15 @@ class game {
                     "vote": voteInfo[i].count
                 })
             }
+            var winner = this.m_players[voteInfo[i].pidx].addPoints(1);
+            if (m_enable_rewards) {
+                while (winner.getRewardIdx() < this.m_rewards.length 
+                        && this.m_rewards[winner.getRewardIdx()][0] <= winner.getPoints()) {
+                    winner.addReward(this.m_rewards[winner.getRewardIdx()][1]);
+                    winner.incrRewardIdx();
+                }
+            }
+
             this.state = state.JUDGECONTEP;
             global.emitters.bro_getResultVote(this.m_id, nameRank);
         }
@@ -290,6 +307,11 @@ class game {
         if (pid != this.m_players[this.m_episode.judge()].pid) return;
         
         this.nextJudge();
+    }
+
+    // Sending rewards that were calculated for passing specific point thresholds
+    sendRewards() {
+        
     }
 
     // Display stats and handle events based on number of points earned

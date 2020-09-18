@@ -73,12 +73,13 @@ class connectionEmitter{
     In/Out: pid(str),
             invalid_sets(2D array[int] : #invalid sets x #targets in a set),
             id_to_name(array[str] : #players)
+            judge_id(int)
     */
-    sig_imJudge(pid, invalid_sets, id_to_name) {
+    sig_imJudge(pid, invalid_sets, id_to_name, judge_id) {
         if (this.debug) {
             console.log("Signal to Judge that they are the judge and give non-available pairs");
         }
-        this.server.to(pid).emit("imJudge", {"invalidSets": invalid_sets, "idToName": id_to_name});
+        this.server.to(pid).emit("imJudge", {"invalidSets": invalid_sets, "idToName": id_to_name, "judgeID": judge_id});
     }
     
     /*
