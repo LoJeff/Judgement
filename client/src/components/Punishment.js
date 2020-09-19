@@ -47,7 +47,7 @@ class Punishment extends Component {
                 </div>
 
                 <div>
-                    <form> <textarea class="punishmentInput" id="punishment" placeholder="Enter a punishment!"/>
+                    <form> <textarea className="punishmentInput" id="punishment" placeholder="Enter a punishment!"/>
                     </form>
                 </div> 
             </div>

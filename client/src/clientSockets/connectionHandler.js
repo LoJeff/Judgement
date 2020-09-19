@@ -27,6 +27,7 @@ class connectionHandler{
 	imJudge(data){
 		this.react.setState({"invalidSets": data.invalidSets,
 							"playerList": data.idToName,
+							"judgeID": data.judgeID,
 							"isJudge": true
 						});
 	}
@@ -47,7 +48,7 @@ class connectionHandler{
 	}
 
 	cueWaitForTrial(data){
-		this.react.props.triggerPageChange("truthOrDare")
+		this.react.props.triggerPageChange("truthOrDare");
 	}
 
 	//broadcasts to targets the current targets
@@ -150,7 +151,7 @@ class connectionHandler{
 			this.tarResultTOD(data);
 		}.bind(this));
 
-		client.on("waitForTrial",function(data){
+		client.on("waitForTrial",function(){
 			this.cueWaitForTrial();
 		}.bind(this));
 

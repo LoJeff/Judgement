@@ -24,8 +24,8 @@ class connectionEmitter {
 
 	dummyFunction() {
 		const client = this.client;
-		client.emit("dummyFunction");
-		console.log("emitted dummyFunction event");
+		client.emit("Giff's a dummyFunction");
+		console.log("emitted Giff's a dummyFunction event");
 	}
 
 	sendPunishment(punishment){

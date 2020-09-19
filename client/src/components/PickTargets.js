@@ -10,26 +10,38 @@ class PickTargets extends Component {
             "isJudge": false,
             "curJudge": null,
             "targetAID": null,
-            "targetBID": null
+            "targetBID": null,
+            "judgeID": null
             };
 
         // functions
         this.submitTargets = this.submitTargets.bind(this);
-        this.generatePossibleTargets = this.generatePossibleTargets.bind(this);
         this.generatePair = this.generatePair.bind(this);
-        this.generatePossibleTargetsList = this.generatePossibleTargetsList.bind(this);
-        this.isIdJudge = this.isIdJudge.bind(this);
     }
 
     componentDidMount(){
         this.props.handlers.updateReact(this);
     }
 
-    submitTargets(){
-        this.props.emitters.sendTargets(this.generatePossibleTargets(this.state.targetAID, this.state.targetBID));
+    submitTargets(targetID){
+        //if first target has not been chosen
+        if (this.state.targetAID === null){
+            this.setState(() => ({
+                targetAID: targetID
+            }))
 
-        // trigger page change
-        this.props.triggerPageChange("truthOrDare");
+        //if second target has not been chosen but first target has
+        } else if (this.state.targetBID === null && this.state.targetAID != null) {
+            this.setState(() => ({
+                targetBID: targetID
+            }))
+
+            //submit choices
+            this.props.emitters.sendTargets(this.generatePair(this.state.targetAID, this.state.targetBID));
+
+            //trigger page change
+            this.props.triggerPageChange("truthOrDare");
+        }
     }
 
     //TODO think of clearer parameter names?
@@ -42,89 +54,58 @@ class PickTargets extends Component {
         return resPair
     }
 
-    isIdJudge(ID){
-        return this.state.playerList[ID] === this.state.curJudge
-    }
+    render(){
 
-    generatePossibleTargetsList(targetAID){
-        //list of player names
-        var possibleTargetsList = [];
-        
-        //if first target has been chosen
-        if (targetAID != null){
-            for (var i = 0; i < this.state.playerList.length; i++ ){
-                
-                var currPair = this.generatePair(targetAID, i);
-                
-                //add possible targets to list
-                if (!(currPair in this.state.invalidSets) ||
-                i !== targetAID || !this.isIdJudge){
-                    possibleTargetsList.push(this.state.playerList[i]);
-                }
-            }
-        } 
-        else {
-            if (this.state.playerList !== undefined){
-                //create list of targets, not including judge
-                for (i = 0; i < this.state.playerList.length; i++ ){
-                    if (!this.isIdJudge){
-                        possibleTargetsList.push(this.state.playerList[i])
+        var checkDisplayButton = (targetID) => {
+
+            //if player is not judge
+            if (targetID !== this.state.judgeID){
+
+                //if first target is already picked
+                if(this.state.targetAID !== null){
+                    var currPair = this.generatePair(targetID, this.state.targetAID);
+
+                    if(!currPair in this.state.invalidSets || targetID !== this.state.targetAID) {
+                        return(
+                            <div>
+                                <button className='popButton' onClick={ () => this.submitTargets(targetID) }> Select for Trial </button>
+                            </div>
+                        )
                     }
-                };
+                }
+                return(
+                //if first target has not been picked
+                <div>
+                    <button className='popButton' onClick={ () => this.submitTargets(targetID) }> Select for Trial </button>
+                </div>
+                )
             }
         }
-        return possibleTargetsList
-    }
 
-    generatePossibleTargets(target){
-        //if the first target has not been chosen yet
-        var targetID = this.state.playerList.indexOf(target);
-        if (this.state.targetAID === null){
-            this.setState((targetID) => ({
-                targetAID: targetID
-            }))
-            return this.generatePossibleTargetsList(targetID)
-        } else {
-            this.setState((targetID) => ({
-                targetBID: targetID
-            }))
-            return []
-        }   
-    }
-
-    render(){
-        const possibleTargets = this.generatePossibleTargetsList(null);
-        const possibleTargetElements = [];
+        var possibleTargetElements = [];
         
-        if (possibleTargets !== undefined){
-            possibleTargets.forEach(function(target){
+        if (this.state.playerList !== undefined){
+
+            for (var i = 0; i < this.state.playerList.length; i++){
                 possibleTargetElements.push(
-                    <li key={target.id} onClick={this.props.generatePossibleTargets(target)}>
-                        {target} (id: {target.id})
+                    <li key={i} >
+                        {this.state.playerList[i]}
+                        {checkDisplayButton(i)}
                     </li>
                 )
-            })
+            };
         }
 
         const showUserSpecificScreen = () => {
             if ( this.state.isJudge ) {
-                console.log("POSSIBLETARGET ELEMENTS: "+possibleTargetElements);
-                console.log("POSSIBLETARGETS: "+possibleTargets);
                 return(
                     <div>
                         <p>I am a judge wooo</p>
                             <div id="possible_targets_set">
-                                <ul class="target_container">
+                                <ul className="target_container">
                                     {possibleTargetElements}
                                 </ul>
                                 
-                            </div>
-
-                            <div id="interactive_set">
-                                <div id="submit_button_container">
-                                    <button className="popButton" type="submit" onClick={this.submitTargets}>Judge!
-                                    </button>
-                                </div>
                             </div>
                     </div>
                 )
