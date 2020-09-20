@@ -68,7 +68,13 @@ class PickTargets extends Component {
                     if(!currPair in this.state.invalidSets || targetID !== this.state.targetAID) {
                         return(
                             <div>
-                                <button className='popButton' onClick={ () => this.submitTargets(targetID) }> Select for Trial </button>
+                                <button className='select_button' onClick={ () => this.submitTargets(targetID) }> Select for Trial </button>
+                            </div>
+                        )
+                    } else {
+                        return (
+                            <div>
+                                <button className='select_button' onClick={ () => this.submitTargets(targetID) } disabled> Select for Trial </button>
                             </div>
                         )
                     }
@@ -76,8 +82,14 @@ class PickTargets extends Component {
                 return(
                 //if first target has not been picked
                 <div>
-                    <button className='popButton' onClick={ () => this.submitTargets(targetID) }> Select for Trial </button>
+                    <button className='select_button' onClick={ () => this.submitTargets(targetID) }> Select for Trial </button>
                 </div>
+                )
+            } else {
+                return (
+                    <div>
+                        <button className='select_button' onClick={ () => this.submitTargets(targetID) } disabled> Select for Trial </button>
+                    </div>
                 )
             }
         }
@@ -100,13 +112,20 @@ class PickTargets extends Component {
             if ( this.state.isJudge ) {
                 return(
                     <div>
-                        <p>I am a judge wooo</p>
-                            <div id="possible_targets_set">
-                                <ul className="target_container">
-                                    {possibleTargetElements}
-                                </ul>
-                                
+                        <div id="possible_targets_set">
+
+                            <div id='target_description'>
+                                Here is our passenger roster, select the first then second passenger to be judged for trial. You can only select passenger pairs that have not already been selected this round.
+                                Choose wisely, once selected they cannot be de-selected!
                             </div>
+
+                            <ul className="target_container">
+                                <div id='passenger_title'>
+                                    PAssenNGeR RosteR
+                                </div>
+                                {possibleTargetElements}
+                            </ul>
+                        </div>
                     </div>
                 )
             } else {
@@ -117,7 +136,7 @@ class PickTargets extends Component {
         }
 
         return( 
-        <div>
+        <div id='pick_targets'>
             <div id="subtitle_container">
                 <h1>Pick Targets</h1>
             </div>
