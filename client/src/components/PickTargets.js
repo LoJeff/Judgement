@@ -31,14 +31,16 @@ class PickTargets extends Component {
             }))
 
         //if second target has not been chosen but first target has
-        } else if (this.state.targetBID === null && this.state.targetAID != null) {
+        } else if (this.state.targetBID === null && this.state.targetAID !== null) {
             this.setState(() => ({
                 targetBID: targetID
             }))
+            
+        } else if (this.state.targetBID !== null && this.state.targetAID !== null) {
 
             //submit choices
             this.props.emitters.sendTargets(this.generatePair(this.state.targetAID, this.state.targetBID));
-
+            
             //trigger page change
             this.props.triggerPageChange("truthOrDare");
         }
@@ -46,12 +48,10 @@ class PickTargets extends Component {
 
     //TODO think of clearer parameter names?
     generatePair(idA, idB){
-        var resPair = [];
-        resPair.push(idA);
-        resPair.push(idB);
+        var resPair = [idA, idB];
         resPair.sort();
-        resPair = toString(resPair);
-        return resPair
+        resPair = resPair.toString();
+        return resPair;
     }
 
     render(){
@@ -65,16 +65,16 @@ class PickTargets extends Component {
                 if(this.state.targetAID !== null){
                     var currPair = this.generatePair(targetID, this.state.targetAID);
 
-                    if(!currPair in this.state.invalidSets || targetID !== this.state.targetAID) {
+                    if(currPair in this.state.invalidSets || targetID === this.state.targetAID || targetID === this.state.targetBID) {
                         return(
                             <div>
-                                <button className='select_button' onClick={ () => this.submitTargets(targetID) }> Select for Trial </button>
+                                <button className='selectButton' onClick={ () => this.submitTargets() } disabled> Select for Trial </button>
                             </div>
                         )
                     } else {
                         return (
                             <div>
-                                <button className='select_button' onClick={ () => this.submitTargets(targetID) } disabled> Select for Trial </button>
+                                <button className='selectButton' onClick={ () => this.submitTargets(targetID) }> Select for Trial </button>
                             </div>
                         )
                     }
@@ -82,13 +82,23 @@ class PickTargets extends Component {
                 return(
                 //if first target has not been picked
                 <div>
-                    <button className='select_button' onClick={ () => this.submitTargets(targetID) }> Select for Trial </button>
+                    <button className='selectButton' onClick={ () => this.submitTargets(targetID) }> Select for Trial </button>
                 </div>
                 )
             } else {
                 return (
                     <div>
-                        <button className='select_button' onClick={ () => this.submitTargets(targetID) } disabled> Select for Trial </button>
+                        <button className='selectButton' onClick={ () => this.submitTargets(null) } disabled> Select for Trial </button>
+                    </div>
+                )
+            }
+        }
+
+        var displaySubmitButton = () => {
+            if (this.state.targetAID !== null && this.state.targetBID !== null) {
+                return (
+                    <div>
+                        <button className='submitButton' onClick={this.submitTargets}>Submit Targets: {this.generatePair(this.state.targetAID, this.state.targetBID)}</button>
                     </div>
                 )
             }
@@ -119,15 +129,21 @@ class PickTargets extends Component {
                                 Choose wisely, once selected they cannot be de-selected!
                             </div>
 
-                            <ul className="target_container">
+                            <ul className="targetContainer">
                                 <div id='passenger_title'>
                                     PAssenNGeR RosteR
                                 </div>
                                 {possibleTargetElements}
+
+                                <div id='submit_target_button_container'>
+                                    {displaySubmitButton()}
+                                </div>
                             </ul>
+
                         </div>
                     </div>
                 )
+
             } else {
                 return(
                 <p>Sit tight! Judge {this.state.curJudge} is deciding who to test.</p>

@@ -59,11 +59,14 @@ class Login extends Component {
                     </div>
                 </div>
 				
-					
 				<div className="button_set">
+                        <div className="login_button_container">
 					    <button className="popButton" type="submit" onClick={this.joinGameRoom}>Join 
                         </button>
+                        </div>
+                        <div className="login_button_container">
                         <button className="popButton" onClick={this.dummyFunction}>Giff's butt</button>
+                        </div>
                 </div>
 
                 <div id="login_title_container">

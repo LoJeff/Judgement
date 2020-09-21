@@ -35,20 +35,26 @@
     
 }
 
-.target_container{
+.targetContainer{
     background-color: rgb(5, 9, 20) ;
 }
 
-ul.target_container {
+ul.targetContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
     background-color: rgb(5, 9, 20);
     box-shadow: -5px 5px rgb(153, 214, 204);
 
     width: 50%;
     padding-bottom: 20px;
     padding-left: 2.5%;
+    padding-right: 2.5%;
 }
 
-ul.target_container li {
+ul.targetContainer li {
     display: flex;
     flex-direction: row;
     justify-content: left;
@@ -65,7 +71,7 @@ ul.target_container li {
     color: rgb(218, 212, 127);
 }
 
-.select_button {
+.selectButton {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -99,4 +105,27 @@ ul.target_container li {
         color:rgb(5, 9, 20);
     }
 
+}
+
+.submitButton {
+    font-family:'Cairo';
+    font-size: 16px;
+    color: rgb(5, 9, 20);
+
+    margin-top: 15px;
+    border: solid 1px;
+    background-color: rgb(197, 84, 127);
+    padding: 0px 10px;
+
+    &:focus {
+        outline: none;
+    }
+
+    &:active {
+        border-color: rgb(197, 84, 127);
+
+        color: rgb(197, 84, 127);
+
+        background-color: rgb(5, 9, 20);
+    }
 }

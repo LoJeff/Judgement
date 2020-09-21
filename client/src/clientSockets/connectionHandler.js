@@ -47,8 +47,9 @@ class connectionHandler{
 		this.react.setState({"enoughPlayers": false});
 	}
 
+	//before vote, after judge given prompt
 	cueWaitForTrial(data){
-		this.react.props.triggerPageChange("truthOrDare");
+		this.react.props.triggerPageChange("performToD");
 	}
 
 	//broadcasts to targets the current targets
@@ -59,7 +60,7 @@ class connectionHandler{
 	//the targets final decision of truth or dare
 	tarResultTOD(data){
 		this.react.setState({"tarResultTOD": data.decision});
-		this.react.props.triggerPageChange("performToD");
+		//this.react.props.triggerPageChange("performToD");
 	}
 
 	//tells judge to choose our prompt, or give own suggestion
@@ -97,6 +98,8 @@ class connectionHandler{
 	tarChooseTOD(data){
 		this.react.setState({"isTarget": true,
 							"playerList": data.idToName});
+		console.log("Receoved trig choose ToD")
+		this.react.props.triggerPageChange("truthOrDare");
 	}
 
 	contWaitFor(data){
