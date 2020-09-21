@@ -98,7 +98,7 @@ class PickTargets extends Component {
             if (this.state.targetAID !== null && this.state.targetBID !== null) {
                 return (
                     <div>
-                        <button className='submitButton' onClick={this.submitTargets}>Submit Targets: {this.generatePair(this.state.targetAID, this.state.targetBID)}</button>
+                        <button className='submitButton' onClick={this.submitTargets}>Submit Passengers {this.state.playerList[this.state.targetAID]} and {this.state.playerList[this.state.targetBID]} for Trial!</button>
                     </div>
                 )
             }

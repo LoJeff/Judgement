@@ -98,7 +98,7 @@ class connectionHandler{
 	tarChooseTOD(data){
 		this.react.setState({"isTarget": true,
 							"playerList": data.idToName});
-		console.log("Receoved trig choose ToD")
+		console.log("Received trig choose ToD")
 		this.react.props.triggerPageChange("truthOrDare");
 	}
 
