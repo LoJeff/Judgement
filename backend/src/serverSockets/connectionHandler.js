@@ -1,3 +1,4 @@
+var curRandGame = undefined;
 
 // This class handles all the game connections socket handlers
 class connectionHandler{
@@ -5,7 +6,6 @@ class connectionHandler{
 		this.server = server;
         this.client = client;
         this.debug = debug;
-        this.curRandGame = undefined;
     }
 
 	joinGameRoom(client,data){
@@ -19,6 +19,9 @@ class connectionHandler{
 			global.data.createNewGame(data.gameid);
 		}
         var game = global.data.findGame(data.gameid);
+
+        // check if game started yet, (in the future add a check for reconnecting players)
+        if (game.getState() != 0) return;
 
 		// check that max players have not been exceeded
 		if(game.getPlayersList().length < game.m_max_players){
@@ -81,18 +84,23 @@ class connectionHandler{
 
     updateGame(client,data){
         var game = this.getGame(client);
+        if (game === undefined) return;
+
         game.update(data);
     }
 
     startGame(client) {
 		// find game
         var game = this.getGame(client);
+        if (game === undefined) return;
+
         game.beginGame(client.id);
     }
 
     rcvPunish(client, data) {
         var game = this.getGame(client);
-        
+        if (game === undefined) return;
+
         if ("punishment" in data) {
             if (this.debug) {
                 console.log("Receiving punishment from player | pid: " + client.id);
@@ -107,6 +115,7 @@ class connectionHandler{
 
     rcvTargets(client, data) {
         var game = this.getGame(client);
+        if (game === undefined) return;
         
         if ("targetSet" in data) {
             if (this.debug) {
@@ -123,6 +132,7 @@ class connectionHandler{
 
     rcvTarTODVote(client, data) {
         var game = this.getGame(client);
+        if (game === undefined) return;
 
         if ("tarVote" in data) {
             if (this.debug) {
@@ -138,6 +148,7 @@ class connectionHandler{
 
     rcvJudgePrompt(client, data) {
         var game = this.getGame(client);
+        if (game === undefined) return;
         
         if ("prompt" in data) {
             if (this.debug) {
@@ -153,6 +164,8 @@ class connectionHandler{
 
     rcvJudgeCont(client) {
         var game = this.getGame(client);
+        if (game === undefined) return;
+        
         if (this.debug) {
             console.log("Receiving judges continue | judId: " + client.id);
         }
@@ -161,6 +174,8 @@ class connectionHandler{
 
     rcvPlayerVote(client, data) {
         var game = this.getGame(client);
+        if (game === undefined) return;
+
         if ("playerVote" in data) {
             if (this.debug) {
                 console.log("Receiving vote from player | pid: " + client.id);
@@ -175,6 +190,8 @@ class connectionHandler{
 
     rcvContToPunish(client) {
         var game = this.getGame(client);
+        if (game === undefined) return;
+
         if (this.debug) {
             console.log("Receiving end game continue | pid: " + client.id);
         }
@@ -208,11 +225,11 @@ class connectionHandler{
         
 		client.on("Giff's a dummyFunction",function(data){
             var name = this.randStr(Math.floor(Math.random() * 10) + 1);
-            if (this.curRandGame === undefined || (global.data.findGame(this.curRandGame) != undefined &&
-                    global.data.findGame(this.curRandGame).getState() != 0)) {
-                this.curRandGame = this.randStr(Math.floor(Math.random() * 20) + 1);
+            if (curRandGame === undefined || (global.data.findGame(curRandGame) != undefined &&
+                    global.data.findGame(curRandGame).getState() != 0)) {
+                curRandGame = this.randStr(Math.floor(Math.random() * 20) + 1);
             }
-            var gameid = this.curRandGame;
+            var gameid = curRandGame;
             global.emitters.sig_genUserInfo(client.id, gameid, name);
         }.bind(this));
 
