@@ -213,7 +213,7 @@ class connectionHandler{
                 this.curRandGame = randStr(Math.floor(Math.random() * 20) + 1);
             }
             data.gameid = this.curRandGame;
-            global.emitters.sig_genUserInfo(data);
+            global.emitters.sig_genUserInfo(this.client.id, data);
         }.bind(this));
 
         client.on("startGame",function(){
