@@ -7,22 +7,40 @@ class Login extends Component {
         // functions
         this.joinGameRoom = this.joinGameRoom.bind(this);
         this.dummyFunction = this.dummyFunction.bind(this);
+        this.setVisual = this.setVisual.bind(this);
         
         // state
         this.state = {
+            "isVisual": false,
+            "genUserID": null,
+            "genGameID": null
         };
     }
 
-    //when need to interact with browser
-    //if need data from remote endpoint, good place to instantiate network request
     componentDidMount(){
         this.props.handlers.updateReact(this);
         document.getElementById("name").value = this.props.clientName;
     }
 
-    joinGameRoom(){
-        var name = document.getElementById("name").value;
-        var gameid = document.getElementById("gameid").value;
+    setVisual(visual){
+        this.setState(() => ({
+            isVisual: visual
+        }));
+
+        console.log("IN SET VISUAL STATE");
+    }
+
+    joinGameRoom(name = null, gameid = null){
+       
+        if (name === null) {
+            name = document.getElementById("name").value;
+        }
+
+        if (gameid === null) {
+            gameid = document.getElementById("gameid").value;
+        }
+
+        this.props.emitters.sig_visualSupported(this.state.isVisual);
         this.props.emitters.joinGameRoom(name,gameid);
 
         // update data
@@ -30,11 +48,14 @@ class Login extends Component {
         this.props.updateClientName(name);
 
         // trigger page change
+        console.log("IS VISUAL?: "+this.state.isVisual);
         this.props.triggerPageChange("lobby");
     }
 
     dummyFunction(){
         this.props.emitters.dummyFunction();
+
+        this.joinGameRoom(this.state.genUserID, this.state.genGameID);
     }
 
     render(){
@@ -53,6 +74,9 @@ class Login extends Component {
                                         <form >
                                             <input className="fancyInput" type="text" id="gameid" placeholder="Enter game ID"/>
                                         </form>
+                                    </div>
+                                    <div>
+                                        <button className="visSuppButton" onClick={ () => this.setVisual(true)}> Include Visual Support </button>
                                     </div>
                                 </div>
                         </div>

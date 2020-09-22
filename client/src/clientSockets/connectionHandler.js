@@ -9,6 +9,16 @@ class connectionHandler{
 		this.react = newReact;
     }
 
+	genUserInfo(data){
+
+		console.log("USERID: "+data.name);
+		console.log("GAMEID: "+data.gameid);
+		
+		this.react.setState({ "genUserID": data.name,
+							"genGameID": data.gameid 
+		});
+	}
+
 	// Notifies the client that a new member has joined the game room
 	updateRoomPlayers(data){
 		// data
@@ -96,6 +106,7 @@ class connectionHandler{
 	}
 
 	tarChooseTOD(data){
+		//remove tarTOD
 		this.react.setState({"isTarget": true,
 							"playerList": data.idToName});
 		console.log("Received trig choose ToD")
@@ -122,6 +133,10 @@ class connectionHandler{
 	eventHandlers(){
 		const client = this.client;
 
+		client.on("genUserInfo",function(data){
+			this.genUserInfo(data);
+		}.bind(this));
+		
 		client.on("updateRoomPlayers",function(data){
 			this.updateRoomPlayers(data);
 		}.bind(this));
