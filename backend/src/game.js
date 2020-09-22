@@ -18,7 +18,7 @@ const state = {
 
 class game {
 	constructor() {
-        this.state = state.PREGAME;
+        this.m_state = state.PREGAME;
 		this.m_id = -1;
         this.m_players = [];
         this.m_max_players = 6;
@@ -78,6 +78,10 @@ class game {
 	getPlayersList() {
 		return this.m_players;
     }
+
+    getState() {
+        return this.m_state;
+    }
     
     //Game Functions
 
@@ -107,10 +111,10 @@ class game {
     
     // Request for all the punishments at the start of the game
 	beginGame(pid) {
-        if (this.state != state.PREGAME) return;
+        if (this.m_state != state.PREGAME) return;
         if (this.m_players.length >= 3) {
             this.m_episode.setNumPlayers(this.m_players.length);
-            this.state = state.PUNISHMENT;
+            this.m_state = state.PUNISHMENT;
             global.emitters.bro_beginGame(this.m_id);
         } else {
             global.emitters.sig_notEnoughPlayers(pid);
@@ -119,7 +123,7 @@ class game {
 
     // Receive punishment from a user
     rcvPunish(pid, punishment) {
-        if (this.state != state.PUNISHMENT) return;
+        if (this.m_state != state.PUNISHMENT) return;
         if (this.m_num_rcvd == this.m_players.length) return;
 
         var idx = this.findPlayerId(pid);
@@ -184,7 +188,7 @@ class game {
 
     // Broadcast to all who is the current judge
     sendJudge() {
-        this.state = state.CHOOSETARGET;
+        this.m_state = state.CHOOSETARGET;
         global.emitters.bro_curJudge(this.m_id, this.m_players[this.m_episode.judge()].getName());
         global.emitters.sig_imJudge(this.m_players[this.m_episode.judge()].pid,
             this.m_invalid_sets, this.m_id_to_name, this.m_episode.judge());
@@ -197,7 +201,7 @@ class game {
 
     // Attempt to set the targets
     setTarget(targets, pid) {
-        if (this.state != state.CHOOSETARGET) return;
+        if (this.m_state != state.CHOOSETARGET) return;
         if (pid != this.m_players[this.m_episode.judge()].pid) return;
 
         if (this.validTarget(targets)) {
@@ -211,7 +215,7 @@ class game {
             }
 
             // Request for choosing truth or dare to all targets
-            this.state = state.TARCHOOSETOD;
+            this.m_state = state.TARCHOOSETOD;
             for (var i = 0; i < this.m_episode.maxTargets(); i++) {
                 global.emitters.sig_tarChooseTOD(this.m_players[this.m_episode.target(i)].pid);
             }
@@ -228,7 +232,7 @@ class game {
 
     // Receiving targets choices of truth or dare
     rcvTarTOD(choice, pid) {
-        if (this.state != state.TARCHOOSETOD) return;
+        if (this.m_state != state.TARCHOOSETOD) return;
         // Check if person trying to vote is one of the targets
         if (!this.m_episode.isTargetId(pid)) return;
 
@@ -237,7 +241,7 @@ class game {
             global.emitters.bro_tarResultTOD(this.m_id, this.m_episode.truth());
 
             // ask the judge to provide a prompt
-            this.state = state.JUDGEPROMPT;
+            this.m_state = state.JUDGEPROMPT;
             global.emitters.sig_judgeChoosePrompt(this.m_players[this.m_episode.judge()].pid, "");
 
             this.m_episode.resetNumResponses();
@@ -246,7 +250,7 @@ class game {
 
     // Receiving judges truth or dare prompt
     rcvJudgePrompt(prompt, pid) {
-        if (this.state != state.JUDGEPROMPT) return;
+        if (this.m_state != state.JUDGEPROMPT) return;
         if (pid != this.m_players[this.m_episode.judge()].pid) return;
 
         this.m_episode.setPrompt(prompt);
@@ -255,24 +259,24 @@ class game {
         global.emitters.bro_judgeResultPrompt(this.m_id, this.m_episode.prompt());
 
         // tell the judge that he/she needs to choose to continue
-        this.state = state.JUDGECONTTOD;
+        this.m_state = state.JUDGECONTTOD;
         global.emitters.bro_waitForTrial(this.m_id);
         global.emitters.sig_judgeReqCont(this.m_players[this.m_episode.judge()].pid);
     }
 
     // Receiving judges request to continue to voting
     rcvJudgeCont(pid) {
-        if (this.state != state.JUDGECONTTOD) return;
+        if (this.m_state != state.JUDGECONTTOD) return;
         if (pid != this.m_players[this.m_episode.judge()].pid) return;
 
         // Broadcast to all to begin voting
-        this.state = state.VOTE;
+        this.m_state = state.VOTE;
         global.emitters.bro_playerVote(this.m_id, this.m_episode.targets(), this.m_id_to_name);
     }
 
     // Receiving votes from a player
     rcvVote(vote, pid) {
-        if (this.state != state.VOTE) return;
+        if (this.m_state != state.VOTE) return;
         // Check if person trying to vote is one of the targets
         if (isTargetId(pid)) return;
 
@@ -296,14 +300,14 @@ class game {
                 }
             }
 
-            this.state = state.JUDGECONTEP;
+            this.m_state = state.JUDGECONTEP;
             global.emitters.bro_getResultVote(this.m_id, nameRank);
         }
     }
 
     // Receive judges request to continue to next episode
     rcvNextEpisode(pid) {
-        if (this.state != state.JUDGECONTEP) return;
+        if (this.m_state != state.JUDGECONTEP) return;
         if (pid != this.m_players[this.m_episode.judge()].pid) return;
         
         this.nextJudge();
@@ -327,7 +331,7 @@ class game {
         }
         global.emitters.bro_roundRank(this.m_id, rankName);
 
-        this.state = state.NEXTROUND;
+        this.m_state = state.NEXTROUND;
         this.m_num_rcvd = 0;
         global.emitters.bro_contNextRound(this.m_id, this.m_players.length);
 
@@ -337,7 +341,7 @@ class game {
 
     // Receiving continue to next round signal
     nextRound(pid) {
-        if (this.state != state.NEXTROUND) return;
+        if (this.m_state != state.NEXTROUND) return;
 
         if (this.allPlayerContCheck(pid)) {
             // Check if last round has been reached
@@ -351,7 +355,7 @@ class game {
 
     // Conclude the game, including declaring who has to do punishment
     endGameRank() {
-        this.state = state.PUNCONT;
+        this.m_state = state.PUNCONT;
         this.sortByRanking();
         var rankInfo = [];
         for (var i = 0; i < this.m_ranking.length; i++) {
@@ -366,7 +370,7 @@ class game {
 
     // Receiving continue to punishment signal
     rcvContToPunish(pid) {
-        if (this.state != state.PUNCONT) return;
+        if (this.m_state != state.PUNCONT) return;
 
         if (allPlayerContCheck(pid)) {
             this.endGamePunish();
@@ -375,7 +379,7 @@ class game {
 
     // Sending out the punishments to everyone
     endGamePunish() {
-        this.state = state.ENDGAME;
+        this.m_state = state.ENDGAME;
         var randPlayerIdx = Math.floor(Math.random() * this.m_players.length);
         var punChosen = this.m_players[randPlayerIdx].getPunishment();
         var punOwner = this.m_players[randPlayerIdx].getName();

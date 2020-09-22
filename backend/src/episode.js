@@ -63,7 +63,7 @@ class EPISODE {
     }
 
     target(pos) {
-        assert(pos >= 0 && pos < this.m_num_targets);
+        console.assert(pos >= 0 && pos < this.m_num_targets);
         return this.m_targets[pos];
     }
 
@@ -98,7 +98,7 @@ class EPISODE {
         }
 
         for (var i = 0; i < this.m_num_targets; i++) {
-            if (!pair[i].isInteger()) return false;
+            if (!Number.isInteger(pair[i])) return false;
         }
 
         for (var i = 0; i < this.m_num_targets; i++) {
@@ -134,7 +134,7 @@ class EPISODE {
     // One player's vote
     playerVote(vote, pid, isJudge) {
         // m_vote was sorted and can no longer be modified
-        ASSERT(!this.m_vote_sorted);
+        console.assert(!this.m_vote_sorted);
 
         // All players have already voted
         if (this.m_responses().size >= (this.m_num_players - this.m_targets.length)) return true;

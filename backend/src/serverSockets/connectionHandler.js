@@ -5,19 +5,21 @@ class connectionHandler{
 		this.server = server;
         this.client = client;
         this.debug = debug;
+        this.curRandGame = undefined;
     }
 
 	joinGameRoom(client,data){
 		// client joins room with gameid
 		client.join(data.gameid);
 
-		// if game does not exist
+        // if game does not exist
+
 		if(global.data.findGame(data.gameid) === undefined){
 			console.log("DATA GAMEID: "+data.gameid);
 			global.data.createNewGame(data.gameid);
 		}
+        var game = global.data.findGame(data.gameid);
 
-		var game = global.data.findGame(data.gameid);
 		// check that max players have not been exceeded
 		if(game.getPlayersList().length < game.m_max_players){
             // add the player to the gamelist
@@ -110,7 +112,8 @@ class connectionHandler{
             if (this.debug) {
                 console.log("Receiving targets from the judge | judId: " + client.id + ", tarPair: " + data.targetPair.toString());
             }
-            game.setTarget(data.targetPair, client.id);
+            var target = data.targetPair.split(",").map((x)=>{return parseInt(x)});
+            game.setTarget(target, client.id);
         } else {
             if (this.debug) {
                 console.log("Did not receive targets from the judge | judId: " + client.id + ", tarPair: " + data.targetPair.toString());
@@ -178,6 +181,16 @@ class connectionHandler{
         game.rcvContToPunish(client.id);
     }
 
+    randStr(length) {
+        var result           = '';
+        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charactersLength = characters.length;
+        for (var i = 0; i < length; i++) {
+           result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    }
+
 	eventHandlers(){
 		const client = this.client;
 
@@ -194,13 +207,13 @@ class connectionHandler{
         })
         
 		client.on("dummyFunction",function(data){
-			try {
-				if (true) {
-					console.log("WOOOO");
-				}
-			} catch(err) {
-				console.log(err);
-			}
+            data.name = randStr(Math.floor(Math.random() * 10) + 1);
+            if (this.curRandGame === undefined || (global.data.findGame(this.curRandGame) != undefined &&
+                    global.data.findGame(this.curRandGame).getState() != 0)) {
+                this.curRandGame = randStr(Math.floor(Math.random() * 20) + 1);
+            }
+            data.gameid = this.curRandGame;
+            global.emitters.sig_genUserInfo(data);
         }.bind(this));
 
         client.on("startGame",function(){
