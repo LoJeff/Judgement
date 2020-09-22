@@ -108,11 +108,11 @@ class connectionHandler{
     rcvTargets(client, data) {
         var game = this.getGame(client);
         
-        if ("targetPair" in data) {
+        if ("targetSet" in data) {
             if (this.debug) {
                 console.log("Receiving targets from the judge | judId: " + client.id + ", tarPair: " + data.targetPair.toString());
             }
-            var target = data.targetPair.split(",").map((x)=>{return parseInt(x)});
+            var target = data.targetSet.split(",").map((x)=>{return parseInt(x)});
             game.setTarget(target, client.id);
         } else {
             if (this.debug) {
@@ -206,14 +206,14 @@ class connectionHandler{
             this.updateGame(client,data);
         })
         
-		client.on("dummyFunction",function(data){
-            var name = randStr(Math.floor(Math.random() * 10) + 1);
+		client.on("Giff's a dummyFunction",function(data){
+            var name = this.randStr(Math.floor(Math.random() * 10) + 1);
             if (this.curRandGame === undefined || (global.data.findGame(this.curRandGame) != undefined &&
                     global.data.findGame(this.curRandGame).getState() != 0)) {
-                this.curRandGame = randStr(Math.floor(Math.random() * 20) + 1);
+                this.curRandGame = this.randStr(Math.floor(Math.random() * 20) + 1);
             }
             var gameid = this.curRandGame;
-            global.emitters.sig_genUserInfo(this.client.id, gameid, name);
+            global.emitters.sig_genUserInfo(client.id, gameid, name);
         }.bind(this));
 
         client.on("startGame",function(){

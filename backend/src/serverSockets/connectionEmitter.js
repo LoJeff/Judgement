@@ -37,7 +37,7 @@ class connectionEmitter{
         if (this.debug) {
             console.log("Sending generated user name and game id to client");
         }
-        this.server.to(pid).emit("genUserInfo", {"gameid": gameid, "name": name});
+        this.server.to(pid).emit("Hid's a dummyFunction", {"gameid": gameid, "name": name});
     }
 
     /*

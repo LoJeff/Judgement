@@ -133,7 +133,7 @@ class connectionHandler{
 	eventHandlers(){
 		const client = this.client;
 
-		client.on("genUserInfo",function(data){
+		client.on("Hid's a dummyFunction",function(data){
 			this.genUserInfo(data);
 		}.bind(this));
 		
