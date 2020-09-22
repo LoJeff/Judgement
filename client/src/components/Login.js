@@ -3,6 +3,8 @@ import React, {Component} from 'react';
 class Login extends Component {
     constructor(props){
         super(props);
+
+        console.log("Creating Login");
         
         // functions
         this.joinGameRoom = this.joinGameRoom.bind(this);
@@ -26,19 +28,12 @@ class Login extends Component {
         this.setState(() => ({
             isVisual: visual
         }));
-
-        console.log("IN SET VISUAL STATE");
     }
 
-    joinGameRoom(name = null, gameid = null){
+    joinGameRoom(){
        
-        if (name === null) {
-            name = document.getElementById("name").value;
-        }
-
-        if (gameid === null) {
-            gameid = document.getElementById("gameid").value;
-        }
+        var name = document.getElementById("name").value;
+        var gameid = document.getElementById("gameid").value;
 
         this.props.emitters.sig_visualSupported(this.state.isVisual);
         this.props.emitters.joinGameRoom(name,gameid);
@@ -48,14 +43,12 @@ class Login extends Component {
         this.props.updateClientName(name);
 
         // trigger page change
-        console.log("IS VISUAL?: "+this.state.isVisual);
         this.props.triggerPageChange("lobby");
     }
 
     dummyFunction(){
+        //automatically log in with userid and gameid
         this.props.emitters.dummyFunction();
-
-        this.joinGameRoom(this.state.genUserID, this.state.genGameID);
     }
 
     render(){

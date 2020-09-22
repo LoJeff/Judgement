@@ -59,7 +59,6 @@ class App extends Component {
     }
 
     // Lobby Page
-    //TODO: change the order of this so it makes more sense/matches flow
     render(){
         if(this.state.pageState === "login"){
             return(<Login emitters={this.state.emitters}

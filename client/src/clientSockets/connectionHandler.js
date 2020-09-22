@@ -9,14 +9,16 @@ class connectionHandler{
 		this.react = newReact;
     }
 
+	//why is this react/props different from lobby+ react/props?
 	genUserInfo(data){
+		this.react.state.emitters.joinGameRoom(data.name, data.gameid);
 
-		console.log("USERID: "+data.name);
-		console.log("GAMEID: "+data.gameid);
-		
-		this.react.setState({ "genUserID": data.name,
-							"genGameID": data.gameid 
-		});
+		console.log("REACT: "+Object.keys(this.react));
+		console.log("PROPS: "+Object.keys(this.react.props));
+
+		this.react.updateClientName(data.name);
+		this.react.updateGameid(data.gameid);
+		this.react.triggerPageChange("lobby");
 	}
 
 	// Notifies the client that a new member has joined the game room
@@ -46,9 +48,13 @@ class connectionHandler{
 		this.react.setState({"curJudge": data.name});
 	}
 
-	beginGame(data){
+	beginGame(){
+
+		console.log("BEGIN REACT: "+Object.keys(this.react));
+		console.log("BEGIN PROPS: "+Object.keys(this.react.props));
+
 		console.log("Received begin game");
-		this.react.setState({"enoughPlayers": true})        
+		this.react.setState({"enoughPlayers": true});        
 		this.react.props.triggerPageChange("punishment");
 	}
 
@@ -132,13 +138,13 @@ class connectionHandler{
 
 	eventHandlers(){
 		const client = this.client;
-
-		client.on("Hid's a dummyFunction",function(data){
-			this.genUserInfo(data);
-		}.bind(this));
 		
 		client.on("updateRoomPlayers",function(data){
 			this.updateRoomPlayers(data);
+		}.bind(this));
+
+		client.on("Hid's a dummyFunction",function(data){
+			this.genUserInfo(data);
 		}.bind(this));
 
 		client.on("updateGame",function(data){
