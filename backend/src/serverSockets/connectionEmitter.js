@@ -107,7 +107,7 @@ class connectionEmitter{
     /*
     In/Out: pid(str)
     */
-    sig_tarChooseTOD(pid) {
+    sig_tarChooseTOD(pid, id_to_name) {
         if (this.debug) {
             console.log("Signal to targets to choose Truth or Dare");
         }

@@ -14,7 +14,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const server = http.createServer(app);
 const io = socketio(server);
-const debug = false;
+const debug = true;
 
 
 app.use(bodyParser.json());
