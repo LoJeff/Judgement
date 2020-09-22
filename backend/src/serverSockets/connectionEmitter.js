@@ -31,6 +31,16 @@ class connectionEmitter{
     /*
     In/Out: gameid(str)
     */
+    sig_genUserInfo(pid, data) {
+        if (this.debug) {
+            console.log("Sending generated user name and game id to client");
+        }
+        this.server.to(pid).emit("genUserInfo", data);
+    }
+
+    /*
+    In/Out: gameid(str)
+    */
     bro_beginGame(gameid) {
         if (this.debug) {
             console.log("Broadcasting Begin Game, waiting for user punishments");
@@ -107,7 +117,7 @@ class connectionEmitter{
     /*
     In/Out: pid(str)
     */
-    sig_tarChooseTOD(pid, id_to_name) {
+    sig_tarChooseTOD(pid) {
         if (this.debug) {
             console.log("Signal to targets to choose Truth or Dare");
         }
