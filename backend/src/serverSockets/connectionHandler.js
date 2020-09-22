@@ -207,13 +207,13 @@ class connectionHandler{
         })
         
 		client.on("dummyFunction",function(data){
-            data.name = randStr(Math.floor(Math.random() * 10) + 1);
+            var name = randStr(Math.floor(Math.random() * 10) + 1);
             if (this.curRandGame === undefined || (global.data.findGame(this.curRandGame) != undefined &&
                     global.data.findGame(this.curRandGame).getState() != 0)) {
                 this.curRandGame = randStr(Math.floor(Math.random() * 20) + 1);
             }
-            data.gameid = this.curRandGame;
-            global.emitters.sig_genUserInfo(this.client.id, data);
+            var gameid = this.curRandGame;
+            global.emitters.sig_genUserInfo(this.client.id, gameid, name);
         }.bind(this));
 
         client.on("startGame",function(){
