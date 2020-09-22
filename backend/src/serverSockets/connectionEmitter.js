@@ -29,13 +29,15 @@ class connectionEmitter{
     }
 
     /*
-    In/Out: gameid(str)
+    In/Out: pid(str),
+            gameid(str),
+            name(str)
     */
-    sig_genUserInfo(pid, data) {
+    sig_genUserInfo(pid, gameid, name) {
         if (this.debug) {
             console.log("Sending generated user name and game id to client");
         }
-        this.server.to(pid).emit("genUserInfo", data);
+        this.server.to(pid).emit("genUserInfo", {"gameid": gameid, "name": name});
     }
 
     /*
