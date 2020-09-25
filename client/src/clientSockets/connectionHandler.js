@@ -68,20 +68,24 @@ class connectionHandler{
 		this.react.props.triggerPageChange("performToD");
 	}
 
-	//broadcasts to targets the current targets
+	//broadcasts to all the current targets
 	valTargets(data){
 		this.react.setState({"curTargets": data.targets});
 	}
 
 	//the targets final decision of truth or dare
 	tarResultTOD(data){
+		console.log("Received final ToD: "+data.decision);
+		
 		this.react.setState({"tarResultTOD": data.decision});
-		//this.react.props.triggerPageChange("performToD");
+		this.react.props.triggerPageChange("deliverToD");
 	}
 
 	//tells judge to choose our prompt, or give own suggestion
 	judgeChoosePrompt(data){
-		this.react.setState({"suggest": data.suggestion});
+		this.react.setState({ "isJudge": true,
+							"suggest": data.suggestion
+						});
 	}
 
 	//broadcast the trial that judge chose
@@ -95,7 +99,6 @@ class connectionHandler{
 
 	playerVote(data){
 		this.react.props.triggerPageChange("deliverToD");
-		//this.react.setState({"curTargets": data.targets})
 	}
 
 	resultVote(data){

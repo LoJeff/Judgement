@@ -5,8 +5,8 @@ class DeliverTruthOrDare extends Component {
         super(props);
     
         this.state = {
-            "isTarget": false,
-            "isJudge": false,
+            "isTarget": null,
+            "isJudge": null,
             "curTargets": null,
             "playerList": [],
             "suggestion": ""

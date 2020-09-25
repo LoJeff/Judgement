@@ -19,9 +19,6 @@ class TruthOrDare extends Component {
         this.setState(() => ({
             tarTODChoice: choice
         }));
-
-        console.log("in SET CHOICE: "+choice);
-        console.log("AFTER SETTING CHOICE: "+this.state.tarTODChoice);
     }
 
     componentDidMount(){
@@ -29,12 +26,13 @@ class TruthOrDare extends Component {
     }
 
     submitChoice(){
-
-        console.log("CHOICE SENT: "+this.state.tarTODChoice);
         this.props.emitters.sendTarTODVote(this.state.tarTODChoice);
 
-        // trigger page change
-        this.props.triggerPageChange("deliverToD");
+        this.setState(() => ({
+            tarTODChoice: "Vote submitted!"
+        }));
+
+        document.getElementById('submitButton').setAttribute("disabled", "disabled");
     }
 
     render(){
@@ -42,14 +40,14 @@ class TruthOrDare extends Component {
             if (this.state.tarTODChoice !== null) {
                 return (         
                     <div>
-                    <button className="popButton" onClick={this.submitChoice}> Submit Vote: {this.state.tarTODChoice}</button>
+                    <button className="popButton" id="submitButton" onClick={this.submitChoice}> Submit Vote: {this.state.tarTODChoice}</button>
                     </div>
                 )
             } else {
                 return (
                     //TODO: SET VISUAL FOR DISABLED SUBMIT BUTTON
                     <div>
-                    <button className="popButton" onClick={this.submitChoice} disabled> Submit Vote: Please select a Trial option!</button>
+                    <button className="popButton" onClick={null} disabled> Submit Vote: Please select a Trial option!</button>
                     </div>
                 )
             }
