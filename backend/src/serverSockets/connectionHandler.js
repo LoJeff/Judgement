@@ -119,13 +119,13 @@ class connectionHandler{
         
         if ("targetSet" in data) {
             if (this.debug) {
-                console.log("Receiving targets from the judge | judId: " + client.id + ", tarPair: " + data.targetPair.toString());
+                console.log("Receiving targets from the judge | judId: " + client.id + ", tarPair: " + data.targetSet.toString());
             }
             var target = data.targetSet.split(",").map((x)=>{return parseInt(x)});
             game.setTarget(target, client.id);
         } else {
             if (this.debug) {
-                console.log("Did not receive targets from the judge | judId: " + client.id + ", tarPair: " + data.targetPair.toString());
+                console.log("Did not receive targets from the judge | judId: " + client.id + ", tarPair: " + data.targetSet.toString());
             }
         }
     }

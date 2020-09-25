@@ -7,9 +7,8 @@ class TruthOrDare extends Component {
         this.state = {
             "curTargets": null,
             "tarTODChoice": null,
-            "isTarget": null,
-            "playerList": []
-        };
+            "isTarget": false
+            };
 
         // functions
         this.submitChoice = this.submitChoice.bind(this);
@@ -17,11 +16,12 @@ class TruthOrDare extends Component {
     }
 
     setTODChoice(choice){
-        this.setState((choice) => ({
+        this.setState(() => ({
             tarTODChoice: choice
-        }))
+        }));
 
-        this.submitChoice();
+        console.log("in SET CHOICE: "+choice);
+        console.log("AFTER SETTING CHOICE: "+this.state.tarTODChoice);
     }
 
     componentDidMount(){
@@ -29,15 +29,31 @@ class TruthOrDare extends Component {
     }
 
     submitChoice(){
-        //setup emitter
-        this.props.emitters.sendTarTODVote(this.state.tarTODChoice)
+
+        console.log("CHOICE SENT: "+this.state.tarTODChoice);
+        this.props.emitters.sendTarTODVote(this.state.tarTODChoice);
 
         // trigger page change
         this.props.triggerPageChange("deliverToD");
     }
 
     render(){
-
+        const displaySubmitButton = () => {
+            if (this.state.tarTODChoice !== null) {
+                return (         
+                    <div>
+                    <button className="popButton" onClick={this.submitChoice}> Submit Vote: {this.state.tarTODChoice}</button>
+                    </div>
+                )
+            } else {
+                return (
+                    //TODO: SET VISUAL FOR DISABLED SUBMIT BUTTON
+                    <div>
+                    <button className="popButton" onClick={this.submitChoice} disabled> Submit Vote: Please select a Trial option!</button>
+                    </div>
+                )
+            }
+        }
         const showUserSpecificScreen = () => {
             if ( this.state.isTarget ){
                 return(
@@ -45,11 +61,14 @@ class TruthOrDare extends Component {
                         <p>I am a target wooo</p>
                             <div id="possible_truthordare_set">
                                 {/**have more flushed out hover values?*/}
-                            <button className="popButton" onClick={this.setTODChoice("Truth")}>Confess
-                            </button>
+                                <button className="popButton" onClick={ () => this.setTODChoice("Truth")}>Confess
+                                </button>
+                                <button className="popButton" onClick={ () => this.setTODChoice("Dare")}>Repent
+                                </button>
                             </div>
-                            <button className="popButton" onClick={this.setTODChoice("Dare")}>Repent
-                        </button>
+                            <div>
+                                {displaySubmitButton()}
+                            </div>
                     </div> 
                 )
             } else {

@@ -70,7 +70,7 @@ class connectionHandler{
 
 	//broadcasts to targets the current targets
 	valTargets(data){
-		this.react.setState({"targets": data.targets});
+		this.react.setState({"curTargets": data.targets});
 	}
 
 	//the targets final decision of truth or dare
@@ -95,7 +95,7 @@ class connectionHandler{
 
 	playerVote(data){
 		this.react.props.triggerPageChange("deliverToD");
-		this.react.setState({"curTargets": data.targets})
+		//this.react.setState({"curTargets": data.targets})
 	}
 
 	resultVote(data){
@@ -111,12 +111,10 @@ class connectionHandler{
 		this.react.setState({"totalPlayers": data.total});
 	}
 
-	tarChooseTOD(data){
-		//remove tarTOD
-		this.react.setState({"isTarget": true,
-							"playerList": data.idToName});
-		console.log("Received trig choose ToD")
+	tarChooseTOD(){
 		this.react.props.triggerPageChange("truthOrDare");
+		this.react.setState({"isTarget": true});
+		console.log("received sig choose ToD");
 	}
 
 	contWaitFor(data){

@@ -109,14 +109,14 @@ class EPISODE {
     }
 
     isTargetId(pid) {
-        return m_target_id_hash.has(pid);
+        return this.m_target_id_hash.has(pid);
     }
 
     // Two targets choose if they want truth or dare
     tarChooseTOD(choice, pid) {
         if (choice != 0 && choice != 1) return false;
         // Player has already made a choice
-        if (this.m_responses().has(pid)) return false;
+        if (this.m_responses.has(pid)) return false;
 
         if (this.m_responses.size < this.m_num_targets - 1) {
             this.m_tod_choice[choice]++;
@@ -137,22 +137,22 @@ class EPISODE {
         console.assert(!this.m_vote_sorted);
 
         // All players have already voted
-        if (this.m_responses().size >= (this.m_num_players - this.m_targets.length)) return true;
+        if (this.m_responses.size >= (this.m_num_players - this.m_targets.length)) return true;
         // Valid vote
         if (!(this.m_targets.length > vote && vote >= 0)) return false;
         // Player has already voted
-        if (this.m_responses().has(pid)) return false;
+        if (this.m_responses.has(pid)) return false;
 
         var inc = 1;
         if (isJudge) inc += 2;
 
-        this.m_responses().add(pid);
+        this.m_responses.add(pid);
         this.m_vote[vote].count += inc;
 
         if (this.m_vote[vote].order == Number.MAX_SAFE_INTEGER) {
             this.m_vote[vote].order = this.m_responses.size;
         }
-        return this.m_responses().size >= (this.m_num_players - this.m_targets.length);
+        return this.m_responses.size >= (this.m_num_players - this.m_targets.length);
     }
 
     // Sort the votes and return the ranking

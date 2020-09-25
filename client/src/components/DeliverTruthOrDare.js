@@ -36,12 +36,14 @@ class DeliverTruthOrDare extends Component {
 
     displayPlayerNamesFromString(playerList, string){
         var result = "";
-        var idsFromString = string.split(",");
-        for (var i = 0; i < idsFromString.length; i++){
-            if (i === idsFromString.length - 1) {
-                result += " and ";
+        if (string !== null) {
+            var idsFromString = string.split(",");
+            for (var i = 0; i < idsFromString.length; i++){
+                if (i === idsFromString.length - 1) {
+                    result += " and ";
+                }
+                result += this.getTargetNameFromString(i, playerList, string) + " ";
             }
-            result += this.getTargetNameFromString(i, playerList, string) + " ";
         }
         return result;
     }
@@ -70,12 +72,12 @@ class DeliverTruthOrDare extends Component {
                             </div>
 
                             <div id="submit_button_container">
-                                <button className="popButton" type="submit" onClick={this.continueToTrial(document.getElementById("customTrial").value)}>Submit Custom Trial
+                                <button className="popButton" type="submit" onClick={ () => this.continueToTrial(document.getElementById("customTrial").value)}>Submit Custom Trial
                                 </button>
                             </div>
                             
                         <div id="submit_button_container">
-                            <button className="popButton" type="submit" onClick={this.continueToTrial(this.state.suggestion)}>
+                            <button className="popButton" type="submit" onClick={ () => this.continueToTrial(this.state.suggestion)}>
                                 Suggestion: {this.state.suggestion}
                             </button>
                         </div>
@@ -88,7 +90,7 @@ class DeliverTruthOrDare extends Component {
                 return (
                     <div>
                         <h2>Jury</h2>
-                        <p>Awaiting Judge Trial for, {this.props.displayPlayerNamesFromString(this.state.playerList, this.state.curTargets)} </p>
+                        <p>Awaiting Judge to choose a Trial for, {this.displayPlayerNamesFromString(this.state.playerList, this.state.curTargets)} </p>
                     </div>
                 )
             }
