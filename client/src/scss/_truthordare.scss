@@ -1,0 +1,27 @@
+#truth_or_dare{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#vote_container{
+    margin: 30px;
+
+    background-color: rgb(5, 9, 20);
+}
+
+#tod_vote_title{
+    font-size: 40px;
+
+}
+
+#tod_vote_desc{
+    font-size: 14px;
+    color: white;
+}
+
+#possible_truthordare_set{
+    margin: 10px;
+}
+
