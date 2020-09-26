@@ -80,11 +80,11 @@ class EPISODE {
     }
 
     truth() {
-        return m_tod_choice[0] > m_tod_choice[1];
+        return this.m_tod_choice[0] > this.m_tod_choice[1];
     }
     
     dare() {
-        return m_tod_choice[0] < m_tod_choice[1];
+        return this.m_tod_choice[0] < this.m_tod_choice[1];
     }
 
     prompt() {
@@ -122,10 +122,10 @@ class EPISODE {
             this.m_tod_choice[choice]++;
             this.m_responses.add(pid);
             return false;
-        } else if (this.m_responses.length == this.m_num_targets - 1) {
+        } else if (this.m_responses.size == this.m_num_targets - 1) {
             this.m_tod_choice[choice]++;
-            if (m_tod_choice[0] == m_tod_choice[1]) {
-                m_tod_choice[Math.round(Math.random())]++;
+            if (this.m_tod_choice[0] == this.m_tod_choice[1]) {
+                this.m_tod_choice[Math.round(Math.random())]++;
             }
             return true;
         }
