@@ -71,42 +71,6 @@ ul.targetContainer li {
     color: rgb(218, 212, 127);
 }
 
-.selectButton {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-    background-color: rgb(5, 9, 20);
-    border: solid 1px;
-    border-color: rgb(153, 214, 204);
-    color: rgb(153, 214, 204);
-
-    margin-left: 10px;
-    width: 100px;
-    position: relative;
-    left: 5px;
-    
-    font-family: 'Cairo';
-    text-align: center;
-
-    &:disabled{
-        display: none;
-    }
-
-    &:focus{
-        outline: none;
-    }
-
-    &:active{
-        background-color: rgb(153, 214, 204);
-        border: solid 1px;
-        border-color: rgb(5, 9, 20);
-
-        color:rgb(5, 9, 20);
-    }
-
-}
-
 .submitButton {
     font-family:'Cairo';
     font-size: 16px;

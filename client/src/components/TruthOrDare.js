@@ -40,14 +40,14 @@ class TruthOrDare extends Component {
             if (this.state.tarTODChoice !== null) {
                 return (         
                     <div>
-                    <button className="popButton" id="submitButton" onClick={this.submitChoice}> Submit Vote: {this.state.tarTODChoice}</button>
+                        <button className="popButton" id="submitButton" onClick={this.submitChoice}> Submit Vote: <span id="blue_text"> {this.state.tarTODChoice} </span> </button>
                     </div>
                 )
             } else {
                 return (
                     //TODO: SET VISUAL FOR DISABLED SUBMIT BUTTON
                     <div>
-                    <button className="popButton" onClick={null} disabled> Submit Vote: Please select a Trial option!</button>
+                        <button className="popButton" onClick={null} disabled> Submit Vote: Please select a Trial option!</button>
                     </div>
                 )
             }
@@ -56,17 +56,27 @@ class TruthOrDare extends Component {
             if ( this.state.isTarget ){
                 return(
                     <div>
-                        <p>I am a target wooo</p>
+                        <div id="vote_container">
+                            <div id="tod_vote_title">
+                                Choose a Trial!
+                            </div>
+
+                            <div id="tod_vote_desc">
+                                You are currently under trial! Choose to <span id="blue_text"> Confess </span> your sins or <span id="blue_text"> Repent </span> with an act of service!
+                            </div>
+
                             <div id="possible_truthordare_set">
                                 {/**have more flushed out hover values?*/}
-                                <button className="popButton" onClick={ () => this.setTODChoice("Truth")}>Confess
+                                <button className="voteToDButtons" onClick={ () => this.setTODChoice("Truth")}>Confess
                                 </button>
-                                <button className="popButton" onClick={ () => this.setTODChoice("Dare")}>Repent
+                                <button className="voteToDButtons" onClick={ () => this.setTODChoice("Dare")}>Repent
                                 </button>
                             </div>
+
                             <div>
                                 {displaySubmitButton()}
                             </div>
+                        </div>
                     </div> 
                 )
             } else {
@@ -77,8 +87,8 @@ class TruthOrDare extends Component {
         }
 
         return ( 
-        <div>
-            <div>
+        <div id="truth_or_dare">
+            <div id="subtitle_container">
                 <h1>Truth or Dare</h1>
             </div>
 
