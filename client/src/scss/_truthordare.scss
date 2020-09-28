@@ -89,6 +89,10 @@
     color: rgb(197, 84, 127);
     font-size: 14px;
 
+    &:focus{
+        outline: none;
+    }
+
     &:disabled{
         border-color: rgb(110, 46, 71);
 
