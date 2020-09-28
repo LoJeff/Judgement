@@ -13,12 +13,28 @@ class TruthOrDare extends Component {
         // functions
         this.submitChoice = this.submitChoice.bind(this);
         this.setTODChoice = this.setTODChoice.bind(this);
+        this.clickChoice = this.clickChoice.bind(this);
     }
 
     setTODChoice(choice){
         this.setState(() => ({
             tarTODChoice: choice
         }));
+    }
+
+    clickChoice(choice){
+
+        if (this.state.tarTODChoice !== "Submitted"){
+            this.setTODChoice(choice);
+
+            if( choice === "Truth") {
+                document.getElementById('choiceTruth').setAttribute("disabled", "true");
+                document.getElementById('choiceDare').removeAttribute("disabled");
+            } else {
+                document.getElementById('choiceDare').setAttribute("disabled", "true");
+                document.getElementById('choiceTruth').removeAttribute("disabled");
+            }
+        }
     }
 
     componentDidMount(){
@@ -29,25 +45,32 @@ class TruthOrDare extends Component {
         this.props.emitters.sendTarTODVote(this.state.tarTODChoice);
 
         this.setState(() => ({
-            tarTODChoice: "Vote submitted!"
+            tarTODChoice: "Submitted"
         }));
 
-        document.getElementById('submitButton').setAttribute("disabled", "disabled");
+        document.getElementById('submitVoteButton').setAttribute("disabled", "true");
     }
 
     render(){
         const displaySubmitButton = () => {
-            if (this.state.tarTODChoice !== null) {
+            
+            if (this.state.tarTODChoice === "Submitted"){
                 return (         
                     <div>
-                        <button className="popButton" id="submitButton" onClick={this.submitChoice}> Submit Vote: <span id="blue_text"> {this.state.tarTODChoice} </span> </button>
+                        <button className="submitVote" type="text" id="submitVoteButton" onClick={this.submitChoice}>Vote submitted</button>
+                    </div>
+                )
+
+            } else if (this.state.tarTODChoice !== null) {
+                return (         
+                    <div>
+                        <button className="submitVote" type="text" id="submitVoteButton" onClick={this.submitChoice}>Submit Vote</button>
                     </div>
                 )
             } else {
                 return (
-                    //TODO: SET VISUAL FOR DISABLED SUBMIT BUTTON
                     <div>
-                        <button className="popButton" onClick={null} disabled> Submit Vote: Please select a Trial option!</button>
+                        <button className="submitVote" type="text" onClick={null} disabled>Submit Vote</button>
                     </div>
                 )
             }
@@ -67,9 +90,9 @@ class TruthOrDare extends Component {
 
                             <div id="possible_truthordare_set">
                                 {/**have more flushed out hover values?*/}
-                                <button className="voteToDButtons" onClick={ () => this.setTODChoice("Truth")}>Confess
+                                <button className="voteToDButtons" type="text" id="choiceTruth" onClick={ () => this.clickChoice("Truth")}>Confess
                                 </button>
-                                <button className="voteToDButtons" onClick={ () => this.setTODChoice("Dare")}>Repent
+                                <button className="voteToDButtons" type="text" id="choiceDare" onClick={ () => this.clickChoice("Dare")}>Repent
                                 </button>
                             </div>
 
@@ -81,7 +104,7 @@ class TruthOrDare extends Component {
                 )
             } else {
                 return(
-                <p>Sit tight! The accused are currently deciding their appeal</p>
+                <p>The accused are currently deciding their appeal</p>
                 )
             }
         }
@@ -89,7 +112,7 @@ class TruthOrDare extends Component {
         return ( 
         <div id="truth_or_dare">
             <div id="subtitle_container">
-                <h1>Truth or Dare</h1>
+                <h1>Appeal</h1>
             </div>
 
             <div>
