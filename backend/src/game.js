@@ -1,6 +1,8 @@
 import PLAYER from "./player/player.js";
 import EPISODE from "./episode.js";
 
+const suggestion = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vestibulum mattis ullamcorper velit sed ullamcorper morbi.";
+
 // game states
 const state = {
     PREGAME: 0,
@@ -242,7 +244,7 @@ class game {
 
             // ask the judge to provide a prompt
             this.m_state = state.JUDGEPROMPT;
-            global.emitters.sig_judgeChoosePrompt(this.m_players[this.m_episode.judge()].pid, "");
+            global.emitters.sig_judgeChoosePrompt(this.m_players[this.m_episode.judge()].pid, suggestion);
 
             this.m_episode.resetNumResponses();
         }
