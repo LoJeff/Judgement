@@ -13,12 +13,28 @@ class TruthOrDare extends Component {
         // functions
         this.submitChoice = this.submitChoice.bind(this);
         this.setTODChoice = this.setTODChoice.bind(this);
+        this.clickChoice = this.clickChoice.bind(this);
     }
 
     setTODChoice(choice){
         this.setState(() => ({
             tarTODChoice: choice
         }));
+    }
+
+    clickChoice(choice){
+
+        if (this.state.tarTODChoice !== "Submitted"){
+            this.setTODChoice(choice);
+
+            if( choice === "Truth") {
+                document.getElementById('choiceTruth').setAttribute("disabled", "true");
+                document.getElementById('choiceDare').removeAttribute("disabled");
+            } else {
+                document.getElementById('choiceDare').setAttribute("disabled", "true");
+                document.getElementById('choiceTruth').removeAttribute("disabled");
+            }
+        }
     }
 
     componentDidMount(){
@@ -29,25 +45,32 @@ class TruthOrDare extends Component {
         this.props.emitters.sendTarTODVote(this.state.tarTODChoice);
 
         this.setState(() => ({
-            tarTODChoice: "Vote submitted!"
+            tarTODChoice: "Submitted"
         }));
 
-        document.getElementById('submitButton').setAttribute("disabled", "disabled");
+        document.getElementById('submitVoteButton').setAttribute("disabled", "true");
     }
 
     render(){
         const displaySubmitButton = () => {
-            if (this.state.tarTODChoice !== null) {
+            
+            if (this.state.tarTODChoice === "Submitted"){
                 return (         
                     <div>
-                    <button className="popButton" id="submitButton" onClick={this.submitChoice}> Submit Vote: {this.state.tarTODChoice}</button>
+                        <button className="submitVote" type="text" id="submitVoteButton" onClick={this.submitChoice}>Vote submitted</button>
+                    </div>
+                )
+
+            } else if (this.state.tarTODChoice !== null) {
+                return (         
+                    <div>
+                        <button className="submitVote" type="text" id="submitVoteButton" onClick={this.submitChoice}>Submit Vote</button>
                     </div>
                 )
             } else {
                 return (
-                    //TODO: SET VISUAL FOR DISABLED SUBMIT BUTTON
                     <div>
-                    <button className="popButton" onClick={null} disabled> Submit Vote: Please select a Trial option!</button>
+                        <button className="submitVote" type="text" onClick={null} disabled>Submit Vote</button>
                     </div>
                 )
             }
@@ -56,30 +79,40 @@ class TruthOrDare extends Component {
             if ( this.state.isTarget ){
                 return(
                     <div>
-                        <p>I am a target wooo</p>
+                        <div id="vote_container">
+                            <div id="tod_vote_title">
+                                Choose a Trial!
+                            </div>
+
+                            <div id="tod_vote_desc">
+                                You are currently under trial! Choose to <span id="blue_text"> Confess </span> your sins or <span id="blue_text"> Repent </span> with an act of service!
+                            </div>
+
                             <div id="possible_truthordare_set">
                                 {/**have more flushed out hover values?*/}
-                                <button className="popButton" onClick={ () => this.setTODChoice("Truth")}>Confess
+                                <button className="voteToDButtons" type="text" id="choiceTruth" onClick={ () => this.clickChoice("Truth")}>Confess
                                 </button>
-                                <button className="popButton" onClick={ () => this.setTODChoice("Dare")}>Repent
+                                <button className="voteToDButtons" type="text" id="choiceDare" onClick={ () => this.clickChoice("Dare")}>Repent
                                 </button>
                             </div>
+
                             <div>
                                 {displaySubmitButton()}
                             </div>
+                        </div>
                     </div> 
                 )
             } else {
                 return(
-                <p>Sit tight! The accused are currently deciding their appeal</p>
+                <p>The accused are currently deciding their appeal</p>
                 )
             }
         }
 
         return ( 
-        <div>
-            <div>
-                <h1>Truth or Dare</h1>
+        <div id="truth_or_dare">
+            <div id="subtitle_container">
+                <h1>Appeal</h1>
             </div>
 
             <div>

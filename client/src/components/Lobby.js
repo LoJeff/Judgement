@@ -87,8 +87,13 @@ class Lobby extends Component {
                 </div>
 
                 <div className='button_set'>
+                    <div className="login_button_container">
                     <button className="popButton" onClick={this.leaveGameRoom}>Abandon Ship</button>
+                    </div>
+                    
+                    <div className="login_button_container">
                     <button className="popButton" onClick={this.startGame}>Start Voyage</button>
+                    </div>
                 </div>
             </div>
         );

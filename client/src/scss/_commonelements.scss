@@ -3,6 +3,10 @@
     width: 100%;
 }
 
+#blue_text{
+    color: rgb(153, 214, 204);
+}
+
 #alert_container{
     margin: 5px;
     width: 50%;
@@ -13,6 +17,10 @@
     padding: 5px;
     text-align: center;
     font-size: 24px;
+}
+
+.login_button_container{
+	margin-left: 50px;
 }
 
 h1 {
@@ -86,4 +94,39 @@ p {
 	flex-direction: row;
 	margin-left: 50px;
 	float:center;
+}
+
+.selectButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    background-color: rgb(5, 9, 20);
+    border: solid 1px;
+    border-color: rgb(153, 214, 204);
+    color: rgb(153, 214, 204);
+
+    margin-left: 10px;
+    width: 100px;
+    position: relative;
+    left: 5px;
+    
+    font-family: 'Cairo';
+    text-align: center;
+
+    &:disabled{
+        display: none;
+    }
+
+    &:focus{
+        outline: none;
+    }
+
+    &:active{
+        background-color: rgb(153, 214, 204);
+        border: solid 1px;
+        border-color: rgb(5, 9, 20);
+
+        color:rgb(5, 9, 20);
+    }
 }
