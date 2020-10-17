@@ -23,6 +23,8 @@ class App extends Component {
         this.triggerPageChange = this.triggerPageChange.bind(this);
         this.updateGameid = this.updateGameid.bind(this);
         this.updateClientName = this.updateClientName.bind(this);
+        this.updateCurTargets = this.updateCurTargets.bind(this);
+
 
         // create socket connection
         const socket = io();
@@ -36,6 +38,7 @@ class App extends Component {
             pageState: "login",
             gameid: "",
             clientName: "",
+            curTargets: ""
         };
     }
 
@@ -56,6 +59,10 @@ class App extends Component {
 
     updateClientName(newName){
         this.setState({clientName: newName});
+    }
+
+    updateCurTargets(targetIds){
+        this.setState({curTargets: targetIds});
     }
 
     // Lobby Page
@@ -88,24 +95,28 @@ class App extends Component {
             return(<PickTargets emitters={this.state.emitters}
                                 handlers={this.state.handlers}
                                 triggerPageChange={this.triggerPageChange}
+                                updateCurTargets={this.updateCurTargets}
                 />)
         }
         else if(this.state.pageState === "truthOrDare"){
             return(<TruthOrDare emitters={this.state.emitters}
                                 handlers={this.state.handlers}
                                 triggerPageChange={this.triggerPageChange}
+                                updateCurTargets={this.updateCurTargets}
                 />)
         }        
         else if(this.state.pageState === "deliverToD"){
             return(<DeliverTruthOrDare emitters={this.state.emitters}
                                 handlers={this.state.handlers}
                                 triggerPageChange={this.triggerPageChange}
+                                curTargets={this.state.curTargets}
                 />)
         }
         else if(this.state.pageState === "performToD"){
             return(<PerformTruthOrDare emitters={this.state.emitters}
                          handlers={this.state.handlers}
                          triggerPageChange={this.triggerPageChange}
+                         curTargets={this.state.curTargets}
                 />)
         }
         else if(this.state.pageState === "vote"){

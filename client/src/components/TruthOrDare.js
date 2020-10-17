@@ -5,7 +5,6 @@ class TruthOrDare extends Component {
         super(props);
     
         this.state = {
-            "curTargets": null,
             "tarTODChoice": null,
             "isTarget": false
             };

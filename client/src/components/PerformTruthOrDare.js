@@ -7,7 +7,6 @@ class PerformTruthOrDare extends Component {
         this.state = {
             "isTarget": false,
             "isJudge": false,
-            "curTargets": null,
             "playerList": [],
             "curTrial": ""        
         };

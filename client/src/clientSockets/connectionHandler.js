@@ -58,19 +58,24 @@ class connectionHandler{
 		this.react.props.triggerPageChange("punishment");
 	}
 
-	notEnoughPlayers(data){
+	notEnoughPlayers(){
 		console.log("Received not enough players");
 		this.react.setState({"enoughPlayers": false});
 	}
 
 	//before vote, after judge given prompt
-	cueWaitForTrial(data){
+	cueWaitForTrial(){
 		this.react.props.triggerPageChange("performToD");
 	}
 
 	//broadcasts to all the current targets
 	valTargets(data){
-		this.react.setState({"curTargets": data.targets});
+		console.log("RECEIVEDTARGETS: "+data.targets);
+
+		console.log("UPDATECURTARGS REACT: "+Object.keys(this.react));
+		console.log("UPDATECURTARGS PROPS: "+Object.keys(this.react.props));
+
+		this.react.props.updateCurTargets(data.targets);
 	}
 
 	//the targets final decision of truth or dare
@@ -84,7 +89,7 @@ class connectionHandler{
 	//tells judge to choose our prompt, or give own suggestion
 	judgeChoosePrompt(data){
 		this.react.setState({ "isJudge": true,
-							"suggest": data.suggestion
+							"suggestion": data.suggestion
 						});
 	}
 
