@@ -19,7 +19,7 @@ class connectionEmitter{
 		this.server.to(data.gameid).emit("updateChat",sendData);
 	}
 
-	broadcast_gameUpdate(data){        
+	broadcast_gameUpdate(data){
 		this.server.to(data.gameid).emit("updateGame",data);
     }
 
