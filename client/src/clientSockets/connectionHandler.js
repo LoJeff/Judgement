@@ -35,22 +35,10 @@ class connectionHandler{
 	}
 	
 	imJudge(data){
-		console.log("id to name: "+data.idToName);
-		console.log("idToName type: "+ typeof data.idToName);
-
-		//parsed idToName
-		//var parseIdToName = JSON.parse(data.idToName);
-
-		console.log("parseIdToName type: "+typeof parseIdToName);
 
 		var playerList = data.idToName.split(",").map((x)=>{return x});
 
-		console.log("PLAYER LIST: "+playerList);
-
 		this.react.props.updatePlayerList(playerList);
-
-		//invalidSets
-		console.log("invalidsets: "+data.invalidSets);
 
 		var invalidSetsList = [];
 		if (data.invalidSets.size > 0) {
