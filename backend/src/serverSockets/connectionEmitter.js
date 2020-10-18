@@ -6,7 +6,7 @@ class connectionEmitter{
 	}
 
 	broadcast_updateRoomPlayers(data){
-		var sendData = {"playersList":data.playersList};
+		var sendData = {"idToName":data.idToName};
 		this.server.to(data.gameid).emit("updateRoomPlayers",sendData);
 	}
 
