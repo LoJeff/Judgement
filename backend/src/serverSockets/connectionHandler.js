@@ -24,14 +24,14 @@ class connectionHandler{
         if (game.getState() != 0) return;
 
 		// check that max players have not been exceeded
-		if(game.getPlayersList().length < game.m_max_players){
+		if(game.getIdToName().length < game.m_max_players){
             // add the player to the gamelist
             console.log("ADDING PLAYER " + data.name);
 			game.addPlayer(client.id,data.name);
 
 			// broadcast to all users in the room that a new player has joined
-			var playersList = global.data.findGame(data.gameid).getPlayersList();
-			var broadcastData = {"gameid":data.gameid,"playersList":playersList};
+			var idToName = global.data.findGame(data.gameid).getIdToName();
+			var broadcastData = {"gameid":data.gameid,"idToName":idToName};
 			global.emitters.broadcast_updateRoomPlayers(broadcastData);	
 
 			// broadcast chat message that a new player has joined

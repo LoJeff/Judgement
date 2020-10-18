@@ -77,6 +77,10 @@ class game {
 		return this.m_players.findIndex( (player) => player.pid == pid);
 	}
 
+    getIdToName() {
+        return this.m_id_to_name;
+    }
+
 	getPlayersList() {
 		return this.m_players;
     }
