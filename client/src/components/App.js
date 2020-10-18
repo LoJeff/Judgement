@@ -25,6 +25,7 @@ class App extends Component {
         this.updateClientName = this.updateClientName.bind(this);
         this.updateCurTargets = this.updateCurTargets.bind(this);
         this.updatePlayerList = this.updatePlayerList.bind(this);
+        this.displayPlayerNamesFromString = this.displayPlayerNamesFromString.bind(this);
 
 
         // create socket connection
@@ -69,6 +70,26 @@ class App extends Component {
 
     updatePlayerList(playerList){
         this.setState({playerList: playerList});
+    }
+
+    displayPlayerNamesFromString(playerList, playerID){
+        var result = "";
+        if (playerID !== undefined) {
+
+            var idsFromString = JSON.stringify(playerID);
+            var listOfIds = idsFromString.split(",").map((x)=>{ 
+                var x = x.replace(/\D/g, ''); 
+                return parseInt(x);
+            });
+
+            for (var i = 0; i < listOfIds.length; i++){
+                if (i === listOfIds.length - 1) {
+                    result += " and";
+                }
+                result += " " + playerList[listOfIds[i]];
+            }
+        }
+        return result;
     }
 
     // Lobby Page
@@ -121,6 +142,7 @@ class App extends Component {
                                 triggerPageChange={this.triggerPageChange}
                                 curTargets={this.state.curTargets}
                                 playerList={this.state.playerList}
+                                displayPlayerNamesFromString={this.displayPlayerNamesFromString}
                 />)
         }
         else if(this.state.pageState === "performToD"){
@@ -128,12 +150,17 @@ class App extends Component {
                          handlers={this.state.handlers}
                          triggerPageChange={this.triggerPageChange}
                          curTargets={this.state.curTargets}
+                         playerList={this.state.playerList}
+                         displayPlayerNamesFromString={this.displayPlayerNamesFromString}
                 />)
         }
         else if(this.state.pageState === "vote"){
             return(<Vote emitters={this.state.emitters}
                          handlers={this.state.handlers}
                          triggerPageChange={this.triggerPageChange}
+                         curTargets={this.state.curTargets}
+                         playerList={this.state.playerList}
+                         displayPlayerNamesFromString={this.displayPlayerNamesFromString}
                 />)
         }
         else if(this.state.pageState === "leaderboard"){

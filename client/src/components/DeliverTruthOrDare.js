@@ -12,7 +12,6 @@ class DeliverTruthOrDare extends Component {
 
         // functions
         this.continueToTrial = this.continueToTrial.bind(this);
-        this.displayPlayerNamesFromString = this.displayPlayerNamesFromString.bind(this);
     }
 
     componentDidMount(){
@@ -24,27 +23,7 @@ class DeliverTruthOrDare extends Component {
         this.props.emitters.sendJudgePrompt(trial);
 
         // trigger page change
-        this.props.triggerPageChange("vote");
-    }
-
-    displayPlayerNamesFromString(playerList, pairID){
-        var result = "";
-        if (pairID !== null) {
-
-            var idsFromString = JSON.stringify(pairID);
-            var listOfIds = idsFromString.split(",").map((x)=>{ 
-                var x = x.replace(/\D/g, ''); 
-                return parseInt(x);
-            });
-
-            for (var i = 0; i < listOfIds.length; i++){
-                if (i === listOfIds.length - 1) {
-                    result += " and";
-                }
-                result += " " + playerList[listOfIds[i]];
-            }
-        }
-        return result;
+        this.props.triggerPageChange("performToD");
     }
 
     render(){
@@ -67,7 +46,7 @@ class DeliverTruthOrDare extends Component {
                                 </div>
 
                                 <div id="tod_vote_desc">
-                                    Test {this.displayPlayerNamesFromString(this.props.playerList, this.props.curTargets)} with a trial.
+                                    Test {this.props.displayPlayerNamesFromString(this.props.playerList, this.props.curTargets)} with a trial.
                                 </div>
 
                                 <div>
@@ -105,7 +84,7 @@ class DeliverTruthOrDare extends Component {
                 return (
                     <div>
                         <h2>Jury</h2>
-                        <p>Awaiting Judge to choose a Trial for, {this.displayPlayerNamesFromString(this.props.playerList, this.props.curTargets)} </p>
+                        <p>Awaiting Judge to choose a Trial for: {this.props.displayPlayerNamesFromString(this.props.playerList, this.props.curTargets)} </p>
                     </div>
                 )
             }
@@ -114,7 +93,7 @@ class DeliverTruthOrDare extends Component {
         return ( 
         <div>
             <div>
-                <h1>Awaiting Trial for: {this.displayPlayerNamesFromString(this.props.playerList, this.props.curTargets)} </h1>
+                <h1>Awaiting Trial for: {this.props.displayPlayerNamesFromString(this.props.playerList, this.props.curTargets)} </h1>
             </div>
 
             <div>

@@ -8,8 +8,6 @@ class Vote extends Component {
             "isJudge": false,
             "playerVote": null,
             "trigLeaderboard": false,
-            "curTargets": null,
-            "playerList": [],
             "resultVote": null,
             "trigEndGame": false
         };
@@ -17,7 +15,6 @@ class Vote extends Component {
         // functions
         this.submitVote = this.submitVote.bind(this);
         this.setPlayerVote = this.setPlayerVote.bind(this);
-        this.getTargetNameFromString = this.getTargetNameFromString(this);
         this.contToRoundEnd = this.contToRoundEnd(this);
     }
 
@@ -35,7 +32,7 @@ class Vote extends Component {
     contToRoundEnd(){
         //if leaderboard screen is seen
         if (this.state.trigEndGame){
-            this.props.triggerPageChange("FinalLeaderboard");
+            this.props.triggerPageChange("finalLeaderboard");
 
         } else if (this.state.trigLeaderboard){
             this.props.triggerPageChange("leaderboard");
@@ -50,18 +47,13 @@ class Vote extends Component {
         this.props.handlers.updateReact(this);
     }
 
-    getTargetNameFromString(playerIndex, playerList, string){
-        return playerList[string.split(",")[playerIndex]]
-    }
-
     render(){
 
         const showJudgeSpecificElement = () => {
             if ( this.state.isJudge ){
                 return(
                     <div>
-                        //the captain can say this:
-                        <p>Remember, you are the judge! Your votes hold twice the power!</p>
+                        <p>You are the judge! Your vote holds twice the power!</p>
                     </div> 
                 )
             }
@@ -106,7 +98,6 @@ class Vote extends Component {
                 <div id="submit_button_container">
                     <div>
                         <button className="popButton" type="submit" onClick={this.submitVote(0)}>
-                            //this probably is not displayed properly?
                             {this.getTargetNameFromString(0, this.state.playerList, this.state.curTargets)}
                         </button>
                     </div>

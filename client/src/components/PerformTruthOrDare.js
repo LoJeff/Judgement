@@ -12,16 +12,7 @@ class PerformTruthOrDare extends Component {
         };
 
         // functions
-        //TODO: figure this out with correct parameters
-        //figure out how to import functions
-        //Vote.getTargetNameFromString(0, this.state.playerList, this.state.curTargets);
         this.continueGame = this.continueGame.bind(this);
-        this.displayPlayerNamesFromString = this.displayPlayerNamesFromString.bind(this);
-        this.getTargetNameFromString = this.getTargetNameFromString.bind(this);
-    }
-
-    getTargetNameFromString(playerIndex, playerList, string){
-        return playerList[string.split(",")[playerIndex]]
     }
 
     componentDidMount(){
@@ -34,18 +25,6 @@ class PerformTruthOrDare extends Component {
 
         // trigger page change
         this.props.triggerPageChange("vote");
-    }
-
-    displayPlayerNamesFromString(playerList, string){
-        var result = "";
-        var idsFromString = string.split(",");
-        for (var i = 0; i < idsFromString.length; i++){
-            if (i === idsFromString.length - 1) {
-                result += " and ";
-            }
-            result += this.getTargetNameFromString(i, playerList, string) + " ";
-        }
-        return result;
     }
 
     render(){
@@ -77,7 +56,7 @@ class PerformTruthOrDare extends Component {
                 return (
                     <div>
                         <h2>Jury</h2>
-                <p> {this.props.displayPlayerNamesFromString(this.state.playerList, this.state.curTargets)} are currently on Trial! They received this order from the Judge.</p>
+                <p> {this.props.displayPlayerNamesFromString(this.props.playerList, this.props.curTargets)} are currently on Trial! They received this order from the Judge: </p>
                 <p> Be prepared to vote on who passes the trial! </p>
                     </div>
                 )
