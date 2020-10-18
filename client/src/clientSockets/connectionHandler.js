@@ -23,9 +23,7 @@ class connectionHandler{
 
 	// Notifies the client that a new member has joined the game room
 	updateRoomPlayers(data){
-		// data
-			// data.players
-		this.react.setState({"playersList": data.playersList});
+		this.react.props.updatePlayerList(data.idToName);
 	}
 
 	updateGame(data){
@@ -37,8 +35,29 @@ class connectionHandler{
 	}
 	
 	imJudge(data){
-		this.react.setState({"invalidSets": data.invalidSets,
-							"playerList": data.idToName,
+		console.log("id to name: "+data.idToName);
+		console.log("idToName type: "+ typeof data.idToName);
+
+		//parsed idToName
+		//var parseIdToName = JSON.parse(data.idToName);
+
+		console.log("parseIdToName type: "+typeof parseIdToName);
+
+		var playerList = data.idToName.split(",").map((x)=>{return x});
+
+		console.log("PLAYER LIST: "+playerList);
+
+		this.react.props.updatePlayerList(playerList);
+
+		//invalidSets
+		console.log("invalidsets: "+data.invalidSets);
+
+		var invalidSetsList = [];
+		if (data.invalidSets.size > 0) {
+			invalidSetsList = data.invalidSets.split(",").map((x)=>{ return x});
+		}
+
+		this.react.setState({"invalidSets": invalidSetsList,
 							"judgeID": data.judgeID,
 							"isJudge": true
 						});
@@ -49,9 +68,6 @@ class connectionHandler{
 	}
 
 	beginGame(){
-
-		console.log("BEGIN REACT: "+Object.keys(this.react));
-		console.log("BEGIN PROPS: "+Object.keys(this.react.props));
 
 		console.log("Received begin game");
 		this.react.setState({"enoughPlayers": true});        
@@ -70,11 +86,6 @@ class connectionHandler{
 
 	//broadcasts to all the current targets
 	valTargets(data){
-		console.log("RECEIVEDTARGETS: "+data.targets);
-
-		console.log("UPDATECURTARGS REACT: "+Object.keys(this.react));
-		console.log("UPDATECURTARGS PROPS: "+Object.keys(this.react.props));
-
 		this.react.props.updateCurTargets(data.targets);
 	}
 

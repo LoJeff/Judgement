@@ -7,20 +7,12 @@ class DeliverTruthOrDare extends Component {
         this.state = {
             "isTarget": null,
             "isJudge": null,
-            "playerList": [],
             "suggestion": ""
             };
 
         // functions
         this.continueToTrial = this.continueToTrial.bind(this);
         this.displayPlayerNamesFromString = this.displayPlayerNamesFromString.bind(this);
-        this.getTargetNameFromString = this.getTargetNameFromString.bind(this);
-    }
-
-    getTargetNameFromString(playerIndex, playerList, stringIDs){
-        var stringOfIds = JSON.stringify(stringIDs);
-
-        return playerList[stringOfIds.split(",")[playerIndex]];
     }
 
     componentDidMount(){
@@ -40,12 +32,16 @@ class DeliverTruthOrDare extends Component {
         if (pairID !== null) {
 
             var idsFromString = JSON.stringify(pairID);
-            idsFromString = idsFromString.split(",");
-            for (var i = 0; i < idsFromString.length; i++){
-                if (i === idsFromString.length - 1) {
-                    result += " and ";
+            var listOfIds = idsFromString.split(",").map((x)=>{ 
+                var x = x.replace(/\D/g, ''); 
+                return parseInt(x);
+            });
+
+            for (var i = 0; i < listOfIds.length; i++){
+                if (i === listOfIds.length - 1) {
+                    result += " and";
                 }
-                result += this.getTargetNameFromString(i, playerList, idsFromString) + " ";
+                result += " " + playerList[listOfIds[i]];
             }
         }
         return result;
@@ -71,7 +67,7 @@ class DeliverTruthOrDare extends Component {
                                 </div>
 
                                 <div id="tod_vote_desc">
-                                    Test {this.props.curTargets} with a trial.
+                                    Test {this.displayPlayerNamesFromString(this.props.playerList, this.props.curTargets)} with a trial.
                                 </div>
 
                                 <div>
@@ -109,7 +105,7 @@ class DeliverTruthOrDare extends Component {
                 return (
                     <div>
                         <h2>Jury</h2>
-                        <p>Awaiting Judge to choose a Trial for, {this.displayPlayerNamesFromString(this.state.playerList, this.props.curTargets)} </p>
+                        <p>Awaiting Judge to choose a Trial for, {this.displayPlayerNamesFromString(this.props.playerList, this.props.curTargets)} </p>
                     </div>
                 )
             }
@@ -118,7 +114,7 @@ class DeliverTruthOrDare extends Component {
         return ( 
         <div>
             <div>
-                <h1>Awaiting Trial for: {this.props.curTargets} </h1>
+                <h1>Awaiting Trial for: {this.displayPlayerNamesFromString(this.props.playerList, this.props.curTargets)} </h1>
             </div>
 
             <div>

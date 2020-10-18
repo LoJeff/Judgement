@@ -5,7 +5,6 @@ class PickTargets extends Component {
         super(props);
     
         this.state = {
-            "playerList": [],
             "invalidSets": [],
             "isJudge": false,
             "curJudge": null,
@@ -98,7 +97,7 @@ class PickTargets extends Component {
             if (this.state.targetAID !== null && this.state.targetBID !== null) {
                 return (
                     <div>
-                        <button className='submitButton' onClick={this.submitTargets}>Submit Passengers {this.state.playerList[this.state.targetAID]} and {this.state.playerList[this.state.targetBID]} for Trial!</button>
+                        <button className='submitButton' onClick={this.submitTargets}>Submit Passengers {this.props.playerList[this.state.targetAID]} and {this.props.playerList[this.state.targetBID]} for Trial!</button>
                     </div>
                 )
             }
@@ -106,12 +105,13 @@ class PickTargets extends Component {
 
         var possibleTargetElements = [];
         
-        if (this.state.playerList !== undefined){
+        if (this.props.playerList !== undefined){
 
-            for (var i = 0; i < this.state.playerList.length; i++){
+            for (var i = 0; i < this.props.playerList.length; i++){
+
                 possibleTargetElements.push(
                     <li key={i} >
-                        {this.state.playerList[i]}
+                        {this.props.playerList[i]}
                         {checkDisplayButton(i)}
                     </li>
                 )
@@ -150,7 +150,7 @@ class PickTargets extends Component {
                 )
             }
         }
-
+                
         return( 
         <div id='pick_targets'>
             <div id="subtitle_container">

@@ -24,6 +24,7 @@ class App extends Component {
         this.updateGameid = this.updateGameid.bind(this);
         this.updateClientName = this.updateClientName.bind(this);
         this.updateCurTargets = this.updateCurTargets.bind(this);
+        this.updatePlayerList = this.updatePlayerList.bind(this);
 
 
         // create socket connection
@@ -38,7 +39,8 @@ class App extends Component {
             pageState: "login",
             gameid: "",
             clientName: "",
-            curTargets: ""
+            curTargets: "",
+            playerList: []
         };
     }
 
@@ -65,6 +67,10 @@ class App extends Component {
         this.setState({curTargets: targetIds});
     }
 
+    updatePlayerList(playerList){
+        this.setState({playerList: playerList});
+    }
+
     // Lobby Page
     render(){
         if(this.state.pageState === "login"){
@@ -83,6 +89,8 @@ class App extends Component {
                           updateGameid={this.updateGameid}
                           gameid={this.state.gameid}
                           clientName={this.state.clientName}
+                          updatePlayerList={this.updatePlayerList}
+                          playerList={this.state.playerList}
                           />);
         }
         else if(this.state.pageState === "punishment"){
@@ -94,8 +102,10 @@ class App extends Component {
         else if(this.state.pageState === "pickTargets"){
             return(<PickTargets emitters={this.state.emitters}
                                 handlers={this.state.handlers}
+                                playerList={this.state.playerList}
                                 triggerPageChange={this.triggerPageChange}
                                 updateCurTargets={this.updateCurTargets}
+                                updatePlayerList={this.updatePlayerList}
                 />)
         }
         else if(this.state.pageState === "truthOrDare"){
@@ -110,6 +120,7 @@ class App extends Component {
                                 handlers={this.state.handlers}
                                 triggerPageChange={this.triggerPageChange}
                                 curTargets={this.state.curTargets}
+                                playerList={this.state.playerList}
                 />)
         }
         else if(this.state.pageState === "performToD"){
