@@ -91,7 +91,11 @@ class connectionEmitter{
         if (this.debug) {
             console.log("Signal to Judge that they are the judge and give non-available pairs");
         }
-        this.server.to(pid).emit("imJudge", {"invalidSets": invalid_sets, "idToName": id_to_name, "judgeID": judge_id});
+        this.server.to(pid).emit("imJudge", {
+            "invalidSets": JSON.stringify(invalid_sets),
+            "idToName": JSON.stringify(id_to_name),
+            "judgeID": judge_id
+        });
     }
     
     /*
