@@ -166,21 +166,21 @@ class connectionEmitter{
     /*
     In/Out: pid(str)
     */
+    sig_tarResultPrompt(pid) {
+        if (this.debug) {
+            console.log("Signal to the targets that the prompt has been provided");
+        }
+        this.servers.to(pid).emit("tarResultPrompt");
+    }
+
+    /*
+    In/Out: pid(str)
+    */
     sig_judgeReqCont(pid) {
         if (this.debug) {
             console.log("Tell the judge to choose to continue when truth/dares are done");
         }
         this.server.to(pid).emit("judgeReqCont");
-    }
-
-    /*
-    In/Out: gameid(str)
-    */
-    bro_waitForTrial(gameid) {
-        if (this.debug) {
-            console.log("Tell everyone that we are currently in the process of the trial");
-        }
-        this.server.to(gameid).emit("waitForTrial");
     }
     
     /*

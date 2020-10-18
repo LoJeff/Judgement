@@ -266,7 +266,9 @@ class game {
 
         // tell the judge that he/she needs to choose to continue
         this.m_state = state.JUDGECONTTOD;
-        global.emitters.bro_waitForTrial(this.m_id);
+        for (var i = 0; i < this.m_episode.maxTargets(); i++) {
+            global.emitters.sig_tarResultPrompt(this.m_players[this.m_episode.target(i)].pid);
+        }
         global.emitters.sig_judgeReqCont(this.m_players[this.m_episode.judge()].pid);
     }
 
