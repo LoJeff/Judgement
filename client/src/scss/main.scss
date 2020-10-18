@@ -7,6 +7,7 @@
 @import "commonelements";
 @import "lobby";
 @import "truthordare";
+@import "delivertruthordare";
 
 //fonts
 @import url('https://fonts.googleapis.com/css2?&family=Cairo&family=Major+Mono+Display&display=swap');
@@ -24,7 +25,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: black;
-  //background-image: url("../images/dmgDarkBG1.png");
 }
 
 code {

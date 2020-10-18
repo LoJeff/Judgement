@@ -7,19 +7,11 @@ class DeliverTruthOrDare extends Component {
         this.state = {
             "isTarget": null,
             "isJudge": null,
-            "curTargets": null,
-            "playerList": [],
             "suggestion": ""
             };
 
         // functions
         this.continueToTrial = this.continueToTrial.bind(this);
-        this.displayPlayerNamesFromString = this.displayPlayerNamesFromString.bind(this);
-        this.getTargetNameFromString = this.getTargetNameFromString.bind(this);
-    }
-
-    getTargetNameFromString(playerIndex, playerList, string){
-        return playerList[string.split(",")[playerIndex]]
     }
 
     componentDidMount(){
@@ -31,21 +23,7 @@ class DeliverTruthOrDare extends Component {
         this.props.emitters.sendJudgePrompt(trial);
 
         // trigger page change
-        this.props.triggerPageChange("vote");
-    }
-
-    displayPlayerNamesFromString(playerList, string){
-        var result = "";
-        if (string !== null) {
-            var idsFromString = string.split(",");
-            for (var i = 0; i < idsFromString.length; i++){
-                if (i === idsFromString.length - 1) {
-                    result += " and ";
-                }
-                result += this.getTargetNameFromString(i, playerList, string) + " ";
-            }
-        }
-        return result;
+        this.props.triggerPageChange("performToD");
     }
 
     render(){
@@ -60,28 +38,44 @@ class DeliverTruthOrDare extends Component {
                 )
             } else if (this.state.isJudge) {
                 return(
-                    <div>
-                        <h2>Judge</h2>
-                        <p> Give {this.state.curTargets} a trial.</p>
-                        <p>Come up with your own trial or choose one of ours?</p>
-                        <div id="interactive_set">
-                            <div className="row_of_input">
-                                <div id="punishment_container">
-                                        <form > <input className="punishmentInput" type="text" id="customTrial" placeholder="Enter Trial!"/></form>
+                    <div id="deliver-tod">
+                        <div id="trials-container">
+                            <div className="enter-trial-container">
+                                <div id="trial_vote_title">
+                                    Trial
                                 </div>
+
+                                <div id="tod_vote_desc">
+                                    Test {this.props.displayPlayerNamesFromString(this.props.playerList, this.props.curTargets)} with a trial.
+                                </div>
+
+                                <div>
+                                        <form > <textarea className="custom-trial-input" type="text" id="customTrial" placeholder="Enter Trial!"/></form>
+                                </div>
+
+                                <div id="submit_button_container">
+                                    <button className="submitButton" type="submit" onClick={ () => this.continueToTrial(document.getElementById("customTrial").value)}>Submit Custom Trial
+                                    </button>
+                                </div>
+
                             </div>
 
-                            <div id="submit_button_container">
-                                <button className="popButton" type="submit" onClick={ () => this.continueToTrial(document.getElementById("customTrial").value)}>Submit Custom Trial
-                                </button>
+                            <div className="enter-trial-sidebar-container">
+                                <div id="enter-trial-sidebar-title"> Message from the captain:</div>
+                                Hey, try this trial!
+                                <div id="suggestion-container">
+                                    {this.state.suggestion}
+                                </div>
+
+                                <div id="submit_button_container">
+
+                                    <button className="submitButton" type="submit" onClick={ () => this.continueToTrial(this.state.suggestion)}>
+                                        Submit Suggested Trial
+                                    </button>
+                                </div>
                             </div>
-                            
-                        <div id="submit_button_container">
-                            <button className="popButton" type="submit" onClick={ () => this.continueToTrial(this.state.suggestion)}>
-                                Suggestion: {this.state.suggestion}
-                            </button>
                         </div>
-                        </div>
+
                     </div>
                 )
             //if not judge or target, then they are jury
@@ -90,7 +84,7 @@ class DeliverTruthOrDare extends Component {
                 return (
                     <div>
                         <h2>Jury</h2>
-                        <p>Awaiting Judge to choose a Trial for, {this.displayPlayerNamesFromString(this.state.playerList, this.state.curTargets)} </p>
+                        <p>Awaiting Judge to choose a Trial for: {this.props.displayPlayerNamesFromString(this.props.playerList, this.props.curTargets)} </p>
                     </div>
                 )
             }
@@ -99,7 +93,7 @@ class DeliverTruthOrDare extends Component {
         return ( 
         <div>
             <div>
-                <h1>Awaiting Trial for: {this.state.curTargets} </h1>
+                <h1>Awaiting Trial for: {this.props.displayPlayerNamesFromString(this.props.playerList, this.props.curTargets)} </h1>
             </div>
 
             <div>

@@ -9,7 +9,6 @@ class Lobby extends Component {
 
         // state
         this.state = {
-            "playersList": [],
             "enoughPlayers": false,
             "displayNotEnoughPlayers": null
         };
@@ -46,9 +45,9 @@ class Lobby extends Component {
 
     render(){
         const playersListElements = [];
-        if (this.state.playersList !== undefined){
-            this.state.playersList.forEach(function(player){
-                playersListElements.push(<li key={player.id}>{player.name} (id:{player.id})</li>)
+        if (this.props.playerList !== undefined){
+            this.props.playerList.forEach(function(playerName){
+                playersListElements.push(<li key={playerName}>{playerName}</li>)
             });
         }
 

@@ -23,6 +23,10 @@ class App extends Component {
         this.triggerPageChange = this.triggerPageChange.bind(this);
         this.updateGameid = this.updateGameid.bind(this);
         this.updateClientName = this.updateClientName.bind(this);
+        this.updateCurTargets = this.updateCurTargets.bind(this);
+        this.updatePlayerList = this.updatePlayerList.bind(this);
+        this.displayPlayerNamesFromString = this.displayPlayerNamesFromString.bind(this);
+
 
         // create socket connection
         const socket = io();
@@ -36,6 +40,8 @@ class App extends Component {
             pageState: "login",
             gameid: "",
             clientName: "",
+            curTargets: "",
+            playerList: []
         };
     }
 
@@ -58,6 +64,34 @@ class App extends Component {
         this.setState({clientName: newName});
     }
 
+    updateCurTargets(targetIds){
+        this.setState({curTargets: targetIds});
+    }
+
+    updatePlayerList(playerList){
+        this.setState({playerList: playerList});
+    }
+
+    displayPlayerNamesFromString(playerList, playerID){
+        var result = "";
+        if (playerID !== undefined) {
+
+            var idsFromString = JSON.stringify(playerID);
+            var listOfIds = idsFromString.split(",").map((x)=>{ 
+                var x = x.replace(/\D/g, ''); 
+                return parseInt(x);
+            });
+
+            for (var i = 0; i < listOfIds.length; i++){
+                if (i === listOfIds.length - 1) {
+                    result += " and";
+                }
+                result += " " + playerList[listOfIds[i]];
+            }
+        }
+        return result;
+    }
+
     // Lobby Page
     render(){
         if(this.state.pageState === "login"){
@@ -76,6 +110,8 @@ class App extends Component {
                           updateGameid={this.updateGameid}
                           gameid={this.state.gameid}
                           clientName={this.state.clientName}
+                          updatePlayerList={this.updatePlayerList}
+                          playerList={this.state.playerList}
                           />);
         }
         else if(this.state.pageState === "punishment"){
@@ -87,31 +123,44 @@ class App extends Component {
         else if(this.state.pageState === "pickTargets"){
             return(<PickTargets emitters={this.state.emitters}
                                 handlers={this.state.handlers}
+                                playerList={this.state.playerList}
                                 triggerPageChange={this.triggerPageChange}
+                                updateCurTargets={this.updateCurTargets}
+                                updatePlayerList={this.updatePlayerList}
                 />)
         }
         else if(this.state.pageState === "truthOrDare"){
             return(<TruthOrDare emitters={this.state.emitters}
                                 handlers={this.state.handlers}
                                 triggerPageChange={this.triggerPageChange}
+                                updateCurTargets={this.updateCurTargets}
                 />)
         }        
         else if(this.state.pageState === "deliverToD"){
             return(<DeliverTruthOrDare emitters={this.state.emitters}
                                 handlers={this.state.handlers}
                                 triggerPageChange={this.triggerPageChange}
+                                curTargets={this.state.curTargets}
+                                playerList={this.state.playerList}
+                                displayPlayerNamesFromString={this.displayPlayerNamesFromString}
                 />)
         }
         else if(this.state.pageState === "performToD"){
             return(<PerformTruthOrDare emitters={this.state.emitters}
                          handlers={this.state.handlers}
                          triggerPageChange={this.triggerPageChange}
+                         curTargets={this.state.curTargets}
+                         playerList={this.state.playerList}
+                         displayPlayerNamesFromString={this.displayPlayerNamesFromString}
                 />)
         }
         else if(this.state.pageState === "vote"){
             return(<Vote emitters={this.state.emitters}
                          handlers={this.state.handlers}
                          triggerPageChange={this.triggerPageChange}
+                         curTargets={this.state.curTargets}
+                         playerList={this.state.playerList}
+                         displayPlayerNamesFromString={this.displayPlayerNamesFromString}
                 />)
         }
         else if(this.state.pageState === "leaderboard"){

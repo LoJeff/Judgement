@@ -23,9 +23,7 @@ class connectionHandler{
 
 	// Notifies the client that a new member has joined the game room
 	updateRoomPlayers(data){
-		// data
-			// data.players
-		this.react.setState({"playersList": data.playersList});
+		this.react.props.updatePlayerList(data.idToName);
 	}
 
 	updateGame(data){
@@ -37,8 +35,17 @@ class connectionHandler{
 	}
 	
 	imJudge(data){
-		this.react.setState({"invalidSets": data.invalidSets,
-							"playerList": data.idToName,
+
+		var playerList = data.idToName.split(",").map((x)=>{return x});
+
+		this.react.props.updatePlayerList(playerList);
+
+		var invalidSetsList = [];
+		if (data.invalidSets.size > 0) {
+			invalidSetsList = data.invalidSets.split(",").map((x)=>{ return x});
+		}
+
+		this.react.setState({"invalidSets": invalidSetsList,
 							"judgeID": data.judgeID,
 							"isJudge": true
 						});
@@ -50,27 +57,24 @@ class connectionHandler{
 
 	beginGame(){
 
-		console.log("BEGIN REACT: "+Object.keys(this.react));
-		console.log("BEGIN PROPS: "+Object.keys(this.react.props));
-
 		console.log("Received begin game");
 		this.react.setState({"enoughPlayers": true});        
 		this.react.props.triggerPageChange("punishment");
 	}
 
-	notEnoughPlayers(data){
+	notEnoughPlayers(){
 		console.log("Received not enough players");
 		this.react.setState({"enoughPlayers": false});
 	}
 
 	//before vote, after judge given prompt
-	cueWaitForTrial(data){
+	cueWaitForTrial(){
 		this.react.props.triggerPageChange("performToD");
 	}
 
 	//broadcasts to all the current targets
 	valTargets(data){
-		this.react.setState({"curTargets": data.targets});
+		this.react.props.updateCurTargets(data.targets);
 	}
 
 	//the targets final decision of truth or dare
@@ -84,7 +88,7 @@ class connectionHandler{
 	//tells judge to choose our prompt, or give own suggestion
 	judgeChoosePrompt(data){
 		this.react.setState({ "isJudge": true,
-							"suggest": data.suggestion
+							"suggestion": data.suggestion
 						});
 	}
 
