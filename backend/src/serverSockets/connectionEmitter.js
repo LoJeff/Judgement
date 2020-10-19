@@ -170,7 +170,7 @@ class connectionEmitter{
         if (this.debug) {
             console.log("Signal to the targets that the prompt has been provided");
         }
-        this.servers.to(pid).emit("tarResultPrompt");
+        this.server.to(pid).emit("tarResultPrompt");
     }
 
     /*

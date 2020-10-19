@@ -60,7 +60,7 @@ class Vote extends Component {
         }
 
         const voteResultElements = [];
-        if (this.state.resultVote !== undefined){
+        if (this.state.resultVote !== null){
             this.state.resultVote.forEach(function(target){
                 voteResultElements.push(<li key={this.state.resultVote.indexOf(target)}>{target[0]} had {target[1]} votes </li>)
             });
@@ -98,12 +98,12 @@ class Vote extends Component {
                 <div id="submit_button_container">
                     <div>
                         <button className="popButton" type="submit" onClick={this.submitVote(0)}>
-                            {this.getTargetNameFromString(0, this.state.playerList, this.state.curTargets)}
+                            {this.props.displayPlayerNamesFromString(this.props.playerList, this.props.curTargets[0])}
                         </button>
                     </div>
                     <div>
                         <button className="popButton" type="submit" onClick={this.submitVote(1)}>
-                            {this.getTargetNameFromString(1, this.state.playerList, this.state.curTargets)}
+                            {this.props.displayPlayerNamesFromString(this.props.playerList, this.props.curTargets[1])}
                         </button>
                     </div>
 				</div>

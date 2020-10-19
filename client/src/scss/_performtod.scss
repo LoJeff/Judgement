@@ -1,0 +1,48 @@
+#target-trial-container{
+    background-color: rgb(5, 9, 20);
+
+    color: rgb(197, 84, 127);
+
+    padding: 10px 20px;
+
+    width: 60%;
+    padding: 20px;
+    transform: translate(30%);
+}
+
+#trial-container{
+    border: solid 1px;
+    border-color: rgb(197, 84, 127);
+
+    color: rgb(197, 84, 127);
+
+    padding: 10px;
+    margin: 10px;
+}
+
+#continue-trial-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background-color: rgb(5, 9, 20);
+    border-color: rgb(197, 84, 127);
+
+    color: rgb(197, 84, 127);
+    text-align: center;
+
+    width: 60%;
+    padding: 20px;
+    transform: translate(30%);
+}
+
+#wait-vote-container{
+    background-color: rgb(5, 9, 20);
+
+    color: rgb(197, 84, 127);
+
+    width: 60%;
+    padding: 20px;
+    transform: translate(30%);
+}

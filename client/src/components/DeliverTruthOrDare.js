@@ -39,7 +39,7 @@ class DeliverTruthOrDare extends Component {
             } else if (this.state.isJudge) {
                 return(
                     <div id="deliver-tod">
-                        <div id="trials-container">
+                        <div id="enter-trials-container">
                             <div className="enter-trial-container">
                                 <div id="trial_vote_title">
                                     Trial

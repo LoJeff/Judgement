@@ -67,11 +67,6 @@ class connectionHandler{
 		this.react.setState({"enoughPlayers": false});
 	}
 
-	//before vote, after judge given prompt
-	cueWaitForTrial(){
-		this.react.props.triggerPageChange("performToD");
-	}
-
 	//broadcasts to all the current targets
 	valTargets(data){
 		this.react.props.updateCurTargets(data.targets);
@@ -94,11 +89,19 @@ class connectionHandler{
 
 	//broadcast the trial that judge chose
 	judgeResultPrompt(data){
+		this.react.props.triggerPageChange("performToD");
 		this.react.setState({"curTrial": data.prompt});
+	}
+
+	tarResultPrompt(data){
+		this.react.setState({ "isTarget": true})
 	}
 
 	judgeReqCont(data){
 		console.log("Received: tell judge to continue when trial is over");
+		this.react.setState({
+			"isJudge": true
+		})
 	}
 
 	playerVote(data){
@@ -180,10 +183,6 @@ class connectionHandler{
 			this.tarResultTOD(data);
 		}.bind(this));
 
-		client.on("waitForTrial",function(){
-			this.cueWaitForTrial();
-		}.bind(this));
-
 		client.on("valTargets",function(data){
 			this.valTargets(data);
 		}.bind(this));
@@ -199,6 +198,10 @@ class connectionHandler{
 
 		client.on("judgeResultPrompt", function(data){
 			this.judgeResultPrompt(data);
+		}.bind(this));
+
+		client.on("tarResultPrompt", function(data){
+			this.tarResultPrompt(data);
 		}.bind(this));
 		
 		client.on("judgeReqCont",function(data){
