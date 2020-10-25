@@ -286,7 +286,7 @@ class game {
     rcvVote(vote, pid) {
         if (this.m_state != state.VOTE) return;
         // Check if person trying to vote is one of the targets
-        if (isTargetId(pid)) return;
+        if (this.m_episode.isTargetId(pid)) return;
 
         var isJudge = (pid == this.m_players[this.m_episode.judge()].pid);
 

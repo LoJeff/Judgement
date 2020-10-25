@@ -138,7 +138,7 @@ class connectionHandler{
             if (this.debug) {
                 console.log("Receiving target vote for TOD | tarId: " + client.id + ", tarVote: " + data.tarVote.toString());
             }
-            var choice = data.tarVote == "Truth" ? 0 : 1;
+            var choice = data.tarVote;
             game.rcvTarTOD(choice, client.id);
         } else {
             if (this.debug) {
