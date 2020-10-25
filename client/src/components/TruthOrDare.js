@@ -13,6 +13,7 @@ class TruthOrDare extends Component {
         this.submitChoice = this.submitChoice.bind(this);
         this.setTODChoice = this.setTODChoice.bind(this);
         this.clickChoice = this.clickChoice.bind(this);
+        this.displaySubmitButton = this.displaySubmitButton.bind(this);
     }
 
     setTODChoice(choice){
@@ -50,30 +51,31 @@ class TruthOrDare extends Component {
         document.getElementById('submitVoteButton').setAttribute("disabled", "true");
     }
 
-    render(){
-        const displaySubmitButton = () => {
-            
-            if (this.state.tarTODChoice === "Submitted"){
-                return (         
-                    <div>
-                        <button className="submitVote" type="text" id="submitVoteButton" onClick={this.submitChoice}>Vote submitted</button>
-                    </div>
-                )
+    displaySubmitButton(){
+        if (this.state.tarTODChoice === "Submitted"){
+            return (         
+                <div>
+                    <button className="submitVote" type="text" id="submitVoteButton" onClick={this.submitChoice}>Vote submitted</button>
+                </div>
+            )
 
-            } else if (this.state.tarTODChoice !== null) {
-                return (         
-                    <div>
-                        <button className="submitVote" type="text" id="submitVoteButton" onClick={this.submitChoice}>Submit Vote</button>
-                    </div>
-                )
-            } else {
-                return (
-                    <div>
-                        <button className="submitVote" type="text" onClick={null} disabled>Submit Vote</button>
-                    </div>
-                )
-            }
+        } else if (this.state.tarTODChoice !== null) {
+            return (         
+                <div>
+                    <button className="submitVote" type="text" id="submitVoteButton" onClick={this.submitChoice}>Submit Vote</button>
+                </div>
+            )
+        } else {
+            return (
+                <div>
+                    <button className="submitVote" type="text" onClick={null} disabled>Submit Vote</button>
+                </div>
+            )
         }
+    }
+
+    render(){
+
         const showUserSpecificScreen = () => {
             if ( this.state.isTarget ){
                 return(
@@ -96,7 +98,7 @@ class TruthOrDare extends Component {
                             </div>
 
                             <div>
-                                {displaySubmitButton()}
+                                {this.displaySubmitButton()}
                             </div>
                         </div>
                     </div> 

@@ -73,7 +73,7 @@ class Vote extends Component {
     render(){
 
         const showJudgeSpecificElement = () => {
-            if ( true ){
+            if ( this.state.isJudge ){
                 return(
                     <div>
                         <p>You are the judge! Your vote holds twice the power!</p>

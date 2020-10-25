@@ -247,7 +247,7 @@ class connectionHandler{
             this.rcvTargets(client,data);
         }.bind(this));
 
-        client.on("sendTarTODVote",function(data){
+        client.on("tarTODVote",function(data){
             this.rcvTarTODVote(client,data);
         }.bind(this));
 
@@ -259,7 +259,7 @@ class connectionHandler{
             this.rcvJudgeCont(client);
         }.bind(this));
 
-        client.on("sendPlayerVote",function(data){
+        client.on("sendPlayerToDChoice",function(data){
             this.rcvPlayerVote(client,data);
         }.bind(this));
 
