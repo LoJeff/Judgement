@@ -98,8 +98,8 @@ class connectionEmitter {
 		const client = this.client
 		const data = {"playerVote": playerVote}
 		client.emit("sendPlayerToDChoice", data)
-
 	}
+	
 
 	sig_contNextRound(){
 		//signal current user clicks to continue game from leaderboard

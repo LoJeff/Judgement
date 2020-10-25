@@ -220,6 +220,7 @@ class connectionHandler{
 			this.leaveGameRoom(client,data);
 		}.bind(this));
 
+        //not needed
         client.on("updateGame", function(data){
             this.updateGame(client,data);
         })
@@ -246,7 +247,7 @@ class connectionHandler{
             this.rcvTargets(client,data);
         }.bind(this));
 
-        client.on("tarTODVote",function(data){
+        client.on("sendTarTODVote",function(data){
             this.rcvTarTODVote(client,data);
         }.bind(this));
 
@@ -254,11 +255,11 @@ class connectionHandler{
             this.rcvJudgePrompt(client, data);
         }.bind(this));
 
-        client.on("sigJudgeContGame",function(data){
+        client.on("sig_judgeContGame",function(data){
             this.rcvJudgeCont(client);
         }.bind(this));
 
-        client.on("sendPlayerToDChoice",function(data){
+        client.on("sendPlayerVote",function(data){
             this.rcvPlayerVote(client,data);
         }.bind(this));
 

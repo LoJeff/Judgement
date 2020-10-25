@@ -35,7 +35,7 @@ class PerformTruthOrDare extends Component {
                             <div id="trial_vote_title">On Trial</div>
                             You have received the following trial:
                             <div id="trial-container">{this.state.curTrial}</div>
-                            The Jury will judge you based on your performance. The trial ends upon the Judge's discretion.
+                            The Jury will judge you based on your performance. The trial ends upon the Judge and Jury's discretion.
                         </div> 
                         <div id="role-container">
                             Currently you are: On Trial
@@ -58,8 +58,7 @@ class PerformTruthOrDare extends Component {
                             <div id="trial-container">
                                 {this.state.curTrial}
                             </div>
-                            Proceed to judgement when trial is complete:
-
+                            Proceed to judgement when trial is complete and Jury is finished viewing:
                                 <div>
                                     <button className="popButton" type="submit" onClick={this.continueGame}>
                                         Proceed

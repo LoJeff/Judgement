@@ -15,7 +15,8 @@ class Vote extends Component {
         // functions
         this.submitVote = this.submitVote.bind(this);
         this.setPlayerVote = this.setPlayerVote.bind(this);
-        this.contToRoundEnd = this.contToRoundEnd(this);
+        this.contToRoundEnd = this.contToRoundEnd.bind(this);
+        this.showVoteResult = this.showVoteResult.bind(this);
     }
 
     setPlayerVote(playerInt){
@@ -39,6 +40,7 @@ class Vote extends Component {
             
         } else {
             //if round continues
+            console.log("in contToRoundEnd");
             this.props.triggerPageChange("pickTargets");       
         }
     }
@@ -47,10 +49,31 @@ class Vote extends Component {
         this.props.handlers.updateReact(this);
     }
 
+    showVoteResult(resultList){
+        if (this.state.resultVote !== null){
+            return(
+                <div>
+                    <div>
+                        {this.state.resultVote[0][0]} wins this trial.
+                    </div>
+                    <div>
+                        Results:
+                        {resultList}
+                    </div>
+                    <div id="subtitle_button_container">
+                        <button className="popButton" type="submit" onClick={this.contToRoundEnd}>
+                            Continue
+                        </button>
+                    </div>
+                </div>
+            )
+        }
+    }
+
     render(){
 
         const showJudgeSpecificElement = () => {
-            if ( this.state.isJudge ){
+            if ( true ){
                 return(
                     <div>
                         <p>You are the judge! Your vote holds twice the power!</p>
@@ -66,27 +89,6 @@ class Vote extends Component {
             });
         }
 
-        const showVoteResult = () => {
-            if (this.state.resultVote !== null){
-                return(
-                    <div>
-                        <div>
-                            {this.state.resultVote[0][0]} wins this trial.
-                        </div>
-                        <div>
-                            Results:
-                            {voteResultElements}
-                        </div>
-                        <div id="subtitle_button_container">
-                            <button className="popButton" type="submit" onClick={this.contToRoundEnd()}>
-                                Continue
-                            </button>
-                        </div>
-                    </div>
-                )
-            }
-        }
-
         return ( 
         <div>
             <div>
@@ -97,18 +99,18 @@ class Vote extends Component {
             <div>
                 <div id="submit_button_container">
                     <div>
-                        <button className="popButton" type="submit" onClick={this.submitVote(0)}>
+                        <button className="popButton" type="submit" onClick={ () => this.submitVote(0)}>
                             {this.props.displayPlayerNamesFromString(this.props.playerList, this.props.curTargets[0])}
                         </button>
                     </div>
                     <div>
-                        <button className="popButton" type="submit" onClick={this.submitVote(1)}>
+                        <button className="popButton" type="submit" onClick={ () => this.submitVote(1)}>
                             {this.props.displayPlayerNamesFromString(this.props.playerList, this.props.curTargets[1])}
                         </button>
                     </div>
 				</div>
 
-                {showVoteResult()}
+                {this.showVoteResult(voteResultElements)}
 
             </div>
 

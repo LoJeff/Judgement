@@ -104,8 +104,8 @@ class connectionHandler{
 		})
 	}
 
-	playerVote(data){
-		this.react.props.triggerPageChange("deliverToD");
+	playerVote(){
+		this.react.props.triggerPageChange("vote");
 	}
 
 	resultVote(data){
