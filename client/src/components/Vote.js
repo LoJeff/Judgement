@@ -20,9 +20,11 @@ class Vote extends Component {
     }
 
     setPlayerVote(playerInt){
-        this.setState((playerInt) => ({
+        console.log("in setPLayerVote: " + playerInt);
+        this.setState(() => ({
             playerVote: playerInt
         }))
+
     }
 
     submitVote(vote){
@@ -40,7 +42,6 @@ class Vote extends Component {
             
         } else {
             //if round continues
-            console.log("in contToRoundEnd");
             this.props.triggerPageChange("pickTargets");       
         }
     }
@@ -93,22 +94,24 @@ class Vote extends Component {
         <div>
             <div>
                 <h1>Pass Judgement</h1>
-                <p>Whos appeal was stronger?</p>
+                <p>Whose appeal was stronger?</p>
                 {showJudgeSpecificElement()}
             </div>
             <div>
                 <div id="submit_button_container">
                     <div>
-                        <button className="popButton" type="submit" onClick={ () => this.submitVote(0)}>
+                        <button className="voteToDButtons" type="submit" id="0" onClick={ () => this.props.displayVoteChoices(0, this.setPlayerVote, this.state.playerVote)}>
                             {this.props.displayPlayerNamesFromString(this.props.playerList, this.props.curTargets[0])}
                         </button>
                     </div>
                     <div>
-                        <button className="popButton" type="submit" onClick={ () => this.submitVote(1)}>
+                        <button className="voteToDButtons" type="submit" id="1" onClick={ () => this.props.displayVoteChoices(1, this.setPlayerVote, this.state.playerVote)}>
                             {this.props.displayPlayerNamesFromString(this.props.playerList, this.props.curTargets[1])}
                         </button>
                     </div>
 				</div>
+
+                {this.props.displaySubmitButton(this.state.playerVote, this.submitVote)}
 
                 {this.showVoteResult(voteResultElements)}
 

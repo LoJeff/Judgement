@@ -26,6 +26,9 @@ class App extends Component {
         this.updateCurTargets = this.updateCurTargets.bind(this);
         this.updatePlayerList = this.updatePlayerList.bind(this);
         this.displayPlayerNamesFromString = this.displayPlayerNamesFromString.bind(this);
+        this.displayVoteChoices = this.displayVoteChoices.bind(this);
+        this.displaySubmitButton = this.displaySubmitButton.bind(this);
+        //this.submitVote = this.submitVote.bind(this);
 
 
         // create socket connection
@@ -83,13 +86,60 @@ class App extends Component {
             });
 
             for (var i = 0; i < listOfIds.length; i++){
-                if (i === listOfIds.length - 1) {
+                if (i === listOfIds.length - 1 && result.length > 0) {
                     result += " and";
                 }
                 result += " " + playerList[listOfIds[i]];
             }
         }
         return result;
+    }
+
+    displayVoteChoices(vote, setFunc, stateVal){
+
+        if (stateVal !== true){
+            setFunc(vote);
+
+            if( vote === 0) {
+                document.getElementById("0").setAttribute("disabled", "true");
+                document.getElementById("1").removeAttribute("disabled");
+            } else {
+                document.getElementById("1").setAttribute("disabled", "true");
+                document.getElementById("0").removeAttribute("disabled");
+            }
+        }
+    }
+
+    // submitVote(emitFunc, stateVal, setFunc){
+    //     emitFunc(stateVal);
+
+    //     setFunc(true);
+
+    //     document.getElementById('submitVoteButton').setAttribute("disabled", "true")
+    // }
+
+    displaySubmitButton(stateVal, subFunc){
+
+        if (stateVal === true){
+            return (         
+                <div>
+                    <button className="submitVote" type="text" id="submitVoteButton" onClick={subFunc}>Vote submitted</button>
+                </div>
+            )
+
+        } else if (stateVal !== null) {
+            return (         
+                <div>
+                    <button className="submitVote" type="text" id="submitVoteButton" onClick={subFunc}>Submit Vote</button>
+                </div>
+            )
+        } else {
+            return (
+                <div>
+                    <button className="submitVote" type="text" onClick={null} disabled>Submit Vote</button>
+                </div>
+            )
+        }
     }
 
     // Lobby Page
@@ -134,6 +184,9 @@ class App extends Component {
                                 handlers={this.state.handlers}
                                 triggerPageChange={this.triggerPageChange}
                                 updateCurTargets={this.updateCurTargets}
+                                displayVoteChoices={this.displayVoteChoices}
+                                displaySubmitButton={this.displaySubmitButton}
+                                submitVote={this.submitVote}
                 />)
         }        
         else if(this.state.pageState === "deliverToD"){
@@ -161,6 +214,9 @@ class App extends Component {
                          curTargets={this.state.curTargets}
                          playerList={this.state.playerList}
                          displayPlayerNamesFromString={this.displayPlayerNamesFromString}
+                         displayVoteChoices={this.displayVoteChoices}
+                         displaySubmitButton={this.displaySubmitButton}
+                         submitVote={this.submitVote}
                 />)
         }
         else if(this.state.pageState === "leaderboard"){

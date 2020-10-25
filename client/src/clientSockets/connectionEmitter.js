@@ -65,10 +65,17 @@ class connectionEmitter {
 	}
 	
 	/*
-    In/Out: tarVote(str)
+	In/Out: tarVote(int)
+	0 : truth
+	1 : false
     */
 	sendTarTODVote(tarVote){
 		//send Truth or Dare vote from target
+		console.log("typeof this: " + typeof this);
+		console.log("this: " + this);
+		if (this === undefined){
+			console.log("this is underinfed")
+		}
 		const client = this.client;
 		const data = {"tarVote": tarVote}
 		client.emit("tarTODVote", data)
@@ -95,11 +102,12 @@ class connectionEmitter {
     */
 	sendPlayerVote(playerVote){
 		//send this player's vote for who won trial
+		console.log("emitting player vote: " + playerVote);
 		const client = this.client
 		const data = {"playerVote": playerVote}
 		client.emit("sendPlayerToDChoice", data)
 	}
-	
+
 
 	sig_contNextRound(){
 		//signal current user clicks to continue game from leaderboard
