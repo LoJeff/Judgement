@@ -97,8 +97,7 @@ class Vote extends Component {
         <div id="vote">
             <div>
                 <h1>Pass Judgement</h1>
-                <p>Whose appeal was stronger?</p>
-                {showJudgeSpecificElement()}
+
             </div>
             <div id="row_container">
                 <div id="vote_ticket_container">
@@ -131,7 +130,8 @@ class Vote extends Component {
 
                 <div id="side_help_container">
                     <div id="side_help_desc">
-                            Please select the candidate with the best appeal. The candidate with best appeal voted by Jury majority will receive favour from the Captain.
+                        {showJudgeSpecificElement()}
+                        Please select the candidate with the best appeal. The candidate with the best appeal voted by Jury majority will receive favour from the Captain.
                     </div>
                 </div>
             </div>

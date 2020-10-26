@@ -300,7 +300,7 @@ class game {
                 })
             }
             var winner = this.m_players[voteInfo[0].pidx].addPoints(1);
-            if (m_enable_rewards) {
+            if (this.m_enable_rewards) {
                 while (winner.getRewardIdx() < this.m_rewards.length 
                         && this.m_rewards[winner.getRewardIdx()][0] <= winner.getPoints()) {
                     winner.addReward(this.m_rewards[winner.getRewardIdx()][1]);
