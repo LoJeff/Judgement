@@ -67,15 +67,11 @@ class connectionEmitter {
 	/*
 	In/Out: tarVote(int)
 	0 : truth
-	1 : false
+	1 : dare
     */
 	sendTarTODVote(tarVote){
 		//send Truth or Dare vote from target
-		console.log("typeof this: " + typeof this);
-		console.log("this: " + this);
-		if (this === undefined){
-			console.log("this is underinfed")
-		}
+
 		const client = this.client;
 		const data = {"tarVote": tarVote}
 		client.emit("tarTODVote", data)

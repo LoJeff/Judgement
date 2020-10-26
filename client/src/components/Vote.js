@@ -25,10 +25,13 @@ class Vote extends Component {
             playerVote: playerInt
         }))
 
+        console.log("state playerVote after set: "+this.state.playerVote);
+
     }
 
     submitVote(vote){
         this.setPlayerVote(vote);
+        console.log("playerVote to send: "+this.state.playerVote);
         this.props.emitters.sendPlayerVote(this.state.playerVote);
     }
 
@@ -91,30 +94,46 @@ class Vote extends Component {
         }
 
         return ( 
-        <div>
+        <div id="vote">
             <div>
                 <h1>Pass Judgement</h1>
                 <p>Whose appeal was stronger?</p>
                 {showJudgeSpecificElement()}
             </div>
-            <div>
-                <div id="submit_button_container">
-                    <div>
-                        <button className="voteToDButtons" type="submit" id="0" onClick={ () => this.props.displayVoteChoices(0, this.setPlayerVote, this.state.playerVote)}>
+            <div id="row_container">
+                <div id="vote_ticket_container">
+                    <div id="tod_vote_title">
+                        Voting Ballot
+                    </div>
+                    <div id="tar_list">
+                        <div id="vote_radio_container">
+                            <input className="vote_radio" type="radio" name="voteTarget" onClick={ () => this.setPlayerVote(0)}></input>
+                            <span className="vote_radio"></span>
                             {this.props.displayPlayerNamesFromString(this.props.playerList, this.props.curTargets[0])}
-                        </button>
-                    </div>
-                    <div>
-                        <button className="voteToDButtons" type="submit" id="1" onClick={ () => this.props.displayVoteChoices(1, this.setPlayerVote, this.state.playerVote)}>
+
+                        </div>
+                        <div id="vote_radio_container">
+                            <input className="vote_radio" type="radio" name="voteTarget" onClick={ () => this.setPlayerVote(1)}></input>
+                            <span className="vote_radio"></span>
                             {this.props.displayPlayerNamesFromString(this.props.playerList, this.props.curTargets[1])}
-                        </button>
+
+                        </div>
                     </div>
-				</div>
 
-                {this.props.displaySubmitButton(this.state.playerVote, this.submitVote)}
+                    <div id="submit_button_container">
+                    {this.props.displaySubmitButton(this.state.playerVote, this.submitVote)}
 
-                {this.showVoteResult(voteResultElements)}
+                    </div>
 
+                    {this.showVoteResult(voteResultElements)}
+
+                </div>
+
+                <div id="side_help_container">
+                    <div id="side_help_desc">
+                            Please select the candidate with the best appeal. The candidate with best appeal voted by Jury majority will receive favour from the Captain.
+                    </div>
+                </div>
             </div>
 
         </div>

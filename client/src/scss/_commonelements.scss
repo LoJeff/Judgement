@@ -3,6 +3,15 @@
     width: 100%;
 }
 
+#row_container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    margin: 10px;
+}
+
 #blue_text{
     color: rgb(153, 214, 204);
 }
