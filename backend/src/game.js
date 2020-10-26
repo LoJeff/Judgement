@@ -299,7 +299,7 @@ class game {
                     "vote": voteInfo[i].count
                 })
             }
-            var winner = this.m_players[voteInfo[i].pidx].addPoints(1);
+            var winner = this.m_players[voteInfo[0].pidx].addPoints(1);
             if (m_enable_rewards) {
                 while (winner.getRewardIdx() < this.m_rewards.length 
                         && this.m_rewards[winner.getRewardIdx()][0] <= winner.getPoints()) {
