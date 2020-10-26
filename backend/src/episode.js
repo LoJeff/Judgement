@@ -135,9 +135,8 @@ class EPISODE {
     playerVote(vote, pid, isJudge) {
         // m_vote was sorted and can no longer be modified
         console.assert(!this.m_vote_sorted);
-
         // All players have already voted
-        if (this.m_responses.size >= (this.m_num_players - this.m_targets.length)) return true;
+        if (this.m_responses.size >= this.m_num_players) return true;
         // Valid vote
         if (!(this.m_targets.length > vote && vote >= 0)) return false;
         // Player has already voted
@@ -152,7 +151,7 @@ class EPISODE {
         if (this.m_vote[vote].order == Number.MAX_SAFE_INTEGER) {
             this.m_vote[vote].order = this.m_responses.size;
         }
-        return this.m_responses.size >= (this.m_num_players - this.m_targets.length);
+        return this.m_responses.size >= this.m_num_players;
     }
 
     // Sort the votes and return the ranking

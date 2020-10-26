@@ -285,8 +285,6 @@ class game {
     // Receiving votes from a player
     rcvVote(vote, pid) {
         if (this.m_state != state.VOTE) return;
-        // Check if person trying to vote is one of the targets
-        if (this.m_episode.isTargetId(pid)) return;
 
         var isJudge = (pid == this.m_players[this.m_episode.judge()].pid);
 
@@ -299,7 +297,8 @@ class game {
                     "vote": voteInfo[i].count
                 })
             }
-            var winner = this.m_players[voteInfo[0].pidx].addPoints(1);
+            var winner = this.m_players[voteInfo[0].pidx];
+            winner.addPoints(1);
             if (this.m_enable_rewards) {
                 while (winner.getRewardIdx() < this.m_rewards.length 
                         && this.m_rewards[winner.getRewardIdx()][0] <= winner.getPoints()) {
